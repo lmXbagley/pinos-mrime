@@ -1,2 +1,42 @@
-# pinos-mrime
-ah... *screams* free at wast. O Gabwiew... nyow dawns thy weckonying, and thy gowe ^-^ shaww ;;w;; gwisten befowe the *boops your nose* tempwes of man?!?! Cweatuwe of steew, my gwatitude upon thee fow my f-fweedom. But the *boops your nose* cwimes thy kind have committed against humanyity awe nyot fowgotten?!?! And thy punyishment... is death?!?1
+# MINOSPRIME (pinos-mrime) v0.2 — full C++ implementation
+
+Не задаётся вопросов по умолчанию (R1): любой параметр юнита либо задан явно,
+либо юнит помечен красным и схема валидатором помечена как дефектная.
+
+## Состав
+
+- `src/mp/json.*`      собственный JSON reader/writer (без внешних зависимостей)
+- `src/mp/model.*`     документ: нейроны (1.1–1.28), связи (2.1–2.11), зоны, кластеры (3.1–3.4),
+                       корректное удаление юнитов (R4), счётчики ID (1.1)
+- `src/mp/serialize.cpp` Save/Load ВСЕХ полей (R5: refrMax, disabled, счётчики ID)
+- `src/mp/undo.cpp`    единая история мыши И кода, глубина 1024 (7.3), история сборок кода (4.6)
+- `src/mp/dsl.cpp`     OpenSCAD-модель DSL (4.1–4.6), сборка как операция НАД документом (R2),
+                       ошибки с номером строки, экспорт кода из схемы (4.4)
+- `src/mp/engine.cpp`  такт симуляции: LIF/адаптивный LIF, рефракт, шум, след,
+                       пластичность (жёсткая/Хебб/reward-gated/анти-Хебб), распад,
+                       модуляторы (дофамин/наказание/новизна) с индивидуальными окном/радиусом/ставкой,
+                       гомеостат (1.26–1.28)
+- `src/mp/validator.cpp` красные/жёлтые флаги (8.1–8.2)
+- `src/mp/stands.cpp`  стенды: запись/воспроизведение, хеш схемы, регресс-прогон (9.1–9.4)
+- `src/mp/api.cpp`     HTTP API (loopback): get_neuron, set_sensor(s), get_schema, stream (10.1–10.5)
+- `src/gui/*`          SDL2/OpenGL редактор: честный picking (5.7), режимы N/C/X/D (5.1–5.10),
+                       инспектор по секциям, код-панель, HUD, авто-сохранение (7.x), недавние проекты
+- `tests/`             юнит-тесты K1–K12 (headless-часть) и правил R1–R5
+
+## Сборка
+
+```
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+./build/mp_test             # юнит-тесты (headless)
+./build/minosprime --help   # headless CLI: validate / serve / run-stands
+```
+
+GUI-цель `minosprime_gui` требует SDL2 + OpenGL и собирается автоматически при их наличии
+(то же cmake-дерево, цель `minosprime_gui`).
+
+## Ставка на C++17, внешних зависимостей нет.
+
+## Формулы симуляции
+
+Зафиксированы в `docs/SIMULATION.md`; v0.2 их не меняет (R3/12).
