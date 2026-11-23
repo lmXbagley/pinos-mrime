@@ -19,21 +19,20 @@
 - `src/mp/validator.cpp` красные/жёлтые флаги (8.1–8.2)
 - `src/mp/stands.cpp`  стенды: запись/воспроизведение, хеш схемы, регресс-прогон (9.1–9.4)
 - `src/mp/api.cpp`     HTTP API (loopback): get_neuron, set_sensor(s), get_schema, stream (10.1–10.5)
-- `src/gui/*`          SDL2/OpenGL редактор: честный picking (5.7), режимы N/C/X/D (5.1–5.10),
-                       инспектор по секциям, код-панель, HUD, авто-сохранение (7.x), недавние проекты
+- `src/main_headless.cpp` headless CLI: validate / serve (API) / run-stands
 - `tests/`             юнит-тесты K1–K12 (headless-часть) и правил R1–R5
 
-## Сборка
+Графический редактор (SDL2/OpenGL, раздел 5 директив) — отдельная цель следующей итерации,
+в ядро v0.2 он не входит: всё ядро headless и покрыто тестами.
+
+## Сборка и запуск
 
 ```
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
-./build/mp_test             # юнит-тесты (headless)
+./build/mp_test             # юнит-тесты (headless) — должно быть ALL TESTS PASSED
 ./build/minosprime --help   # headless CLI: validate / serve / run-stands
 ```
-
-GUI-цель `minosprime_gui` требует SDL2 + OpenGL и собирается автоматически при их наличии
-(то же cmake-дерево, цель `minosprime_gui`).
 
 ## Ставка на C++17, внешних зависимостей нет.
 

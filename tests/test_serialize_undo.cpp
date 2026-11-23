@@ -111,12 +111,12 @@ MPT_TEST(undo_unified_history) {
   Project doc = fullDoc();
   UndoStack undo(1024);
   undo.push(doc, "начало");
-  // «мышь»: добавили нейрон
+  // «мышь»: добавили нейрон (снапшот ДО мутации — см. undo.hpp)
   Neuron n; n.type = OI((long long)NType::Hidden); n.zone = "V1";
   n.pos = {9, 9, 9}; n.thr = OF(1); n.leak = OF(0.8); n.refrMax = OI(2);
   n.noise = OF(0); n.trace = OI(0);
-  doc.addNeuron(n);
   undo.push(doc, "мышь: добавить нейрон");
+  doc.addNeuron(n);
   // «код»: сборка — тоже в ту же историю (4.6)
   undo.pushCodeBuild("zone(\"V1\");");
   CHECK(undo.size() == 2, "history holds both");

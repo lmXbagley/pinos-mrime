@@ -19,20 +19,6 @@ void UndoStack::pushCodeBuild(const std::string& codeText) {
   if ((int)buildHistory_.size() > depth_) buildHistory_.erase(buildHistory_.begin());
 }
 
-static Project step(const Project& cur, UndoStack* u, int dir,
-                    const std::string* labelOut) {
-  Project before;
-  deepCopy(cur, before);
-  // записать текущее состояние как символ будущего шага
-  // (классическая реализация: стек содержит снапшоты-ПРЕДКИ; undo заменяет документ на предка,
-  //  после чего предок текущего состояния добавляется как redo-шаг)
-  std::string lbl;
-  Project out;
-  out = u ? Project{} : Project{}; // placeholder, не используется
-  (void)labelOut;
-  return before; // переопределяется ниже
-}
-
 Project UndoStack::undo(const Project& cur, std::string* label) {
   if (!canUndo()) return cur;
   --pos_;

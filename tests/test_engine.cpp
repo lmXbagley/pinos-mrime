@@ -22,7 +22,6 @@ MPT_TEST(engine_lif_spike_formula) {
   Project doc;
   Neuron* n = doc.addNeuron(base(NType::Hidden, ""));
   std::string id = n->id;
-  Synapse* in = nullptr;
   Neuron* s = doc.addNeuron(base(NType::Sensor, ""));
   Synapse sy;
   sy.pre = s->id; sy.post = id;
@@ -32,14 +31,12 @@ MPT_TEST(engine_lif_spike_formula) {
   sy.id = doc.nextSynId();
   doc.synapses.push_back(sy);
   Engine eng(doc);
-  eng.setSensorValue(s->id, 10.0);         // rate-кодирование при norm 0..10 → ~1 в тик
-  eng.tick();                              // сенсор может спайкнуть
-  double preN = doc.neuron(id)->u;
-  CHECK(mpt::near(preN, 0.5, 1e-9), "1 tick 1 ms: u = w*1 (leak=0)");
-  eng.tick();
-  CHECK(mpt::near(doc.neuron(id)->u, 0.5 + 0.5, 1e-9), "second input sums");
-  // порог: третий вход (рефрактерность ещё не в игре) — u=1.5>=1 → спайк
-  eng.tick();
+  eng.setSensorValue(s->id, 10.0);         // rate-кодирование: hz=10000 → период 1 тик
+  eng.tick();                              // T1: сенсор спайкнул, доставка — на T2
+  CHECK(mpt::near(doc.neuron(id)->u, 0.0, 1e-9), "no input on pre-spike tick (delay=1)");
+  eng.tick();                              // T2: доставка w=0.5
+  CHECK(mpt::near(doc.neuron(id)->u, 0.5, 1e-9), "input delivered at t+delay: u = w*1 (leak=0)");
+  eng.tick();                              // T3: вторая доставка — u=1.0>=1 → спайк
   Neuron* after = doc.neuron(id);
   CHECK(after->spiked, "u>=thr => spike");
   CHECK(mpt::near(after->u, doc.uRest, 1e-9), "spike resets u to uRest");
@@ -60,14 +57,18 @@ MPT_TEST(engine_refractory_and_delay) {
   doc.synapses.push_back(sy);
   Engine eng(doc);
   eng.setSensorValue(s->id, 10);
+  eng.tick();                                    // T1: pre спайк
+  CHECK(doc.neuron(n->id)->lastInSum == 0, "delay=2: no delivery on t+1");
   eng.tick();
+  CHECK(doc.neuron(n->id)->lastInSum == 0, "delay=2: no delivery before t+delay");
+  eng.tick();                                    // T3: доставка на t+delay
   const Neuron* nn = doc.neuron(n->id);
-  // при delay=2 доставка придёт на t+3: первый тик — входа нет
-  long long got = 0;
-  for (int t = 0; t < 6; ++t) { eng.tick(); got += (nn->lastInSum != 0 || nn->spiked) ? 1 : 0; }
-  CHECK(got > 0, "delayed input eventually delivered");
-  CHECK(nn->spikeCount >= 1, "delayed spike delivered (2.9)");
-  CHECK(nn->u <= 0.0 + 1e-12, "u never rises while spiking gated by refr? (u at rest)");
+  CHECK(nn->spiked, "delayed spike delivered at t+delay (2.9)");
+  CHECK(nn->refr == 2, "refractory counter set");
+  eng.tick(); eng.tick();                        // T4: рефрактерность глушит спайки
+  CHECK(!doc.neuron(n->id)->spiked, "refractory blocks spike");
+  eng.tick();                                    // T5: новая доставка после рефрактерности
+  CHECK(doc.neuron(n->id)->spiked, "after refractory: spiking resumes");
 }
 
 // ALIF: адаптация порога (1.5) + релаксация homeoRate (1.11)
@@ -83,7 +84,6 @@ MPT_TEST(engine_alif_threshold_adaptation) {
   Neuron* after = doc.neuron(id);
   CHECK(after->spiked, "manual spike");
   CHECK(after->uThrAdapt > 0.0, "ALIF: uThrAdapt += gammaConst");
-  double adapted = after->uThrAdapt;
   CHECK(after->refr > 0, "refractory active");
 }
 
@@ -140,17 +140,18 @@ MPT_TEST(engine_reward_gated_needs_modulator) {
   Project doc;
   Neuron* s = doc.addNeuron(base(NType::Sensor, ""));
   Neuron* n = doc.addNeuron(base(NType::Hidden, ""));
+  std::string sid = s->id, nid = n->id;         // пойнтеры инвалидируются push_back'ом в neurons
   Synapse sy;
-  sy.pre = s->id; sy.post = n->id;
+  sy.pre = sid; sy.post = nid;
   sy.weight = OF(1.0); sy.sign = OI((long long)SSign::Exc);
   sy.plast = OI((long long)Plasticity::RewardGated); sy.lr = OF(0.1);
   sy.pw = OI(5); sy.wMin = OF(0); sy.wMax = OF(2); sy.decay = OF(0); sy.delay = OI(0);
   sy.id = doc.nextSynId();
   doc.synapses.push_back(sy);
   Engine eng(doc);
-  eng.setSensorValue(s->id, 10);
+  eng.setSensorValue(sid, 10);
   eng.tick();
-  eng.fireOnce(n->id);
+  eng.fireOnce(nid);
   eng.tick();
   CHECK(mpt::near(doc.synapse(sy.id)->w, 1.0, 1e-9), "no modulator => no plastic change");
 
@@ -160,11 +161,11 @@ MPT_TEST(engine_reward_gated_needs_modulator) {
   mod.mscope = OI((long long)ModScope::Global);
   mod.windowSec = OF(1.0);
   mod.rate = OF(0.5);
-  doc.addNeuron(mod);
-  eng.setSensorValue(mod.id, 10);          // модулятор спайкнет
-  eng.setSensorValue(s->id, 10);
-  eng.tick();                              // спайк модулятора открывает окно
-  eng.fireOnce(n->id);
+  Neuron* mp = doc.addNeuron(mod);
+  eng.setSensorValue(sid, 10);
+  eng.fireOnce(mp->id);                    // спайк модулятора открывает окно (1.24)
+  eng.tick();
+  eng.fireOnce(nid);
   eng.tick();                              // ещё в окне
   CHECK(mpt::near(doc.synapse(sy.id)->w, 1.0 + 0.1 * 0.5, 1e-9),
         "reward-gated: w += lr * sum(active modulator rates)");

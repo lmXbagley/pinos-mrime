@@ -260,7 +260,7 @@ struct P {
 } // namespace
 
 bool Json::parse(const std::string& text, Json& out, std::string& err, int& line) {
-  P ps{text.data(), text.data() + text.size()};
+  P ps{text.data(), text.data() + text.size(), {}, 1};
   bool ok = ps.value(out, 0);
   if (ok) {
     ps.ws();

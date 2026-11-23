@@ -18,7 +18,7 @@ struct EngineStats {   // HUD 6.6
 
 class Engine {
 public:
-  explicit Engine(Project& doc) : doc_(doc) {}
+  explicit Engine(Project& doc) : doc_(doc) { resetDyn(); }
 
   // один тик (1 tick = 1 мс, см. docs/SIMULATION.md)
   void tick();

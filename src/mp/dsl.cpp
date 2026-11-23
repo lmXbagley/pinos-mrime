@@ -303,6 +303,7 @@ V3 parseVec(const std::vector<Tok>& toks, ExprCtx& cx, std::vector<DslError>& er
 }
 
 double evalParam(const std::vector<Tok>& toks, ExprCtx& cx, std::vector<DslError>& errs, int line) {
+  (void)line;
   DLexer L; L.toks = toks;
   return evalExpr(L, cx, errs);
 }
@@ -773,7 +774,22 @@ BuildResult parseAndBuild(Project& doc, const std::string& codeText) {
         }
         for (long long i = 0; i < N; ++i) {
           std::string zoneCode2 = zoneCode.empty() ? "Z0" : zoneCode;
-          std::string id = zoneCode2 + ".H." + std::to_string(i + 1);
+          // R2: если номер занят ручным юнитом или другим код-юнитом этой сборки —
+          // следующий свободный номер (конфликт фиксируется, ручное не стираем)
+          std::string id;
+          bool shifted = false;
+          for (long long nn = i + 1;; ++nn) {
+            std::string cand = zoneCode2 + ".H." + std::to_string(nn);
+            Neuron* exn0 = doc.neuron(cand);
+            bool manualBlocked = exn0 && !exn0->byCode;
+            bool dupThisBuild = std::find(codeIds.begin(), codeIds.end(), cand) != codeIds.end();
+            if (manualBlocked) { shifted = true; continue; }
+            if (dupThisBuild) continue;
+            id = cand;
+            break;
+          }
+          if (shifted)
+            res.conflicts.push_back({std::string("номер зоны '") + zoneCode2 + "' занят ручным юнитом (R2), кластер смещает номера", id});
           // id: зоны кластера видно в канонике (код.тип.ннн)
           Neuron n;
           n.byCode = true;
@@ -814,8 +830,7 @@ BuildResult parseAndBuild(Project& doc, const std::string& codeText) {
         // внутренние связи по топологии (3.2): knn/random/full/grid
         // веса из формулы connect с wVar/евидом
         std::string wExpr;
-        if (const auto* t2 = gp("w")) wExpr = "";
-        if (const auto* t2 = gp("w")) { wExpr = ""; }
+        if (const auto* t2 = gp("w")) { wExpr = ""; (void)t2; }
         double wBase = 0.5;
         if (const auto* t2 = gp("w")) {
           DLexer WL; WL.toks.clear(); Tok wt; wt.k = Tok::Num; wt.num = 0; wt.line = st.line;

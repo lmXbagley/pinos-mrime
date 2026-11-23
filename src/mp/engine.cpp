@@ -9,6 +9,7 @@ namespace mp {
 //   I_n(t)  = Σ_{s: post==n, enabled} effW(s) * pre_spiked(t - delay_s)
 //   u'      = u + leak*(uRest - u) + I + noise*gauss()      (1 tick = 1 мс)
 //   спайк   : refr == 0 && u >= thr_eff;  thr_eff = thr + uThrAdapt + homeoAdj
+//             порог thr не задан => порогового спайка нет (параметр обязателен, R1)
 //   ALIF    : при спайке uThrAdapt += PROJ.gammaConst;
 //             иначе uThrAdapt *= exp(-relax/1000), relax = homeoRate (если homeoOn) иначе 0
 //   после спайка: u = uRest, refr = refrMax, traceV = trace (1.10); traceV-- каждый тик
@@ -16,7 +17,7 @@ namespace mp {
 //   сенсор rate      : гармоника частоты: hz = 1000*smooth, период round(1000/hz), детерминированно
 //   сенсор EventDiff : спайк при |raw - raw_prev| > fireThr
 //   сенсор EventOnOff: on при пересечении fireThr вверх; off при падении ниже fireThr-hyst
-//   пластичность (при |t_pre - t_post| <= pw тиков):
+//   пластичность (при |t_pre - t_post| <= pw тиков; применяется в тик пост-спайка):
 //     Хебб w+=lr; анти-Хебб w-=lr; reward-gated w+=lr*M; жёсткая — без изменений
 //     M = Σ ставок активных модуляторов (1.25)
 //   распад (2.8): тик без пары спайков → w *= (1 - decay); клампы |w| в [wMin, wMax]
@@ -189,6 +190,8 @@ void Engine::tick() {
     n.u += I[i];
     if (noise > 0) n.u += noise * gauss();
 
+    // порог не задан => спонтанного порогового спайка нет (полей нет — валидатор R1 "unset thr => red")
+    bool hasThr = n.thr.set;
     double thr = n.thr.set ? n.thr.v : 0.0;
     long long refrMax = n.refrMax.set ? n.refrMax.v : 0;
 
@@ -196,7 +199,7 @@ void Engine::tick() {
       --n.refr;
       n.spiked = false;
       if (n.traceV > 0) --n.traceV;
-    } else if (n.u >= thr + n.uThrAdapt + n.homeoAdj) {
+    } else if (hasThr && n.u >= thr + n.uThrAdapt + n.homeoAdj) {
       n.spiked = true;
       ++spikesThisTick;
       ++n.spikeCount;
@@ -220,6 +223,12 @@ void Engine::tick() {
         n.spiked = true; ++spikesThisTick; ++n.spikeCount; n.u = doc_.uRest;
         if (n.model.set && (NModel)n.model.v == NModel::ALIF)
           n.uThrAdapt += doc_.gammaConst;                  // адаптация на любом спайке (1.5)
+        if (n.type.set && (NType)n.type.v == NType::Modulator && n.rate.set) {
+          // окно модулятора открывается и ручным спайком (1.24)
+          double winSec2 = n.windowSec.set ? n.windowSec.v : 0.0;
+          long long until2 = tickNow_ + (long long)std::max(1LL, (long long)std::llround(winSec2 * 1000.0));
+          mods_.push_back({n.id, until2, n.rate.v});
+        }
       }
       n.refr = refrMax;
       n.traceV = n.trace.set ? n.trace.v : 0;
@@ -272,7 +281,7 @@ void Engine::tick() {
     long long pw = s.pw.set ? s.pw.v : 0;
     bool pairInWindow = s.lastPreTick >= 0 && s.lastPostTick >= 0 &&
                         std::llabs(s.lastPreTick - s.lastPostTick) <= pw;
-    if (pairInWindow && s.plast.set) {
+    if (postSpiked && pairInWindow && s.plast.set) {   // применяем ровно в тик пост-спайка (2.4)
       Plasticity pl = (Plasticity)s.plast.v;
       double lr = (s.lr.set ? s.lr.v : 0.0) * std::max(0.0, plastScale_);
       switch (pl) {

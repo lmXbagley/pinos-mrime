@@ -42,18 +42,3 @@ target_link_libraries(mp_test PRIVATE mp_core)
 
 enable_testing()
 add_test(NAME all COMMAND mp_test)
-
-find_package(SDL2 QUIET)
-if(SDL2_FOUND)
-  add_executable(minosprime_gui
-    src/gui/main_gui.cpp
-    src/gui/view.cpp
-    src/gui/ui.cpp
-  )
-  target_compile_definitions(minosprime_gui PRIVATE MP_GUI=1)
-  target_link_libraries(minosprime_gui PRIVATE mp_core SDL2::SDL2 ${OPENGL_LIBRARIES})
-  find_package(OpenGL QUIET)
-  if(OpenGL_FOUND)
-    target_link_libraries(minosprime_gui PRIVATE OpenGL::GL)
-  endif()
-endif()

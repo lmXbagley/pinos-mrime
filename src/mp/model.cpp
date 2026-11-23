@@ -274,6 +274,9 @@ std::string schemaHash(const Project& p) {
     h = hmix(h, (uint64_t)std::llround(n.pos.z * 1000));
     h = hmix(h, (uint64_t)n.refrMax.v);
     h = hmix(h, n.disabled ? 1 : 0);
+    h = hmix(h, n.model.set ? (uint64_t)n.model.v : 0);
+    h = hmix(h, n.thr.set ? (uint64_t)std::llround(n.thr.v * 1000) : (uint64_t)-1);
+    h = hmix(h, n.leak.set ? (uint64_t)std::llround(n.leak.v * 1000) : (uint64_t)-1);
   }
   for (const auto& s : p.synapses) {
     h = hstr(h, s.pre);
@@ -281,6 +284,8 @@ std::string schemaHash(const Project& p) {
     h = hmix(h, (uint64_t)std::llround(s.weight.v * 1000));
     h = hmix(h, (uint64_t)s.sign.v);
     h = hmix(h, s.enabled ? 1 : 0);
+    h = hmix(h, s.delay.set ? (uint64_t)s.delay.v : 0);
+    h = hmix(h, s.plast.set ? (uint64_t)s.plast.v : 0);
   }
   char buf[32];
   std::snprintf(buf, sizeof buf, "%016llx", (unsigned long long)h);
