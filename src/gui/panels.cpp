@@ -82,7 +82,7 @@ static float enumRow2(UI& ui, unsigned id, const char* name, Rect r, int& idx, c
 static void drawCodePanel(App& app, UI& ui) {
   float w = 560, h = 300;
   float x = 8, y = (float)ui.winH - h - 128;
-  if (uiWindowShared(ui, hashStr("code"), "Код — операция НАД документом (4.1–4.6, R2)", x, y, w, h, false)) {}
+  if (uiWindowShared(ui, hashStr("code"), "Код — операция НАД документом (4.1–4.6, R2)", x, y, w, h, true)) {}
   float bw = 74;
   if (widgetButton(ui, hashStr("tab code"), "Код", {x + 8, y + 26, bw, 20}, true, app.codeTabErrors ? C_BORDER : C_ACCENT))
     app.codeTabErrors = false;
@@ -365,6 +365,9 @@ static void drawHud(App& app, UI& ui) {
   x += 80;
   if (widgetButton(ui, hashStr("files"), "Файл", {x, 4, 50, 24}, true, app.winFiles ? C_ACCENT : C_BORDER))
     app.winFiles = !app.winFiles;
+  x += 56;
+  if (widgetButton(ui, hashStr("codeB"), "Код", {x, 4, 50, 24}, true, app.winCode ? C_ACCENT : C_BORDER))
+    app.winCode = !app.winCode;
   x += 56;
   if (widgetButton(ui, hashStr("stands"), "Стенды", {x, 4, 66, 24}, true, app.winStands ? C_ACCENT : C_BORDER))
     app.winStands = !app.winStands;
@@ -1105,6 +1108,7 @@ void panelsDraw(App& app) {
       else if (k == "C" && !ui.ctrl) app.mode = Mode::Wire;
       else if (k == "X" && !ui.ctrl) app.mode = Mode::Cut;
       else if (k == "D" && !ui.ctrl) app.mode = Mode::Damage;
+      else if (k == "Tab") app.winCode = !app.winCode;
       else if (k == "Escape") {
         app.wirePre = false;
         app.selN.clear();
