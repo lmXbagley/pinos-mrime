@@ -109,6 +109,7 @@ void UI::endFrame() {
     float mh = menu.items.size() * ih + 4;
     float x = std::max(2.0f, std::min(menu.x, (float)winW - wmenu - 2));
     float y = std::max(2.0f, std::min(menu.y, (float)winH - mh - 2));
+    menuRect = {x, y, wmenu, mh};
     quad(x, y, wmenu, mh, 0x10151cff);
     frame(x, y, wmenu, mh, C_ACCENT);
     int pick = -1;
@@ -125,15 +126,15 @@ void UI::endFrame() {
       }
       widgetLabel(*this, menu.items[i], {ir.x + 10, ir.y + 3.5f, ir.w, ih}, C_TEXT);
     }
-    if (pick >= 0) {
-      menuResult = pick;
+    if (keyOnce("Escape")) {
       menuOpen = false;
-      lReleased = false;
+      lPressed = false;
       lDown = false;
+      lReleased = false;
+    } else if (pick >= 0) {
+      menuResult = pick;
       lPressed = false;
-    } else if (lPressed && !Rect{x, y, wmenu, mh}.hit(mx, my)) {
-      menuOpen = false;
-      lPressed = false;
+      lReleased = false;
       lDown = false;
     }
   }

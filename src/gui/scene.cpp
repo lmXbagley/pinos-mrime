@@ -42,14 +42,19 @@ static float clampf(float v, float a, float b) { return std::max(a, std::min(b, 
 void scenePick(App& app) {
   UI& ui = app.ui;
   Ray ray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
-  const float tbase = std::max(0.8f, app.cam.dist * 0.02f);
   std::string bestN;
   float bestNT = 1e30f;
   for (const auto& n : app.doc.neurons) {
     if (!n.alive) continue;
+    float visR = (n.type.set && (n.type.v == 0 || n.type.v == 2)) ? 0.75f : 0.6f;
+    float f = 0;
+    auto it = app.flash.find(n.id);
+    if (it != app.flash.end()) f = (float)it->second;
+    if (f > 0.25f) visR += f * 0.35f;
+    float thr = visR * 1.9f;
     float d = 0, t = 0;
     if (!rayPoint(ray, n.pos, d, &t)) continue;
-    if (d < tbase && t < bestNT) {
+    if (d < thr && t < bestNT) {
       bestN = n.id;
       bestNT = t;
     }
@@ -63,7 +68,7 @@ void scenePick(App& app) {
       if (!a || !b) continue;
       float d = 0, t = 0;
       if (!raySegment(ray, a->pos, b->pos, d, &t)) continue;
-      if (d < tbase * 0.6f && t < bestST) {
+      if (d < 1.4f && t < bestST) {
         bestS = s.id;
         bestST = t;
       }

@@ -84,6 +84,7 @@ struct App {
   mp::BuildResult lastBuild;
   float errScroll = 0;
   bool codeTabErrors = false;
+  bool wantFs = false;
   bool winCode = true, winInsp = true, winStands = false, winFiles = false, winHelp = false;
 
   // ---- файлы (7.x) ----

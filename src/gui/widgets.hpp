@@ -63,6 +63,7 @@ struct UI {
   bool menuOpen = false;
   Menu menu;
   int menuResult = -1;
+  Rect menuRect{0, 0, 0, 0};
   bool guardClicks = false; // клик уходит в выпадающий слой
 
   void beginFrame(int w, int h);

@@ -9,6 +9,17 @@
 #include <SDL2/SDL_opengl.h>
 
 #include <cstdio>
+#include <string>
+
+static void applyFullscreen(SDL_Window* win, bool fs) {
+  SDL_SetWindowFullscreen(win, fs ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+  if (fs && (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN) == 0)
+    SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN);
+}
+
+static void toggleFullscreen(SDL_Window* win, bool currentlyFs) {
+  applyFullscreen(win, !currentlyFs);
+}
 
 int main(int argc, char** argv) {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
@@ -26,6 +37,9 @@ int main(int argc, char** argv) {
                                      1600, 900,
                                      SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN |
                                          SDL_WINDOW_ALLOW_HIGHDPI);
+  bool startFs = false;
+  for (int i = 1; i < argc; ++i)
+    if (std::string(argv[i]) == "--fullscreen" || std::string(argv[i]) == "-f") startFs = true;
   if (!win) {
     fprintf(stderr, "SDL_CreateWindow: %s\n", SDL_GetError());
     SDL_Quit();
@@ -44,7 +58,17 @@ int main(int argc, char** argv) {
   mpui::initDraw();
 
   mpui::App app;
-  app.startup(argc > 1 ? argv[1] : nullptr);
+  const char* fileArg = nullptr;
+  for (int i = 1; i < argc; ++i)
+    if (argv[i][0] != '-') { fileArg = argv[i]; break; }
+  app.startup(fileArg);
+
+  if (startFs) app.wantFs = true;
+
+  if (app.wantFs) {
+    applyFullscreen(win, true);
+    app.wantFs = false;
+  }
 
   Uint64 perfFreq = SDL_GetPerformanceFrequency();
   Uint64 lastT = SDL_GetPerformanceCounter();
@@ -88,8 +112,8 @@ int main(int argc, char** argv) {
         case SDL_KEYDOWN: {
           if (ev.key.repeat || ev.key.keysym.sym == SDLK_UNKNOWN) break;
           if (ev.key.keysym.sym == SDLK_F11) {
-            bool fs = (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
-            SDL_SetWindowFullscreen(win, fs ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+            bool fs = (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN) != 0;
+            toggleFullscreen(win, fs);
             break;
           }
           app.ui.keys.push_back(SDL_GetKeyName(ev.key.keysym.sym));
@@ -120,6 +144,12 @@ int main(int argc, char** argv) {
     app.ui.beginFrame(w, h);
 
     app.update(dt);
+
+    if (app.wantFs) {
+      bool fs = (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN) != 0;
+      toggleFullscreen(win, fs);
+      app.wantFs = false;
+    }
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);

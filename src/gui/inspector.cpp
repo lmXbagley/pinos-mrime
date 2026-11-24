@@ -487,7 +487,7 @@ void inspectorDraw(App& app) {
     ttl = "Выбрано связей: " + std::to_string(app.selS.size());
   else if (!app.selCluster.empty())
     ttl = "Кластер " + app.selCluster;
-  if (uiWindowShared(ui, hashStr("insp"), ttl.c_str(), x, y, w, h, false)) {}
+  if (uiWindowShared(ui, hashStr("insp"), ttl.c_str(), x, y, w, h, true)) app.winInsp = false;
   pushClip(x + 1, y + 24, w - 2, h - 24);
   Rect r{x + 6, y + 28, w - 12, 20};
   if (app.selN.size() == 1) {

@@ -82,7 +82,8 @@ static float enumRow2(UI& ui, unsigned id, const char* name, Rect r, int& idx, c
 static void drawCodePanel(App& app, UI& ui) {
   float w = 560, h = 300;
   float x = 8, y = (float)ui.winH - h - 128;
-  if (uiWindowShared(ui, hashStr("code"), "Код — операция НАД документом (4.1–4.6, R2)", x, y, w, h, true)) {}
+  if (uiWindowShared(ui, hashStr("code"), "Код — операция НАД документом (4.1–4.6, R2)", x, y, w, h, true))
+    app.winCode = false;
   float bw = 74;
   if (widgetButton(ui, hashStr("tab code"), "Код", {x + 8, y + 26, bw, 20}, true, app.codeTabErrors ? C_BORDER : C_ACCENT))
     app.codeTabErrors = false;
@@ -374,6 +375,9 @@ static void drawHud(App& app, UI& ui) {
   x += 72;
   if (widgetButton(ui, hashStr("help"), "?", {x, 4, 28, 24}, true, app.winHelp ? C_ACCENT : C_BORDER))
     app.winHelp = !app.winHelp;
+  x += 36;
+  if (widgetButton(ui, hashStr("fsbtn"), "FS", {x, 4, 28, 24}, true, C_BORDER))
+    app.wantFs = true;
   x += 36;
   char ap[48];
   snprintf(ap, 48, "API:%s", app.apiStatus.c_str());
@@ -674,7 +678,8 @@ static void drawHelp(App& app, UI& ui) {
 // ================= мышь сцены (5.x) =================
 void sceneMouse(App& app) {
   UI& ui = app.ui;
-  if (ui.menuOpen || ui.dropOpen) return;
+  if (ui.dropOpen) return;
+  if (ui.menuOpen && !ui.rPressed && ui.menuRect.hit(ui.mx, ui.my)) return;
   if (app.overAny || app.place.open || app.synWin.open || app.confirmOpen || app.fillOpen || app.flowOpen)
     return;
 
@@ -945,6 +950,9 @@ void handleMenusStatic(App& app) {
   if (m < 0) return;
   int ctx = app.menuCtx;
   std::string arg = app.menuArg;
+  if (ctx == 1 && !app.doc.neuron(arg)) return;
+  if (ctx == 2 && !app.doc.synapse(arg)) return;
+  if (ctx == 3 && !app.doc.cluster(arg)) return;
   if (ctx == 1) {
     switch (m) {
       case 0:
@@ -961,6 +969,7 @@ void handleMenusStatic(App& app) {
         app.flowOpen = true;
         app.flowId = arg;
         app.flowHz = 0;
+        ui.menuOpen = false;
         break;
       case 3:
         app.undoPush("мышь: дублировать");
@@ -995,6 +1004,7 @@ void handleMenusStatic(App& app) {
         app.confirmArg = arg;
         app.confirmTxt = "Удалить " + arg + "? (R4)";
         app.confirmOpen = true;
+        ui.menuOpen = false;
         break;
     }
   } else if (ctx == 2) {
@@ -1007,6 +1017,7 @@ void handleMenusStatic(App& app) {
         app.synWin.editing = true;
         app.synWin.editId = arg;
         app.synWin.s = *s;
+        ui.menuOpen = false;
       }
     } else if (m == 1) {
       app.toggleDamage(arg, true);
@@ -1015,17 +1026,20 @@ void handleMenusStatic(App& app) {
       app.confirmArg = arg;
       app.confirmTxt = "Перерезать связь " + arg + "?";
       app.confirmOpen = true;
+      ui.menuOpen = false;
     }
   } else if (ctx == 3) {
     if (m == 0) {
       app.fillOpen = true;
       app.fillId = arg;
       app.fillFrac = 0.5;
+      ui.menuOpen = false;
     } else if (m == 1) {
       app.selCluster = arg;
       app.selN.clear();
       app.selS.clear();
     } else if (m == 2) {
+      ui.menuOpen = false;
       app.undoPush("мышь: удалить кластер");
       app.doc.removeClusterNeurons(arg);
       for (size_t i = 0; i < app.doc.clusters.size(); ++i)
@@ -1045,6 +1059,7 @@ void handleMenusStatic(App& app) {
         app.confirmWhat = 3;
         app.confirmTxt = "Начать новую схему? (текущая будет потеряна)";
         app.confirmOpen = true;
+        ui.menuOpen = false;
         break;
       case 5: app.winFiles = true; break;
       case 6: app.saveFile(app.filePath.empty() ? "autosave.mnp.json" : app.filePath); break;
@@ -1052,6 +1067,7 @@ void handleMenusStatic(App& app) {
       case 8: app.fitView(); break;
     }
   } else if (ctx == 4) {
+    ui.menuOpen = false;
     app.place.open = true;
     app.place.pos = app.lastPos;
     app.place.n = mp::Neuron();
@@ -1072,7 +1088,7 @@ void panelsDraw(App& app) {
 
   drawHud(app, ui);
   drawFlagsBar(app, ui);
-  inspectorDraw(app);
+  if (app.winInsp) inspectorDraw(app);
   if (app.winCode) drawCodePanel(app, ui);
   if (app.winFiles) drawFilesPanel(app, ui);
   if (app.winStands) drawStandsPanel(app, ui);
@@ -1113,6 +1129,7 @@ void panelsDraw(App& app) {
       else if (k == "D" && !ui.ctrl) app.mode = Mode::Damage;
       else if (k == "Tab") app.winCode = !app.winCode;
       else if (k == "Escape") {
+        app.ui.menuOpen = false;
         app.wirePre = false;
         app.selN.clear();
         app.selS.clear();
