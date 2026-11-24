@@ -25,7 +25,7 @@ struct Ray {
 
 struct Camera {
   mp::V3 target{0, 0, 0};
-  float yaw = 0.8f, pitch = 0.5f, dist = 40.0f;
+  float yaw = 0.0f, pitch = 1.52f, dist = 40.0f;
   float fov = 45.0f;
   mp::V3 flyTarget{};
   float flyDist = 0;

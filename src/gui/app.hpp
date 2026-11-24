@@ -141,13 +141,9 @@ struct App {
   int menuCtx = 0;             // открытое контекстное меню (0 нет)
   std::string menuArg;         // аргумент меню (id юнита/кластера)
   float flagsScroll = 0;
-  bool gizmoOn = false;    // G: осевой перенос выделенного (FreeCAD-стиль)
-  int gizmoAxis = -1;      // 0=X 1=Y 2=Z, -1 = ось не выбрана
   std::vector<std::string> gizmoIds;
   std::vector<mp::V3> gizmoStart;
   mp::V3 gizmoOrig{};
-  float gizmoGrab = 0;
-  bool gizmoDrag = false;
   bool mvDrag = false;
   mp::V3 mvGrabPoint{};
   std::vector<mp::V3> mvStart;

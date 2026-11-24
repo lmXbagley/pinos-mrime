@@ -260,100 +260,12 @@ void sceneDraw3D(App& app) {
   if (app.mode == Mode::Neuron && !app.overAny) {
     ball3D((float)app.lastPos.x, 0.0f + 0.7f, (float)app.lastPos.z, 0.7f, 0x6fa8dc66);
   }
-  // --- гизмо осевого переноса (режим Движ/G) ---
-  if (app.mode == Mode::Move && !app.gizmoIds.empty()) {
-    mp::V3 p{0, 0, 0};
-    size_t cnt = 0;
-    for (const auto& id : app.gizmoIds)
-      if (mp::Neuron* q = app.doc.neuron(id)) { p.x += q->pos.x; p.y += q->pos.y; p.z += q->pos.z; ++cnt; }
-    if (cnt) p = {p.x / cnt, p.y / cnt, p.z / cnt};
-    float L = (float)std::max(6.0, app.cam.dist * 0.25);
-    float ln = (float)std::max(3.0, app.cam.dist * 0.012);
-    unsigned xc = app.gizmoAxis == 0 ? 0xffb08aff : 0xe06a5aff;
-    unsigned yc = app.gizmoAxis == 1 ? 0xbaf08aff : 0x5ac04aff;
-    unsigned zc = app.gizmoAxis == 2 ? 0x9ac8ffff : 0x5a88e0ff;
-    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x + L, (float)p.y, (float)p.z, ln, xc);
-    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y + L, (float)p.z, ln, yc);
-    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y, (float)p.z + L, ln, zc);
-    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x + L, (float)p.y, (float)p.z, ln + 2, fadeAlpha(xc, 0.30f));
-    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y + L, (float)p.z, ln + 2, fadeAlpha(yc, 0.30f));
-    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y, (float)p.z + L, ln + 2, fadeAlpha(zc, 0.30f));
-    if (app.gizmoAxis >= 0) {
-      mp::V3 a = app.gizmoAxis == 0 ? mp::V3{1, 0, 0} : app.gizmoAxis == 1 ? mp::V3{0, 1, 0} : mp::V3{0, 0, 1};
-      unsigned gc = app.gizmoAxis == 0 ? 0xe06a5aff : app.gizmoAxis == 1 ? 0x5ac04aff : 0x5a88e0ff;
-      float ge = ext * 1.2f;
-      line3D((float)(p.x - a.x * ge), (float)(p.y - a.y * ge), (float)(p.z - a.z * ge),
-             (float)(p.x + a.x * ge), (float)(p.y + a.y * ge), (float)(p.z + a.z * ge), 1.5f, fadeAlpha(gc, 0x55));
-      float ts = (float)app.cam.dist * 0.02f;
-      for (int tk = 1; tk <= 4; ++tk) {
-        double qx = a.x * L * tk / 4.0, qy = a.y * L * tk / 4.0, qz = a.z * L * tk / 4.0;
-        line3D((float)(p.x + qx), (float)(p.y + qy) - ts, (float)(p.z + qz),
-               (float)(p.x + qx), (float)(p.y + qy) + ts, (float)(p.z + qz), 1.2f, fadeAlpha(gc, 0x99));
-      }
-    }
-    ball3D((float)p.x, (float)p.y, (float)p.z, 1.1f, 0xf2f6ffff);
-    }
   glDisable(GL_BLEND);
 }
 
 // ---------- 2D-оверлей ----------
 void sceneOverlay2D(App& app) {
   UI& ui = app.ui;
-  // подписи мировых осей
-  if (app.cam.dist > 0) {
-    float ea = clampf(app.cam.dist * 0.6f, 8.0f, 50.0f);
-    mp::V3 exs{(double)ea, 0, 0}, ezs{0, 0, (double)ea};
-    bool o1 = false, o2 = false;
-    mp::V3 s1 = app.cam.screenPoint(exs, app.ui.winW, app.ui.winH, &o1);
-    mp::V3 s2 = app.cam.screenPoint(ezs, app.ui.winW, app.ui.winH, &o2);
-    if (o1) mpui::text(s1.x + 4, s1.y - 16, "X", 0xd08a8aff, 16);
-    if (o2) mpui::text(s2.x + 4, s2.y - 16, "Z", 0x8aa0d0ff, 16);
-  }
-  // подписи осей гизма
-  if (app.mode == Mode::Move && !app.gizmoIds.empty()) {
-    mp::V3 c{0, 0, 0};
-    size_t cnt = 0;
-    for (const auto& id : app.gizmoIds)
-      if (mp::Neuron* q = app.doc.neuron(id)) { c.x += q->pos.x; c.y += q->pos.y; c.z += q->pos.z; ++cnt; }
-    if (cnt) {
-      c = {c.x / cnt, c.y / cnt, c.z / cnt};
-      float L = (float)std::max(6.0, app.cam.dist * 0.25);
-      mp::V3 ends[3] = {{c.x + L, c.y, c.z}, {c.x, c.y + L, c.z}, {c.x, c.y, c.z + L}};
-      const char* nm[3] = {"X", "Y", "Z"};
-      unsigned cols[3] = {0xffb08aff, 0xbaf08aff, 0x9ac8ffff};
-      for (int k = 0; k < 3; ++k) {
-        bool ok = false;
-        mp::V3 sp = app.cam.screenPoint(ends[k], app.ui.winW, app.ui.winH, &ok);
-        if (ok) mpui::text(sp.x + 6, sp.y - 16, nm[k], cols[k], 18);
-      }
-    }
-  }
-
-  // гизмо-куб ориентации в углу
-  {
-    float cx = 58, cy = (float)ui.winH - 58, R = 34;
-    quad(cx - 46, cy - 46, 92, 92, 0x2f323740);
-    frame(cx - 46, cy - 46, 92, 92, 0x52555a88);
-    const double ax[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
-    const unsigned cols[3] = {0xd0605aff, 0x7cc45aff, 0x5f9edaff};
-    const char* lbl[3] = {"X", "Y", "Z"};
-    for (int i = 0; i < 3; ++i) {
-      mp::V3 q = app.cam.target;
-      q.x += ax[i][0]; q.y += ax[i][1]; q.z += ax[i][2];
-      mp::V3 s0 = app.cam.screenPoint(app.cam.target, ui.winW, ui.winH);
-      mp::V3 s1 = app.cam.screenPoint(q, ui.winW, ui.winH);
-      float dx = s1.x - s0.x, dy = s1.y - s0.y;
-      float len = std::sqrt(dx * dx + dy * dy);
-      if (len < 1e-3f) continue;
-      // передняя ось ярче, задняя тусклее: по глубине камеры
-      mp::V3 e1 = app.cam.eye();
-      float depth = (float)((q.x - e1.x) * ax[i][0] + (q.y - e1.y) * ax[i][1] + (q.z - e1.z) * ax[i][2]);
-      unsigned col = (depth < 0 ? cols[i] : (cols[i] & 0xffffff00) | 0x60);
-      text(cx + dx / len * R - 5, cy + dy / len * R - 8, lbl[i], col, 13);
-      line2D(cx - dx / len * 8, cy - dy / len * 8, cx + dx / len * R, cy + dy / len * R, col);
-    }
-  }
-  // хинт режима кладёт HUD (panels.cpp)
   // ID-билборды (6.1), масштаб от дистанции
   if (app.showIds) {
       for (const auto& n : app.doc.neurons) {

@@ -82,8 +82,8 @@ void App::fitView() {
   if (doc.neurons.empty()) {
     cam.target = {0, 0, 0};
     cam.dist = 60;
-    cam.yaw = 0.8f;
-    cam.pitch = 0.5f;
+    cam.yaw = 0.0f;
+    cam.pitch = 1.52f;
     return;
   }
   double mnx = 1e30, mny = 1e30, mnz = 1e30, mxx = -1e30, mxy = -1e30, mxz = -1e30;
@@ -102,8 +102,8 @@ void App::fitView() {
   double ex = mxx - mnx, ey = mxy - mny, ez = mxz - mnz;
   double rad = std::sqrt(ex * ex + ey * ey + ez * ez) / 2;
   cam.dist = (float)std::max(20.0, rad * 2.4 + 14.0);
-  cam.yaw = 0.8f;
-  cam.pitch = 0.5f;
+  cam.yaw = 0.0f;
+  cam.pitch = 1.52f;
   cam.flying = false;
 }
 

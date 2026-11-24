@@ -311,8 +311,6 @@ static void apiToggle(App& app) {
 static void enterMove(App& app) {
   if (app.mode == Mode::Move) {
     app.mode = Mode::Select;
-    app.gizmoDrag = false;
-    app.gizmoAxis = -1;
     return;
   }
   if (app.selN.empty()) {
@@ -334,8 +332,6 @@ static void enterMove(App& app) {
   app.undoPush("мышь: перенос по оси (G)");
   app.gizmoOrig = {acc.x / cnt, acc.y / cnt, acc.z / cnt};
   app.mode = Mode::Move;
-  app.gizmoAxis = -1;
-  app.gizmoDrag = false;
 }
 
 static void drawHud(App& app, UI& ui) {
@@ -434,7 +430,7 @@ static void drawHud(App& app, UI& ui) {
     case Mode::Wire: hint = app.wirePre ? "Связь: ЛКМ по приёмнику · ESC — отмена" : "Связь: ЛКМ по источнику (5.2)"; break;
     case Mode::Cut: hint = "Резать: ЛКМ по связи — подтверждение (5.3)"; break;
     case Mode::Damage: hint = "Повредить: ЛКМ по нейрону/связи — вкл/выкл (5.10)"; break;
-    case Mode::Move: hint = "Движ: ЛКМ по стрелке/X/Y/Z — вдоль оси · СКМ — свободно по плоскости · Enter — готово · Esc — отмена"; break;
+    case Mode::Move: hint = "Движ: тяни ЛКМ — группа едет за курсором · СКМ — двигает камеру · Enter — готово · Esc — отмена"; break;
   }
   float hy = (float)ui.winH - 26;
   quad(0, hy, W, 26, 0x141920f2);
@@ -717,7 +713,7 @@ void sceneMouse(App& app) {
   if (ui.menuOpen && !ui.rPressed && ui.menuRect.hit(ui.mx, ui.my)) return;
   if (app.overAnyPrev)
     return; // клик ушел в UI-окно/HUD, сцена не отвечает
-  if (app.place.open && app.mode == Mode::Neuron && !ui.menuRect.hit(ui.mx, ui.my)) {
+  if (app.place.open && app.mode == Mode::Neuron && !app.overAnyPrev && !ui.menuRect.hit(ui.mx, ui.my)) {
     Ray pray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
     if (ui.lPressed || ui.lReleased) {
       app.place.pos = app.cam.rayPlane(pray, 0.0f);
@@ -767,16 +763,11 @@ void sceneMouse(App& app) {
       }
     }
   } else {
-    if (mDown) {
-      float dx = ui.mx - lastMx, dy = ui.my - lastMy;
-      if (ui.shift)
-        app.cam.pan(-dx, -dy);
-      else
-        app.cam.orbit(-dx, -dy);
-      lastMx = ui.mx;
-      lastMy = ui.my;
-    }
     if (!mDown) app.mvDrag = false;
+    float dx = ui.mx - lastMx, dy = ui.my - lastMy;
+    app.cam.pan(-dx, -dy);
+    lastMx = ui.mx;
+    lastMy = ui.my;
   }
   midPrev = mDown;
 
@@ -789,66 +780,30 @@ void sceneMouse(App& app) {
   // режим движения (Move/G): осевой перенос ВСЕХ выделенных нейронов от центроида; Enter — выход, Esc — отмена
   bool gizActive = app.mode == Mode::Move && !app.gizmoIds.empty();
   if (gizActive) {
-    auto axisDir = [](int ax) {
-      return ax == 0 ? mp::V3{1, 0, 0} : ax == 1 ? mp::V3{0, 1, 0} : mp::V3{0, 0, 1};
-    };
-    auto solveSc = [&](int ax) {
-      mp::V3 a = axisDir(ax);
-      double w0x = ray.o.x - app.gizmoOrig.x, w0y = ray.o.y - app.gizmoOrig.y, w0z = ray.o.z - app.gizmoOrig.z;
-      double A = ray.d.x * ray.d.x + ray.d.y * ray.d.y + ray.d.z * ray.d.z;
-      double Bv = ray.d.x * a.x + ray.d.y * a.y + ray.d.z * a.z;
-      double bD = (ray.d.x * w0x + ray.d.y * w0y + ray.d.z * w0z);
-      double bA = (a.x * w0x + a.y * w0y + a.z * w0z);
-      double den = A - Bv * Bv;
-      return den > 1e-9 ? (A * bA - Bv * bD) / den : 0.0;
-    };
-    // захват стрелки мышью (в экранных пикселях)
-    if (ui.lPressed && app.gizmoAxis < 0) {
-      float L = (float)std::max(6.0, app.cam.dist * 0.25);
-      int best = -1; float bestD = 16.0f;
-      for (int k = 0; k < 3; ++k) {
-        mp::V3 a = axisDir(k);
-        mp::V3 end{app.gizmoOrig.x + a.x * L, app.gizmoOrig.y + a.y * L, app.gizmoOrig.z + a.z * L};
-        bool oa = false, ob = false;
-        mp::V3 pa = app.cam.screenPoint(app.gizmoOrig, ui.winW, ui.winH, &oa);
-        mp::V3 pb = app.cam.screenPoint(end, ui.winW, ui.winH, &ob);
-        if (!oa || !ob) continue;
-        float ex = pb.x - pa.x, ey = pb.y - pa.y;
-        float len2 = ex * ex + ey * ey;
-        float tt = len2 > 1e-6f ? ((ui.mx - pa.x) * ex + (ui.my - pa.y) * ey) / len2 : 0.0f;
-        tt = std::max(0.0f, std::min(1.0f, tt));
-        float cx = pa.x + ex * tt - ui.mx, cy = pa.y + ey * tt - ui.my;
-        float dd = std::sqrt(cx * cx + cy * cy);
-        if (dd < bestD) { bestD = dd; best = k; }
-      }
-      if (best >= 0) app.gizmoAxis = best;
+    // 2D: ЛКМ — тянуть группу в плоскости (точка захвата = точка под курсором)
+    if (ui.lPressed) {
+      app.mvGrabPoint = app.cam.rayPlane(ray, 0.0f);
+      app.mvStart.clear();
+      for (const auto& id : app.gizmoIds)
+        if (mp::Neuron* q = app.doc.neuron(id)) app.mvStart.push_back(q->pos);
+      app.mvDrag = true;
+      ui.lPressed = false; ui.lReleased = false;
     }
-    // перетаскивание: двигаем все выделенные от их исходных позиций
-    if (app.gizmoAxis >= 0) {
-      if (ui.lPressed && !app.gizmoDrag) {
-        app.gizmoDrag = true;
-        app.gizmoStart.clear();
-        for (const auto& id : app.gizmoIds)
-          if (mp::Neuron* q = app.doc.neuron(id)) app.gizmoStart.push_back(q->pos);
-        app.gizmoGrab = solveSc(app.gizmoAxis);
-      }
-      if (app.gizmoDrag && ui.lDown) {
-        mp::V3 a = axisDir(app.gizmoAxis);
-        double delta = solveSc(app.gizmoAxis) - app.gizmoGrab;
-        size_t si = 0;
-        for (const auto& id : app.gizmoIds) {
-          mp::Neuron* q = app.doc.neuron(id);
-          if (!q || si >= app.gizmoStart.size()) break;
-          mp::V3 p0 = app.gizmoStart[si++];
-          q->pos = {p0.x + a.x * delta, p0.y + a.y * delta, p0.z + a.z * delta};
-          app.doc.dirty = true;
-        }
-      } else if (!ui.lDown) {
-        app.gizmoDrag = false;
+    if (app.mvDrag && ui.lDown) {
+      mp::V3 now = app.cam.rayPlane(ray, 0.0f);
+      double ddx = now.x - app.mvGrabPoint.x, ddy = now.y - app.mvGrabPoint.y, ddz = now.z - app.mvGrabPoint.z;
+      size_t si2 = 0;
+      for (const auto& id : app.gizmoIds) {
+        mp::Neuron* q = app.doc.neuron(id);
+        if (!q || si2 >= app.mvStart.size()) break;
+        mp::V3 p0 = app.mvStart[si2++];
+        q->pos = {p0.x + ddx, p0.y + ddy, p0.z + ddz};
+        app.doc.dirty = true;
       }
     }
+    if (!ui.lDown) app.mvDrag = false;
     if (ui.keyOnce("Return") || ui.keyOnce("Enter") || ui.keyOnce("Keypad Enter")) {
-      app.mode = Mode::Select; app.gizmoDrag = false; app.gizmoAxis = -1;
+      app.mode = Mode::Select;
     } else if (ui.keyOnce("Escape")) {
       size_t si = 0;
       for (const auto& id : app.gizmoIds) {
@@ -857,7 +812,7 @@ void sceneMouse(App& app) {
         q->pos = app.gizmoStart[si++];
       }
       app.doc.dirty = true;
-      app.mode = Mode::Select; app.gizmoDrag = false; app.gizmoAxis = -1;
+      app.mode = Mode::Select;
     }
     if (app.mode == Mode::Move) return;
   }
@@ -1233,13 +1188,7 @@ void panelsDraw(App& app) {
       app.menuCtx = 4;
       app.menuArg.clear();
     }
-    if (app.mode == Mode::Move) {
-      if (ui.keyOnce("X")) app.gizmoAxis = 0;
-      else if (ui.keyOnce("Y")) app.gizmoAxis = 1;
-      else if (ui.keyOnce("Z")) app.gizmoAxis = 2;
-    } else if (ui.keyOnce("G")) {
-      enterMove(app);
-    }
+    if (app.mode != Mode::Move && ui.keyOnce("G")) enterMove(app);
     std::vector<std::string> keys = ui.keys;
     for (const auto& k : keys) {
       if (k == "S" && !ui.ctrl) app.mode = Mode::Select;
