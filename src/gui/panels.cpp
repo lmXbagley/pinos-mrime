@@ -439,7 +439,7 @@ static void drawFlagsBar(App& app, UI& ui) {
       }
     }
   }
-  if (ui.mx > x && ui.my >= y) app.overAny = true;
+  if (ui.mx > x && ui.mx < x + 320 && ui.my >= y) app.overAny = true;
 }
 
 // ================= диалоги =================
@@ -703,19 +703,26 @@ void sceneMouse(App& app) {
       double bD = (ray.d.x * w0x + ray.d.y * w0y + ray.d.z * w0z);
       double bA = (a.x * w0x + a.y * w0y + a.z * w0z);
       double den = A - Bv * Bv;
-      return den > 1e-9 ? (Bv * bD - A * bA) / den : 0.0;
+      return den > 1e-9 ? (A * bA - Bv * bD) / den : 0.0;
     };
-    // захват стрелки мышью
+    // захват стрелки мышью (в экранных пикселях)
     if (ui.lPressed && app.gizmoAxis < 0) {
       float L = (float)std::max(6.0, app.cam.dist * 0.25);
-      float thr = (float)std::max(1.0, app.cam.dist * 0.045);
-      int best = -1; float bestD = thr;
+      int best = -1; float bestD = 16.0f;
       for (int k = 0; k < 3; ++k) {
-        mp::V3 e = app.gizmoOrig;
         mp::V3 a = axisDir(k);
         mp::V3 end{app.gizmoOrig.x + a.x * L, app.gizmoOrig.y + a.y * L, app.gizmoOrig.z + a.z * L};
-        float dd = 0;
-        if (raySegment(ray, e, end, dd) && dd < bestD) { bestD = dd; best = k; }
+        bool oa = false, ob = false;
+        mp::V3 pa = app.cam.screenPoint(app.gizmoOrig, ui.winW, ui.winH, &oa);
+        mp::V3 pb = app.cam.screenPoint(end, ui.winW, ui.winH, &ob);
+        if (!oa || !ob) continue;
+        float ex = pb.x - pa.x, ey = pb.y - pa.y;
+        float len2 = ex * ex + ey * ey;
+        float tt = len2 > 1e-6f ? ((ui.mx - pa.x) * ex + (ui.my - pa.y) * ey) / len2 : 0.0f;
+        tt = std::max(0.0f, std::min(1.0f, tt));
+        float cx = pa.x + ex * tt - ui.mx, cy = pa.y + ey * tt - ui.my;
+        float dd = std::sqrt(cx * cx + cy * cy);
+        if (dd < bestD) { bestD = dd; best = k; }
       }
       if (best >= 0) app.gizmoAxis = best;
     }

@@ -46,39 +46,60 @@ void scenePick(App& app) {
     app.hoverS.clear();
     return;
   }
-  Ray ray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
+    // пикрование в ЭКРАННЫХ пикселях: хитбокс точно по нарисованному кружку
+  auto pxRadius = [&](const mp::V3& p, float rWorld) {
+    mp::V3 e = app.cam.eye();
+    float dx = (float)(p.x - e.x), dy = (float)(p.y - e.y), dz = (float)(p.z - e.z);
+    float D = std::sqrt(dx * dx + dy * dy + dz * dz);
+    float fl = 1.0f / std::tan(app.cam.fov * 3.1415926f / 360.0f);
+    return rWorld * 0.5f * fl / std::max(0.1f, D);
+  };
   std::string bestN;
-  float bestNT = 1e30f;
+  float bestDepth = 1e30f;
   for (const auto& n : app.doc.neurons) {
     if (!n.alive) continue;
     float visR = (n.type.set && (n.type.v == 0 || n.type.v == 2)) ? 0.75f : 0.6f;
     float f = 0;
     auto it = app.flash.find(n.id);
     if (it != app.flash.end()) f = (float)it->second;
-    if (f > 0.25f) visR += f * 0.35f;
-    float thr = visR * 1.9f;
-    float d = 0, t = 0;
-    if (!rayPoint(ray, n.pos, d, &t)) continue;
-    if (d < thr && t < bestNT) {
+    if (f > 0.25f) visR += f * 0.25f;
+    bool ok = false;
+    mp::V3 sp = app.cam.screenPoint(n.pos, ui.winW, ui.winH, &ok);
+    if (!ok) continue;
+    float pr = pxRadius(n.pos, visR) + 4.0f;
+    float dx = sp.x - ui.mx, dy = sp.y - ui.my;
+    if (dx * dx + dy * dy <= pr * pr && sp.z < bestDepth) {
       bestN = n.id;
-      bestNT = t;
+      bestDepth = sp.z;
     }
   }
   std::string bestS;
-  float bestST = 1e30f;
+  float bestSDepth = 1e30f;
   if (bestN.empty()) {
     for (const auto& s : app.doc.synapses) {
       const mp::Neuron* a = app.doc.neuron(s.pre);
       const mp::Neuron* b = app.doc.neuron(s.post);
       if (!a || !b) continue;
-      float d = 0, t = 0;
-      if (!raySegment(ray, a->pos, b->pos, d, &t)) continue;
-      if (d < 1.4f && t < bestST) {
-        bestS = s.id;
-        bestST = t;
+      bool oa = false, ob = false;
+      mp::V3 pa = app.cam.screenPoint(a->pos, ui.winW, ui.winH, &oa);
+      mp::V3 pb = app.cam.screenPoint(b->pos, ui.winW, ui.winH, &ob);
+      if (!oa || !ob) continue;
+      float ex = pb.x - pa.x, ey = pb.y - pa.y;
+      float len2 = ex * ex + ey * ey;
+      float tt = len2 > 1e-6f ? ((ui.mx - pa.x) * ex + (ui.my - pa.y) * ey) / len2 : 0.0f;
+      tt = clampf(tt, 0.0f, 1.0f);
+      float cx = pa.x + ex * tt - ui.mx, cy = pa.y + ey * tt - ui.my;
+      float wpx = 1.0f + (float)std::min(5.0, std::fabs(s.w) * 1.2) + 8.0f;
+      if (cx * cx + cy * cy <= wpx * wpx) {
+        float depth = (pa.z + pb.z) * 0.5f;
+        if (depth < bestSDepth) {
+          bestS = s.id;
+          bestSDepth = depth;
+        }
       }
     }
   }
+  (void)0;
   app.hoverN = bestN;
   app.hoverS = bestS;
 }
