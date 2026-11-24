@@ -42,3 +42,50 @@ target_link_libraries(mp_test PRIVATE mp_core)
 
 enable_testing()
 add_test(NAME all COMMAND mp_test)
+
+# ---- настольный CAD (SDL2 + OpenGL) ----
+set(MP_GUI_SOURCES
+  src/gui/app.cpp
+  src/gui/camera.cpp
+  src/gui/draw.cpp
+  src/gui/inspector.cpp
+  src/gui/main.cpp
+  src/gui/panels.cpp
+  src/gui/scene.cpp
+  src/gui/widgets.cpp
+)
+
+if(WIN32)
+  find_package(SDL2 QUIET)
+  if(SDL2_FOUND)
+    message(STATUS "MINOSPRIME GUI: включён (SDL2)" )
+    add_executable(minosprime_gui WIN32 ${MP_GUI_SOURCES})
+    target_include_directories(minosprime_gui PRIVATE ${SDL2_INCLUDE_DIRS})
+    target_link_libraries(minosprime_gui PRIVATE mp_core ${SDL2_LIBRARIES} opengl32)
+  else()
+    message(STATUS "MINOSPRIME GUI: пропущен — SDL2 не найден (ядро и тесты строятся)")
+  endif()
+elseif(APPLE)
+  find_package(SDL2 QUIET)
+  if(SDL2_FOUND)
+    message(STATUS "MINOSPRIME GUI: включён (SDL2)" )
+    add_executable(minosprime_gui MACOSX_BUNDLE ${MP_GUI_SOURCES})
+    target_include_directories(minosprime_gui PRIVATE ${SDL2_INCLUDE_DIRS})
+    target_link_libraries(minosprime_gui PRIVATE mp_core ${SDL2_LIBRARIES}
+      "-framework OpenGL")
+  else()
+    message(STATUS "MINOSPRIME GUI: пропущен — SDL2 не найден (brew install sdl2)")
+  endif()
+else()
+  find_package(PkgConfig QUIET)
+  find_library(SDL2_LIBRARY NAMES SDL2)
+  find_path(SDL2_INCLUDE_DIR NAMES SDL.h PATH_SUFFIXES SDL2)
+  if(SDL2_LIBRARY AND SDL2_INCLUDE_DIR)
+    message(STATUS "MINOSPRIME GUI: включён (SDL2: ${SDL2_LIBRARY})")
+    add_executable(minosprime_gui ${MP_GUI_SOURCES})
+    target_include_directories(minosprime_gui PRIVATE ${SDL2_INCLUDE_DIR})
+    target_link_libraries(minosprime_gui PRIVATE mp_core ${SDL2_LIBRARY} GL m)
+  else()
+    message(STATUS "MINOSPRIME GUI: пропущен — SDL2 не найден (sudo apt install libsdl2-dev)")
+  endif()
+endif()
