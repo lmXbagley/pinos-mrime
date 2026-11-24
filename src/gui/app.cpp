@@ -59,6 +59,7 @@ const char* modeName(Mode m) {
     case Mode::Wire:   return "связь";
     case Mode::Cut:    return "вы cut";
     case Mode::Damage: return "повреждение";
+    case Mode::Move: return "перемещение";
   }
   return "?";
 }

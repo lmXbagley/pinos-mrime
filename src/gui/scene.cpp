@@ -107,7 +107,7 @@ void scenePick(App& app) {
 // ---------- 3D ----------
 void sceneDraw3D(App& app) {
   UI& ui = app.ui;
-  glClearColor(0.169f, 0.176f, 0.188f, 1);
+  glClearColor(1.0f, 0.945f, 0.831f, 1); // #FFF1D4
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LEQUAL);
@@ -257,7 +257,7 @@ void sceneDraw3D(App& app) {
     }
   }
   // --- призрак установки (5.1) ---
-  if (app.mode == Mode::Neuron && !app.place.open && !app.overAny) {
+  if (app.mode == Mode::Neuron && !app.overAny) {
     ball3D((float)app.lastPos.x, 0.0f + 0.7f, (float)app.lastPos.z, 0.7f, 0x6fa8dc66);
   }
   // --- гизмо осевого переноса (режим Движ/G) ---
@@ -278,6 +278,19 @@ void sceneDraw3D(App& app) {
     line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x + L, (float)p.y, (float)p.z, ln + 2, fadeAlpha(xc, 0.30f));
     line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y + L, (float)p.z, ln + 2, fadeAlpha(yc, 0.30f));
     line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y, (float)p.z + L, ln + 2, fadeAlpha(zc, 0.30f));
+    if (app.gizmoAxis >= 0) {
+      mp::V3 a = app.gizmoAxis == 0 ? mp::V3{1, 0, 0} : app.gizmoAxis == 1 ? mp::V3{0, 1, 0} : mp::V3{0, 0, 1};
+      unsigned gc = app.gizmoAxis == 0 ? 0xe06a5aff : app.gizmoAxis == 1 ? 0x5ac04aff : 0x5a88e0ff;
+      float ge = ext * 1.2f;
+      line3D((float)(p.x - a.x * ge), (float)(p.y - a.y * ge), (float)(p.z - a.z * ge),
+             (float)(p.x + a.x * ge), (float)(p.y + a.y * ge), (float)(p.z + a.z * ge), 1.5f, fadeAlpha(gc, 0x55));
+      float ts = (float)app.cam.dist * 0.02f;
+      for (int tk = 1; tk <= 4; ++tk) {
+        double qx = a.x * L * tk / 4.0, qy = a.y * L * tk / 4.0, qz = a.z * L * tk / 4.0;
+        line3D((float)(p.x + qx), (float)(p.y + qy) - ts, (float)(p.z + qz),
+               (float)(p.x + qx), (float)(p.y + qy) + ts, (float)(p.z + qz), 1.2f, fadeAlpha(gc, 0x99));
+      }
+    }
     ball3D((float)p.x, (float)p.y, (float)p.z, 1.1f, 0xf2f6ffff);
     }
   glDisable(GL_BLEND);

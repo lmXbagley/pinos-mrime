@@ -434,6 +434,7 @@ static void drawHud(App& app, UI& ui) {
     case Mode::Wire: hint = app.wirePre ? "Связь: ЛКМ по приёмнику · ESC — отмена" : "Связь: ЛКМ по источнику (5.2)"; break;
     case Mode::Cut: hint = "Резать: ЛКМ по связи — подтверждение (5.3)"; break;
     case Mode::Damage: hint = "Повредить: ЛКМ по нейрону/связи — вкл/выкл (5.10)"; break;
+    case Mode::Move: hint = "Движ: ЛКМ по стрелке/X/Y/Z — вдоль оси · СКМ — свободно по плоскости · Enter — готово · Esc — отмена"; break;
   }
   float hy = (float)ui.winH - 26;
   quad(0, hy, W, 26, 0x141920f2);
@@ -716,6 +717,16 @@ void sceneMouse(App& app) {
   if (ui.menuOpen && !ui.rPressed && ui.menuRect.hit(ui.mx, ui.my)) return;
   if (app.overAnyPrev)
     return; // клик ушел в UI-окно/HUD, сцена не отвечает
+  if (app.place.open && app.mode == Mode::Neuron && !ui.menuRect.hit(ui.mx, ui.my)) {
+    Ray pray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
+    if (ui.lPressed || ui.lReleased) {
+      app.place.pos = app.cam.rayPlane(pray, 0.0f);
+      ui.lPressed = false;
+      ui.lReleased = false;
+    }
+    app.lastPos = app.place.pos;
+    return;
+  }
   if (app.place.open || app.synWin.open || app.confirmOpen || app.fillOpen || app.flowOpen)
     return;
 
@@ -732,14 +743,40 @@ void sceneMouse(App& app) {
     lastMx = ui.mx;
     lastMy = ui.my;
   }
-  if (mDown) {
-    float dx = ui.mx - lastMx, dy = ui.my - lastMy;
-    if (ui.shift)
-      app.cam.pan(-dx, -dy);
-    else
-      app.cam.orbit(-dx, -dy);
-    lastMx = ui.mx;
-    lastMy = ui.my;
+  bool moveDrag = app.mode == Mode::Move && !app.gizmoIds.empty();
+  if (mDown && moveDrag) {
+    // СКМ — свободный перенос всей группы по плоскости Y=0 (2D-движение)
+    Ray mray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
+    mp::V3 now = app.cam.rayPlane(mray, 0.0f);
+    if (!midPrev) {
+      app.mvGrabPoint = now;
+      app.mvStart.clear();
+      for (const auto& id : app.gizmoIds)
+        if (mp::Neuron* q = app.doc.neuron(id)) app.mvStart.push_back(q->pos);
+      app.mvDrag = true;
+    }
+    if (app.mvDrag) {
+      double ddx = now.x - app.mvGrabPoint.x, ddy = now.y - app.mvGrabPoint.y, ddz = now.z - app.mvGrabPoint.z;
+      size_t si = 0;
+      for (const auto& id : app.gizmoIds) {
+        mp::Neuron* q = app.doc.neuron(id);
+        if (!q || si >= app.mvStart.size()) break;
+        mp::V3 p0 = app.mvStart[si++];
+        q->pos = {p0.x + ddx, p0.y + ddy, p0.z + ddz};
+        app.doc.dirty = true;
+      }
+    }
+  } else {
+    if (mDown) {
+      float dx = ui.mx - lastMx, dy = ui.my - lastMy;
+      if (ui.shift)
+        app.cam.pan(-dx, -dy);
+      else
+        app.cam.orbit(-dx, -dy);
+      lastMx = ui.mx;
+      lastMy = ui.my;
+    }
+    if (!mDown) app.mvDrag = false;
   }
   midPrev = mDown;
 

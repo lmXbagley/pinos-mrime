@@ -148,6 +148,9 @@ struct App {
   mp::V3 gizmoOrig{};
   float gizmoGrab = 0;
   bool gizmoDrag = false;
+  bool mvDrag = false;
+  mp::V3 mvGrabPoint{};
+  std::vector<mp::V3> mvStart;
   bool overAny = false; // мышь над любой 2D-панелью (для призрака/пиков)
   bool overAnyPrev = false; // значение overAny прошлого кадра (для роутинга кликов)
   bool quit = false;
