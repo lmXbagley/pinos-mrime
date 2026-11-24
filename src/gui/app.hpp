@@ -143,9 +143,13 @@ struct App {
   float flagsScroll = 0;
   bool gizmoOn = false;    // G: осевой перенос выделенного (FreeCAD-стиль)
   int gizmoAxis = -1;      // 0=X 1=Y 2=Z, -1 = ось не выбрана
-  std::string gizmoId;
+  std::vector<std::string> gizmoIds;
+  std::vector<mp::V3> gizmoStart;
   mp::V3 gizmoOrig{};
+  float gizmoGrab = 0;
+  bool gizmoDrag = false;
   bool overAny = false; // мышь над любой 2D-панелью (для призрака/пиков)
+  bool overAnyPrev = false; // значение overAny прошлого кадра (для роутинга кликов)
   bool quit = false;
   double fps = 0;
   double now = 0;

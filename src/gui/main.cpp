@@ -11,14 +11,26 @@
 #include <cstdio>
 #include <string>
 
-static void applyFullscreen(SDL_Window* win, bool fs) {
-  SDL_SetWindowFullscreen(win, fs ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
-  if (fs && (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN) == 0)
-    SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN);
-}
-
-static void toggleFullscreen(SDL_Window* win, bool currentlyFs) {
-  applyFullscreen(win, !currentlyFs);
+static bool setFullscreen(SDL_Window* win, bool on) {
+  if (!on) {
+    SDL_SetWindowFullscreen(win, 0);
+    SDL_SetWindowBordered(win, SDL_TRUE);
+    return (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN) == 0;
+  }
+  SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN_DESKTOP);
+  bool ok = (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN) != 0;
+  if (!ok) SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN);
+  ok = (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN) != 0;
+  if (!ok) {
+    SDL_DisplayMode dm;
+    int di = SDL_GetWindowDisplayIndex(win);
+    if (di >= 0 && SDL_GetDesktopDisplayMode(di, &dm) == 0) {
+      SDL_SetWindowBordered(win, SDL_FALSE);
+      SDL_SetWindowPosition(win, 0, 0);
+      SDL_SetWindowSize(win, dm.w, dm.h);
+    }
+  }
+  return ok;
 }
 
 int main(int argc, char** argv) {
@@ -65,10 +77,7 @@ int main(int argc, char** argv) {
 
   if (startFs) app.wantFs = true;
 
-  if (app.wantFs) {
-    applyFullscreen(win, true);
-    app.wantFs = false;
-  }
+
 
   Uint64 perfFreq = SDL_GetPerformanceFrequency();
   Uint64 lastT = SDL_GetPerformanceCounter();
@@ -113,7 +122,10 @@ int main(int argc, char** argv) {
           if (ev.key.repeat || ev.key.keysym.sym == SDLK_UNKNOWN) break;
           if (ev.key.keysym.sym == SDLK_F11) {
             bool fs = (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN) != 0;
-            toggleFullscreen(win, fs);
+            if (setFullscreen(win, !fs))
+              app.statusMsg = !fs ? "фуллскрин: вкл (F11/FS)" : "фуллскрин: выкл";
+            else
+              fprintf(stderr, "SDL_SetWindowFullscreen: %s\n", SDL_GetError());
             break;
           }
           app.ui.keys.push_back(SDL_GetKeyName(ev.key.keysym.sym));
@@ -147,7 +159,10 @@ int main(int argc, char** argv) {
 
     if (app.wantFs) {
       bool fs = (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN) != 0;
-      toggleFullscreen(win, fs);
+      if (setFullscreen(win, !fs))
+        app.statusMsg = !fs ? "фуллскрин: вкл (F11/FS)" : "фуллскрин: выкл";
+      else
+        fprintf(stderr, "SDL_SetWindowFullscreen: %s\n", SDL_GetError());
       app.wantFs = false;
     }
 

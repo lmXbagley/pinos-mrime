@@ -41,6 +41,11 @@ static float clampf(float v, float a, float b) { return std::max(a, std::min(b, 
 // ---------- picking (5.7) ----------
 void scenePick(App& app) {
   UI& ui = app.ui;
+  if (app.overAnyPrev) {
+    app.hoverN.clear();
+    app.hoverS.clear();
+    return;
+  }
   Ray ray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
   std::string bestN;
   float bestNT = 1e30f;
@@ -97,10 +102,13 @@ void sceneDraw3D(App& app) {
   float ext = clampf(app.cam.dist * 1.2f, 24.0f, 500.0f);
   float step = ext > 120 ? 10.0f : 2.0f;
   unsigned gridC = fadeAlpha(0x2b3440ff, 0.8f);
-  for (float i = -ext; i <= ext + 0.01f; i += step) {
-    line3D(i, 0, -ext, i, 0, ext, 1, gridC);
-    line3D(-ext, 0, i, ext, 0, i, 1, gridC);
-  }
+  float tx = (float)app.cam.target.x, tz = (float)app.cam.target.z;
+  float gx = std::floor((tx - ext) / step) * step;
+  float gz = std::floor((tz - ext) / step) * step;
+  for (float g = gx; g <= tx + ext + 0.01f; g += step)
+    line3D(g, 0, tz - ext, g, 0, tz + ext, 1, gridC);
+  for (float g = gz; g <= tz + ext + 0.01f; g += step)
+    line3D(tx - ext, 0, g, tx + ext, 0, g, 1, gridC);
   line3D(-ext, 0, 0, ext, 0, 0, 1.5f, 0x8a5a5aff);
   line3D(0, 0, -ext, 0, 0, ext, 1.5f, 0x5a708aff);
   line3D(0, 0, 0, 0, ext * 0.25f, 0, 1.5f, 0x608a5aff);
@@ -229,14 +237,18 @@ void sceneDraw3D(App& app) {
     ball3D((float)app.lastPos.x, 0.0f + 0.7f, (float)app.lastPos.z, 0.7f, 0x6fa8dc66);
   }
   // --- гизмо осевого переноса (G) ---
-  if (app.gizmoOn && app.doc.neuron(app.gizmoId)) {
-    mp::V3 p = app.doc.neuron(app.gizmoId)->pos;
-    float L = (float)std::max(6.0, app.cam.dist * 0.06);
+  if (app.gizmoOn && !app.gizmoIds.empty()) {
+    mp::V3 p{0, 0, 0};
+    size_t cnt = 0;
+    for (const auto& id : app.gizmoIds)
+      if (mp::Neuron* q = app.doc.neuron(id)) { p.x += q->pos.x; p.y += q->pos.y; p.z += q->pos.z; ++cnt; }
+    if (cnt) p = {p.x / cnt, p.y / cnt, p.z / cnt};
+    float L = (float)std::max(6.0, app.cam.dist * 0.25);
     line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x + L, (float)p.y, (float)p.z, 2.5f, app.gizmoAxis == 0 ? 0xff8a5aff : 0xc0504a99);
     line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y + L, (float)p.z, 2.5f, app.gizmoAxis == 1 ? 0x9ade6aff : 0x4f8a3d99);
     line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y, (float)p.z + L, 2.5f, app.gizmoAxis == 2 ? 0x6aa8ffff : 0x3d5f9e99);
     ball3D((float)p.x, (float)p.y, (float)p.z, 0.9f, 0xf2f6ffff);
-  }
+    }
   glDisable(GL_BLEND);
 }
 
