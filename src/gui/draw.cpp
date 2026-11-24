@@ -218,7 +218,6 @@ void sphere3D(float x, float y, float z, float r, unsigned rgba, int seg) {
   }
 }
 
-} // namespace mpui
 
 void line2D(float x0, float y0, float x1, float y1, unsigned rgba) {
   glDisable(GL_TEXTURE_2D);
@@ -229,3 +228,4 @@ void line2D(float x0, float y0, float x1, float y1, unsigned rgba) {
   glVertex2f(x1, y1);
   glEnd();
 }
+} // namespace mpui
