@@ -72,13 +72,19 @@ void registerRecordedStand(Project& doc, const std::string& standName, double du
   Engine eng(doc);                                         // эталонный прогон
   long long ticks = (long long)std::llround(dur * doc.tickHz);
   std::vector<long long> perTick; perTick.reserve(ticks);
-  long long t = 0;
+  long long t = 0, prevSpikes = 0;
   for (const StandEvent& ev : s->events) {
     long long atTick = (long long)std::llround(ev.t * doc.tickHz);
-    while (t < atTick && t < ticks) { eng.tick(); perTick.push_back(eng.stats().spikes); ++t; }
+    while (t < atTick && t < ticks) {
+      eng.tick(); perTick.push_back(eng.stats().spikes - prevSpikes);
+      prevSpikes = eng.stats().spikes; ++t;
+    }
     eng.setSensorValue(ev.neuronId, ev.v);                 // api и мышь действуют одинаково
   }
-  while (t < ticks) { eng.tick(); perTick.push_back(eng.stats().spikes); ++t; }
+  while (t < ticks) {
+    eng.tick(); perTick.push_back(eng.stats().spikes - prevSpikes);
+    prevSpikes = eng.stats().spikes; ++t;
+  }
   long long total = 0; for (long long x : perTick) total += x;
   s->recSpikesTotal = total;
   s->recSpikesPerSec = total / dur;
@@ -102,7 +108,7 @@ StandRunResult runStand(const Project& doc, const Stand& stand, double speed) {
   for (const auto& e : stand.events) evs.push_back(&e);
   std::sort(evs.begin(), evs.end(),
             [](const StandEvent* a, const StandEvent* b) { return a->t < b->t; });
-  size_t ei = 0; r.replayOk = true;
+  size_t ei = 0; r.replayOk = true; long long prevSpikes = 0;
   for (long long t = 0; t < ticks; ++t) {
     double sec = t / doc.tickHz;
     while (ei < evs.size() && evs[ei]->t <= sec) {
@@ -112,12 +118,15 @@ StandRunResult runStand(const Project& doc, const Stand& stand, double speed) {
       eng.setSensorValue(ev->neuronId, ev->v);
     }
     eng.tick();
-    if (perTick.size() < 1000000) perTick.push_back(eng.stats().spikes);
+    if (perTick.size() < 1000000) {
+      perTick.push_back(eng.stats().spikes - prevSpikes);
+      prevSpikes = eng.stats().spikes;
+    }
   }
   for (long long x : perTick) r.spikesTotal += x;
   double dur = std::max(1e-6, std::max(0.0, stand.durationSec) * speed);
   r.spikesPerSec = r.spikesTotal / dur;
-  r.resultHash = trajectoryHash(doc, ticks, perTick);
+  r.resultHash = trajectoryHash(sim, ticks, perTick);   // траектория КОПИИ, не исходного doc
   r.regressionOk = stand.resultHash.empty() ? false : (r.resultHash == stand.resultHash);
   return r;
 }

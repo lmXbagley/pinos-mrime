@@ -1,0 +1,461 @@
+{
+  "magic": "minosprime",
+  "v": 2,
+  "project": {
+    "name": "demo",
+    "tickBudget": 200000,
+    "excNormLimit": 8,
+    "tickHz": 1000,
+    "gammaConst": 0.050000000000000003,
+    "uRest": 0
+  },
+  "zones": [
+    {
+      "code": "V1",
+      "color": "#66ccff",
+      "note": "зрительная демо-зона",
+      "byCode": false
+    }
+  ],
+  "neurons": [
+    {
+      "id": "V1.S.1",
+      "label": "S1",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "V1",
+      "pos": [
+        -4,
+        0,
+        0
+      ],
+      "model": "lif",
+      "model_set": true,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.5
+      },
+      "hyst": {
+        "set": true,
+        "v": 0.050000000000000003
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 20
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": false,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1.H.1",
+      "label": "H1",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1",
+      "pos": [
+        0,
+        1,
+        0
+      ],
+      "model": "alif",
+      "model_set": true,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": false,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1.M.1",
+      "label": "M1",
+      "type": "motor",
+      "type_set": true,
+      "zone": "V1",
+      "pos": [
+        4,
+        0,
+        0
+      ],
+      "model": "lif",
+      "model_set": true,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": "servo_L",
+      "mapMin": {
+        "set": true,
+        "v": -1
+      },
+      "mapMax": {
+        "set": true,
+        "v": 1
+      },
+      "mapSpeed": {
+        "set": true,
+        "v": 0.5
+      },
+      "inv": false,
+      "curve": "linear",
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": false,
+      "srcCluster": ""
+    }
+  ],
+  "synapses": [
+    {
+      "id": "syn.1",
+      "pre": "V1.S.1",
+      "post": "V1.H.1",
+      "weight": {
+        "set": true,
+        "v": 1
+      },
+      "sign": "exc",
+      "plast": "hebb",
+      "lr": {
+        "set": true,
+        "v": 0.050000000000000003
+      },
+      "pw": {
+        "set": true,
+        "v": 5
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 2
+      },
+      "decay": {
+        "set": true,
+        "v": 0.001
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": false
+    },
+    {
+      "id": "syn.2",
+      "pre": "V1.H.1",
+      "post": "V1.M.1",
+      "weight": {
+        "set": true,
+        "v": 1
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0
+      },
+      "pw": {
+        "set": true,
+        "v": 0
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 2
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": false
+    }
+  ],
+  "clusters": [],
+  "stands": [
+    {
+      "name": "demo",
+      "schemaHash": "832a0c558f0179e9",
+      "resultHash": "f90dc9a498cc84ff",
+      "recSpikesPerSec": 1536,
+      "recSpikesTotal": 768,
+      "durationSec": 0.5,
+      "speed": 1,
+      "events": [
+        {
+          "t": 0.02,
+          "api": true,
+          "path": "/set_sensor?id=V1.S.1&v=10",
+          "neuronId": "V1.S.1",
+          "v": 10
+        },
+        {
+          "t": 0.12000000000000001,
+          "api": true,
+          "path": "/set_sensor?id=V1.S.1&v=10",
+          "neuronId": "V1.S.1",
+          "v": 10
+        },
+        {
+          "t": 0.22,
+          "api": true,
+          "path": "/set_sensor?id=V1.S.1&v=10",
+          "neuronId": "V1.S.1",
+          "v": 10
+        },
+        {
+          "t": 0.32000000000000006,
+          "api": true,
+          "path": "/set_sensor?id=V1.S.1&v=10",
+          "neuronId": "V1.S.1",
+          "v": 10
+        },
+        {
+          "t": 0.42000000000000004,
+          "api": true,
+          "path": "/set_sensor?id=V1.S.1&v=10",
+          "neuronId": "V1.S.1",
+          "v": 10
+        }
+      ]
+    }
+  ],
+  "idCounter": {
+    "V1.H": 1,
+    "V1.M": 1,
+    "V1.S": 1
+  },
+  "synCounter": 2,
+  "clustCounter": 0,
+  "dirty": true
+}

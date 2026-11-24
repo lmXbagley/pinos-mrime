@@ -31,7 +31,35 @@
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
 ./build/mp_test             # юнит-тесты (headless) — должно быть ALL TESTS PASSED
-./build/minosprime --help   # headless CLI: validate / serve / run-stands
+```
+
+## Быстрый старт (headless CLI)
+
+В репозитории есть готовый демо-проект `examples/demo.mnp.json`
+(зона V1: сенсор → ALIF-скрытый → мотор, Хебб-пластичность + записанный стенд):
+
+```
+./build/minosprime validate examples/demo.mnp.json              # флаги R1/8.x (exit 1 при красных)
+./build/minosprime stands examples/demo.mnp.json                # регрессия стендов 9.4 (PASS/FAIL)
+./build/minosprime serve examples/demo.mnp.json --port 18080    # API на 127.0.0.1 (Ctrl+C — стоп)
+```
+
+Пока `serve` работает (1 тик = 1 мс), можно дергать API из браузера или curl:
+
+```
+http://127.0.0.1:18080/get_schema
+http://127.0.0.1:18080/set_sensor?id=V1.S.1&v=10
+http://127.0.0.1:18080/get_neuron?id=V1.H.1
+http://127.0.0.1:18080/stream?ids=V1.S.1,V1.H.1,V1.M.1&hz=10
+```
+
+## Проекты
+
+Свою схему сохраняйте как JSON в формате `saveProjectJson` (magic «minosprime»),
+файл с любым именем `.mnp.json`:
+
+```
+./build/minosprime validate my_project.mnp.json
 ```
 
 ## Ставка на C++17, внешних зависимостей нет.
