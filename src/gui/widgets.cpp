@@ -83,14 +83,15 @@ void UI::endFrame() {
       if (ir.hit(mx, my)) {
         quad(ir.x, ir.y, ir.w, ir.h, i == drop.cur ? C_SEL : 0x233042ff);
         if (lPressed || lReleased) {
-          if (drop.out) *drop.out = i;
+          dropPickId = drop.wid;
+          dropPickVal = i;
           closed = true;
           lPressed = false;
           lReleased = false;
           lDown = false;
         }
       }
-      widgetLabel(*this, drop.items[i], {ir.x + 8, ir.y + 3, ir.w, ih}, i == drop.cur ? C_TEXT : C_DIM);
+      widgetLabel(*this, drop.items[i], {ir.x + 8, ir.y + 3, ir.w, ih}, i == drop.cur ? C_ACCENTHI : C_TEXT);
     }
     if (closed) {
       dropOpen = false;
@@ -394,7 +395,10 @@ void widgetOptI(UI& ui, unsigned id, Rect r, mp::OptI& v, long long step, long l
 
 // ---------- enum ----------
 void widgetEnum(UI& ui, unsigned id, Rect r, int& idx, const std::vector<std::string>& names) {
-  (void)id;
+  if (ui.dropPickId == id) {
+    idx = ui.dropPickVal;
+    ui.dropPickId = 0;
+  }
   if (idx < 0 || idx >= (int)names.size()) idx = 0;
   bool hov = over(r, ui) && !ui.guardClicks;
   quad(r.x, r.y, r.w, r.h, hov ? 0x1d2630ff : C_FIELD);
@@ -402,7 +406,7 @@ void widgetEnum(UI& ui, unsigned id, Rect r, int& idx, const std::vector<std::st
   widgetLabel(ui, names[(size_t)idx], {r.x + 6, r.y + (r.h - 16) / 2, r.w - 14, 0}, C_TEXT);
   widgetLabel(ui, "\xe2\x96\xbc", {r.x + r.w - 15, r.y + (r.h - 15) / 2, 0, 0}, C_DIM);
   if (hov && ui.lPressed) {
-    ui.drop = {r.x, r.y + r.h, r.w, idx, names, &idx};
+    ui.drop = {r.x, r.y + r.h, r.w, idx, names, id};
     ui.dropOpen = true;
     ui.lPressed = false;
   }

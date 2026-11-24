@@ -86,7 +86,7 @@ struct App {
   float errScroll = 0;
   bool codeTabErrors = false;
   bool wantFs = false;
-  bool winCode = true, winInsp = true, winStands = false, winFiles = false, winHelp = false;
+  bool winCode = true, winInsp = true, winStands = false, winFiles = false, winHelp = false, winAbout = false;
 
   // ---- файлы (7.x) ----
   std::string filePath;
@@ -150,6 +150,7 @@ struct App {
   std::vector<mp::V3> mvStart;
   bool overAny = false; // мышь над любой 2D-панелью (для призрака/пиков)
   bool overAnyPrev = false; // значение overAny прошлого кадра (для роутинга кликов)
+  bool overLogo = false; // клик по лого-углу поймал sceneMouse
   bool quit = false;
   double fps = 0;
   double now = 0;

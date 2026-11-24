@@ -30,35 +30,35 @@ static float numRow(UI& ui, unsigned id, const char* name, Rect r, double& v, do
   mp::OptF tmp;
   tmp.set = true;
   tmp.v = v;
-  widgetLabel(ui, name, {r.x + 4, r.y + 2, 118, 0}, C_DIM);
+  widgetLabel(ui, name, {r.x + 4, r.y + 3, 118, 0}, C_DIM);
   widgetOptF(ui, id, r, tmp, step, -1e9, 1e9);
   v = tmp.v;
-  return 20;
+  return 23;
 }
 
 static float enumRow(UI& ui, unsigned id, const char* name, Rect r, int& idx, const std::vector<std::string>& names) {
   widgetLabel(ui, name, {r.x + 4, r.y + 2, 118, 0}, C_DIM);
-  Rect cr{r.x + 124, r.y, r.w - 128, 20};
+  Rect cr{r.x + 124, r.y, r.w - 128, 22};
   widgetEnum(ui, id, cr, idx, names);
-  return 22;
+  return 25;
 }
 
 static float textRow(UI& ui, unsigned id, const char* name, Rect r, std::string& v) {
   widgetLabel(ui, name, {r.x + 4, r.y + 2, 118, 0}, C_DIM);
-  Rect cr{r.x + 124, r.y, r.w - 128, 20};
+  Rect cr{r.x + 124, r.y, r.w - 128, 22};
   widgetTextField(ui, id, cr, v, false);
-  return 22;
+  return 25;
 }
 
 static float boolRow(UI& ui, unsigned id, const char* name, Rect r, bool& v) {
-  widgetCheckbox(ui, id, {r.x + 4, r.y, r.w - 8, 20}, v, name);
-  return 22;
+  widgetCheckbox(ui, id, {r.x + 4, r.y, r.w - 8, 22}, v, name);
+  return 25;
 }
 
 static float roRow(UI& ui, const char* name, const std::string& val, Rect r) {
-  widgetLabel(ui, name, {r.x + 4, r.y + 2, 118, 0}, C_DIM);
-  widgetLabel(ui, val, {r.x + 126, r.y + 2, r.w - 130, 0}, 0xb9c3d0ff);
-  return 20;
+  widgetLabel(ui, name, {r.x + 4, r.y + 3, 118, 0}, C_DIM);
+  widgetLabel(ui, val, {r.x + 126, r.y + 3, r.w - 130, 0}, 0xb9c3d0ff);
+  return 22;
 }
 
 template <class F>

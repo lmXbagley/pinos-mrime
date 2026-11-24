@@ -63,20 +63,20 @@ static float numRow2(UI& ui, unsigned id, const char* name, Rect r, double& v, d
 }
 
 static float textRow2(UI& ui, unsigned id, const char* name, Rect r, std::string& v) {
-  widgetLabel(ui, name, {r.x + 4, r.y + 2, 118, 0}, C_DIM);
-  widgetTextField(ui, id, {r.x + 124, r.y, r.w - 128, 20}, v, false);
-  return 22;
+  widgetLabel(ui, name, {r.x + 4, r.y + 3, 118, 0}, C_DIM);
+  widgetTextField(ui, id, {r.x + 124, r.y, r.w - 128, 22}, v, false);
+  return 26;
 }
 
 static float boolRow2(UI& ui, unsigned id, const char* name, Rect r, bool& v) {
-  widgetCheckbox(ui, id, {r.x + 4, r.y, r.w - 8, 20}, v, name);
-  return 22;
+  widgetCheckbox(ui, id, {r.x + 4, r.y, r.w - 8, 22}, v, name);
+  return 26;
 }
 
 static float enumRow2(UI& ui, unsigned id, const char* name, Rect r, int& idx, const std::vector<std::string>& names) {
-  widgetLabel(ui, name, {r.x + 4, r.y + 2, 118, 0}, C_DIM);
-  widgetEnum(ui, id, {r.x + 124, r.y, r.w - 128, 20}, idx, names);
-  return 22;
+  widgetLabel(ui, name, {r.x + 4, r.y + 3, 118, 0}, C_DIM);
+  widgetEnum(ui, id, {r.x + 124, r.y, r.w - 128, 22}, idx, names);
+  return 26;
 }
 
 // ================= КОД (4.x) =================
@@ -342,6 +342,32 @@ static void enterMove(App& app) {
   app.mode = Mode::Move;
 }
 
+// векторный знак: фрагмент органоида — три узла-«нейрона» с синаптическими связями
+static void drawLogoMark(float x, float y, float s) {
+  line2D(x + 0.18f * s, y + 0.80f * s, x + 0.50f * s, y + 0.22f * s, 0x4d7cc1ff);
+  line2D(x + 0.50f * s, y + 0.22f * s, x + 0.82f * s, y + 0.74f * s, 0x4d7cc1ff);
+  line2D(x + 0.18f * s, y + 0.80f * s, x + 0.82f * s, y + 0.74f * s, 0x33517aff);
+  disc2D(x + 0.18f * s, y + 0.80f * s, s * 0.14f, 0x7799d9ff);
+  disc2D(x + 0.82f * s, y + 0.74f * s, s * 0.14f, 0x4d7cc1ff);
+  disc2D(x + 0.50f * s, y + 0.22f * s, s * 0.18f, 0x7799d9ff);
+  disc2D(x + 0.50f * s, y + 0.22f * s, s * 0.08f, 0xdfe9f8ff);
+}
+
+static void drawAbout(App& app, UI& ui) {
+  float w = 320, h = 226;
+  float x = (float)ui.winW / 2 - w / 2, y = 120;
+  if (uiWindowShared(app, ui, hashStr("about"), "О программе", x, y, w, h, false)) {
+    app.winAbout = false;
+    return;
+  }
+  drawLogoMark(x + w / 2 - 32, y + 36, 64);
+  widgetLabel(ui, "МИНОСПРАЙМ · pinos-mrime", {x + 10, y + 112, w - 20, 0}, C_TEXT, 16);
+  widgetLabel(ui, "v0.2 — CAD-редактор спайковых органоидов", {x + 10, y + 136, w - 20, 0}, C_DIM, 13);
+  widgetLabel(ui, "нейросеть: DSL · симуляция LIF/ALIF · валидатор · стенды", {x + 10, y + 154, w - 20, 0}, C_DIM, 12);
+  widgetLabel(ui, "made by lm", {x + 10, y + 174, w - 20, 0}, C_ACCENTHI, 14);
+  if (widgetButton(ui, hashStr("about ok"), "Закрыть", {x + w / 2 - 60, y + 196, 120, 24})) app.winAbout = false;
+}
+
 static void drawHud(App& app, UI& ui) {
   float W = (float)ui.winW;
   quad(0, 0, W, 32, 0x141920f2);
@@ -446,7 +472,19 @@ static void drawHud(App& app, UI& ui) {
   std::string st2;
   if (app.doc.dirty) st2 = "не сохранено";
   if (app.recording) st2 += (st2.empty() ? "" : " · ") + std::string("ЗАПИСЬ СТЕНДА");
-  if (!st2.empty()) text(W - textWidth(st2, 13) - 10, hy + 6, st2, app.recording ? C_ERR : C_WARN, 13);
+  const char* by = "made by lm";
+  float byw = textWidth(by, 12);
+  float lx = W - 34; // лого-знак справа, клик — «О программе»
+  Rect lgHover{lx - byw - 12, hy + 2, byw + 34, 22};
+  if (lgHover.hit(ui.mx, ui.my) && !ui.guardClicks) frame(lgHover.x, lgHover.y, lgHover.w, lgHover.h, C_ACCENTHI);
+  text(lx - byw - 8, hy + 7, by, C_DIM, 12);
+  drawLogoMark(lx, hy + 4, 18);
+  if (app.overLogo) {
+    app.overLogo = false;
+    app.winAbout = true;
+  }
+  float stRight = lx - byw - 20;
+  if (!st2.empty()) text(stRight - textWidth(st2, 13) - 8, hy + 6, st2, app.recording ? C_ERR : C_WARN, 13);
   if (ui.my < 32) app.overAny = true;
 }
 
@@ -495,26 +533,26 @@ static void drawPlaceDialog(App& app, UI& ui) {
   int t = (int)(n.type.set ? n.type.v : 1);
   enumRow2(ui, hashStr("pc nt"), "тип (1.2)", {x + 10, yw, w - 20, 0}, t, tn);
   n.type = t;
-  yw += 22;
+  yw += 26;
   yw += textRow2(ui, hashStr("pc zn"), "зона (1.3)", {x + 10, yw, w - 20, 0}, n.zone);
   yw += textRow2(ui, hashStr("pc lb"), "метка (1.1)", {x + 10, yw, w - 20, 0}, n.label);
   std::vector<std::string> mdn = {"LIF", "ALIF"};
   int m = (int)(n.model.set ? n.model.v : 0);
   enumRow2(ui, hashStr("pc md"), "модель (1.5)", {x + 10, yw, w - 20, 0}, m, mdn);
   n.model = m;
-  yw += 22;
-  widgetLabel(ui, "порог (1.6)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetOptF(ui, hashStr("pc thr"), {x + 132, yw, w - 156, 20}, n.thr, 0.05);
-  yw += 20;
-  widgetLabel(ui, "утечка (1.7)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetOptF(ui, hashStr("pc lk"), {x + 132, yw, w - 156, 20}, n.leak, 0.01, 0, 1);
-  yw += 20;
-  widgetLabel(ui, "рефрак (1.8)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetOptI(ui, hashStr("pc rf"), {x + 132, yw, w - 156, 20}, n.refrMax, 1, 0, 1e6);
-  yw += 20;
-  widgetLabel(ui, "шум (1.9)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetOptF(ui, hashStr("pc ns"), {x + 132, yw, w - 156, 20}, n.noise, 0.01, 0, 1e3);
-  yw += 22;
+  yw += 26;
+  widgetLabel(ui, "порог (1.6)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetOptF(ui, hashStr("pc thr"), {x + 132, yw, w - 156, 22}, n.thr, 0.05);
+  yw += 24;
+  widgetLabel(ui, "утечка (1.7)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetOptF(ui, hashStr("pc lk"), {x + 132, yw, w - 156, 22}, n.leak, 0.01, 0, 1);
+  yw += 24;
+  widgetLabel(ui, "рефрак (1.8)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetOptI(ui, hashStr("pc rf"), {x + 132, yw, w - 156, 22}, n.refrMax, 1, 0, 1e6);
+  yw += 24;
+  widgetLabel(ui, "шум (1.9)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetOptF(ui, hashStr("pc ns"), {x + 132, yw, w - 156, 22}, n.noise, 0.01, 0, 1e3);
+  yw += 26;
   std::string zhint = "зоны: ";
   for (const auto& z : app.doc.zones) zhint += z.code + " ";
   if (zhint.size() > 6) widgetLabel(ui, zhint, {x + 10, yw, w, 0}, C_DIM, 12);
@@ -553,41 +591,41 @@ static void drawSynDialog(App& app, UI& ui) {
   for (size_t i = 0; i < ids.size(); ++i)
     if (ids[i] == s.pre) preI = (int)i;
   int pe = preI;
-  widgetLabel(ui, "пресинапс (2.1)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetEnum(ui, hashStr("sy pre"), {x + 132, yw, w - 156, 20}, pe, ids);
+  widgetLabel(ui, "пресинапс (2.1)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetEnum(ui, hashStr("sy pre"), {x + 132, yw, w - 156, 22}, pe, ids);
   if (pe != preI && !ids.empty() && ids[0][0] != '(') s.pre = ids[(size_t)pe];
-  yw += 22;
+  yw += 26;
   int postI = 0;
   for (size_t i = 0; i < ids.size(); ++i)
     if (ids[i] == s.post) postI = (int)i;
   int pe2 = postI;
-  widgetLabel(ui, "постсинапс (2.1)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetEnum(ui, hashStr("sy post"), {x + 132, yw, w - 156, 20}, pe2, ids);
+  widgetLabel(ui, "постсинапс (2.1)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetEnum(ui, hashStr("sy post"), {x + 132, yw, w - 156, 22}, pe2, ids);
   if (pe2 != postI && !ids.empty() && ids[0][0] != '(') s.post = ids[(size_t)pe2];
-  yw += 22;
-  widgetLabel(ui, "вес (2.2)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetOptF(ui, hashStr("sy w"), {x + 132, yw, w - 156, 20}, s.weight, 0.05, 0, 1e6);
-  yw += 20;
+  yw += 26;
+  widgetLabel(ui, "вес (2.2)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetOptF(ui, hashStr("sy w"), {x + 132, yw, w - 156, 22}, s.weight, 0.05, 0, 1e6);
+  yw += 24;
   int sg = (int)(s.sign.set ? s.sign.v : 0);
   enumRow2(ui, hashStr("sy sg"), "знак (2.3)", {x + 10, yw, w - 20, 0}, sg, kSSign);
   s.sign = sg;
-  yw += 22;
+  yw += 26;
   int pl = (int)(s.plast.set ? s.plast.v : 0);
   enumRow2(ui, hashStr("sy pl"), "пласт-ть (2.4)", {x + 10, yw, w - 20, 0}, pl, kPlast);
   s.plast = pl;
-  yw += 22;
-  widgetLabel(ui, "lr (2.5)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetOptF(ui, hashStr("sy lr"), {x + 132, yw, w - 156, 20}, s.lr, 0.005, 0, 1e6);
-  yw += 20;
-  widgetLabel(ui, "окно (2.6)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetOptI(ui, hashStr("sy pw"), {x + 132, yw, w - 156, 20}, s.pw, 1, 0, 1e6);
-  yw += 20;
-  widgetLabel(ui, "w мин (2.7)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetOptF(ui, hashStr("sy wmn"), {x + 132, yw, w - 156, 20}, s.wMin, 0.05);
-  yw += 20;
-  widgetLabel(ui, "w макс (2.7)", {x + 14, yw + 2, 118, 0}, C_DIM);
-  widgetOptF(ui, hashStr("sy wmx"), {x + 132, yw, w - 156, 20}, s.wMax, 0.05);
-  yw += 20;
+  yw += 26;
+  widgetLabel(ui, "lr (2.5)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetOptF(ui, hashStr("sy lr"), {x + 132, yw, w - 156, 22}, s.lr, 0.005, 0, 1e6);
+  yw += 24;
+  widgetLabel(ui, "окно (2.6)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetOptI(ui, hashStr("sy pw"), {x + 132, yw, w - 156, 22}, s.pw, 1, 0, 1e6);
+  yw += 24;
+  widgetLabel(ui, "w мин (2.7)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetOptF(ui, hashStr("sy wmn"), {x + 132, yw, w - 156, 22}, s.wMin, 0.05);
+  yw += 24;
+  widgetLabel(ui, "w макс (2.7)", {x + 14, yw + 3, 118, 0}, C_DIM);
+  widgetOptF(ui, hashStr("sy wmx"), {x + 132, yw, w - 156, 22}, s.wMax, 0.05);
+  yw += 24;
   yw += boolRow2(ui, hashStr("sy en"), "включена (2.10)", {x + 10, yw, w - 20, 0}, s.enabled);
   if (widgetButton(ui, hashStr("sy ok"), app.synWin.editing ? "Применить" : "Создать связь",
                    {x + 10, yw + 26, w - 20, 28})) {
@@ -723,7 +761,6 @@ void sceneMouse(App& app) {
   if (ui.menuOpen && !ui.rPressed && ui.menuRect.hit(ui.mx, ui.my)) return;
   if (app.overAnyPrev)
     return; // клик ушел в UI-окно/HUD, сцена не отвечает
-
   // СКМ — движение по полю (пан камеры), работает в любом режиме и с открытыми диалогами
   bool mDown = (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_MIDDLE)) != 0;
   static bool midPrev = false;
@@ -737,6 +774,16 @@ void sceneMouse(App& app) {
     midGrabY = ui.my;
   }
   midPrev = mDown;
+
+  Rect lgCorner{(float)ui.winW - 112, (float)ui.winH - 28, 112, 28}; // зона лого — клик открывает «О программе»
+  if (lgCorner.hit(ui.mx, ui.my) && !mDown) {
+    if (ui.lPressed) {
+      app.overLogo = true;
+      ui.lPressed = false;
+      ui.lReleased = false;
+    }
+    return;
+  }
 
   if (app.place.open && app.mode == Mode::Neuron) {
     Ray pray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
@@ -1176,6 +1223,7 @@ void panelsDraw(App& app) {
   if (app.winFiles) drawFilesPanel(app, ui);
   if (app.winStands) drawStandsPanel(app, ui);
   if (app.winHelp) drawHelp(app, ui);
+  if (app.winAbout) drawAbout(app, ui);
   if (app.place.open) drawPlaceDialog(app, ui);
   if (app.synWin.open) drawSynDialog(app, ui);
   if (app.flowOpen) drawFlowDialog(app, ui);

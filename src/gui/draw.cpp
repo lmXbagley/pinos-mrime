@@ -219,6 +219,19 @@ void sphere3D(float x, float y, float z, float r, unsigned rgba, int seg) {
 }
 
 
+void disc2D(float x, float y, float r, unsigned rgba) {
+  glDisable(GL_TEXTURE_2D);
+  glColor4ub(GLubyte((rgba >> 24) & 0xff), GLubyte((rgba >> 16) & 0xff), GLubyte((rgba >> 8) & 0xff),
+             GLubyte(rgba & 0xff));
+  glBegin(GL_TRIANGLE_FAN);
+  glVertex2f(x, y);
+  for (int i = 0; i <= 16; ++i) {
+    float a = i / 16.0f * 6.2831853f;
+    glVertex2f(x + std::cos(a) * r, y + std::sin(a) * r);
+  }
+  glEnd();
+}
+
 void line2D(float x0, float y0, float x1, float y1, unsigned rgba) {
   glDisable(GL_TEXTURE_2D);
   glColor4ub(GLubyte((rgba >> 24) & 0xff), GLubyte((rgba >> 16) & 0xff), GLubyte((rgba >> 8) & 0xff),

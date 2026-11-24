@@ -15,6 +15,7 @@ void quad(float x, float y, float w, float h, unsigned rgba);
 void frame(float x, float y, float w, float h, unsigned rgba, float t = 1.0f);
 void text(float x, float y, const std::string& utf8, unsigned rgba, float px = 15.0f);
 void line2D(float x0, float y0, float x1, float y1, unsigned rgba);
+void disc2D(float x, float y, float r, unsigned rgba);
 float textWidth(const std::string& utf8, float px = 15.0f);
 float fontHeight(float px = 15.0f);
 

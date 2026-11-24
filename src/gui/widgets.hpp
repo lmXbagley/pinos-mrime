@@ -56,9 +56,11 @@ struct UI {
   void dropFocus();
 
   // выдвижные слои (рисуются в endFrame поверх всего, экранируя клики)
-  struct Drop { float x, y, w; int cur; std::vector<std::string> items; int* out; };
+  struct Drop { float x, y, w; int cur; std::vector<std::string> items; unsigned wid = 0; };
   bool dropOpen = false;
   Drop drop{};
+  unsigned dropPickId = 0; // выбор пункта в endFrame, потребляет widgetEnum по id
+  int dropPickVal = -1;
   struct Menu { bool open = false; float x = 0, y = 0; std::vector<std::string> items; };
   bool menuOpen = false;
   Menu menu;
@@ -84,7 +86,7 @@ bool widgetTextField(UI&, unsigned id, Rect r, std::string& val, bool numeric = 
 // Opt-поля (R1): [●/○] [значение] [−][+]
 void widgetOptF(UI&, unsigned id, Rect r, mp::OptF& v, double step = 0.05, double mn = -1e9, double mx = 1e9);
 void widgetOptI(UI&, unsigned id, Rect r, mp::OptI& v, long long step = 1, long long mn = -1e9, long long mx = 1e9);
-// enum-поле с выпадающим списком
+// enum-поле с выпадающим списком (выбор приезжает через ui.dropPickId в следующем кадре)
 void widgetEnum(UI&, unsigned id, Rect r, int& idx, const std::vector<std::string>& names);
 // секция инспектора (сворачиваемая)
 bool widgetSection(UI&, unsigned id, const char* name, bool& open, Rect r);
