@@ -308,6 +308,36 @@ static void apiToggle(App& app) {
   }
 }
 
+static void enterMove(App& app) {
+  if (app.mode == Mode::Move) {
+    app.mode = Mode::Select;
+    app.gizmoDrag = false;
+    app.gizmoAxis = -1;
+    return;
+  }
+  if (app.selN.empty()) {
+    app.statusMsg = "Движ: сначала выдели нейроны (рамка или клик в режиме Выбор)";
+    return;
+  }
+  app.gizmoIds.clear();
+  app.gizmoStart.clear();
+  mp::V3 acc{0, 0, 0};
+  size_t cnt = 0;
+  for (const auto& id : app.selN)
+    if (mp::Neuron* q = app.doc.neuron(id)) {
+      app.gizmoIds.push_back(id);
+      app.gizmoStart.push_back(q->pos);
+      acc.x += q->pos.x; acc.y += q->pos.y; acc.z += q->pos.z;
+      ++cnt;
+    }
+  if (!cnt) return;
+  app.undoPush("мышь: перенос по оси (G)");
+  app.gizmoOrig = {acc.x / cnt, acc.y / cnt, acc.z / cnt};
+  app.mode = Mode::Move;
+  app.gizmoAxis = -1;
+  app.gizmoDrag = false;
+}
+
 static void drawHud(App& app, UI& ui) {
   float W = (float)ui.winW;
   quad(0, 0, W, 32, 0x141920f2);
@@ -315,10 +345,14 @@ static void drawHud(App& app, UI& ui) {
   float x = 8;
   struct MB { const char* n; Mode m; };
   MB mbs[] = {{"Выбор", Mode::Select}, {"Нейрон", Mode::Neuron}, {"Связь", Mode::Wire},
-              {"Резать", Mode::Cut}, {"Повредить", Mode::Damage}};
+              {"Резать", Mode::Cut}, {"Повредить", Mode::Damage}, {"Движ", Mode::Move}};
   for (auto& mb : mbs) {
-    if (widgetButton(ui, hashStr(mb.n), mb.n, {x, 4, 80, 24}, true, app.mode == mb.m ? C_ACCENT : C_BORDER))
-      app.mode = mb.m;
+    if (widgetButton(ui, hashStr(mb.n), mb.n, {x, 4, 80, 24}, true, app.mode == mb.m ? C_ACCENT : C_BORDER)) {
+      if (mb.m == Mode::Move)
+        enterMove(app);
+      else
+        app.mode = mb.m;
+    }
     x += 84;
   }
   if (widgetButton(ui, hashStr("run"), app.running ? "Стоп" : "Пуск", {x, 4, 64, 24}, true,
@@ -690,8 +724,34 @@ void sceneMouse(App& app) {
   Ray ray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
   app.lastPos = app.cam.rayPlane(ray, 0.0f);
 
-  // G-гизм: осевой перенос ВСЕХ выделенных нейронов от центроида; Enter — выход, Esc — отмена
-  if (app.gizmoOn && !app.gizmoIds.empty()) {
+  // СКМ: орбита / панорама (5.8)
+  bool mDown = (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_MIDDLE)) != 0;
+  static bool midPrev = false;
+  static float lastMx = 0, lastMy = 0;
+  if (mDown && !midPrev) {
+    lastMx = ui.mx;
+    lastMy = ui.my;
+  }
+  if (mDown) {
+    float dx = ui.mx - lastMx, dy = ui.my - lastMy;
+    if (ui.shift)
+      app.cam.pan(-dx, -dy);
+    else
+      app.cam.orbit(-dx, -dy);
+    lastMx = ui.mx;
+    lastMy = ui.my;
+  }
+  midPrev = mDown;
+
+  // колесо — зум
+  if (ui.wheel) {
+    app.cam.zoom((float)ui.wheel);
+    app.ui.wheel = 0;
+  }
+
+  // режим движения (Move/G): осевой перенос ВСЕХ выделенных нейронов от центроида; Enter — выход, Esc — отмена
+  bool gizActive = app.mode == Mode::Move && !app.gizmoIds.empty();
+  if (gizActive) {
     auto axisDir = [](int ax) {
       return ax == 0 ? mp::V3{1, 0, 0} : ax == 1 ? mp::V3{0, 1, 0} : mp::V3{0, 0, 1};
     };
@@ -751,7 +811,7 @@ void sceneMouse(App& app) {
       }
     }
     if (ui.keyOnce("Return") || ui.keyOnce("Enter") || ui.keyOnce("Keypad Enter")) {
-      app.gizmoOn = false; app.gizmoDrag = false; app.gizmoAxis = -1;
+      app.mode = Mode::Select; app.gizmoDrag = false; app.gizmoAxis = -1;
     } else if (ui.keyOnce("Escape")) {
       size_t si = 0;
       for (const auto& id : app.gizmoIds) {
@@ -760,36 +820,9 @@ void sceneMouse(App& app) {
         q->pos = app.gizmoStart[si++];
       }
       app.doc.dirty = true;
-      app.gizmoOn = false; app.gizmoDrag = false; app.gizmoAxis = -1;
+      app.mode = Mode::Select; app.gizmoDrag = false; app.gizmoAxis = -1;
     }
-    if (app.gizmoOn) return;
-  } else if (app.gizmoOn) {
-    app.gizmoOn = false;
-  }
-
-  // СКМ: орбита / панорама (5.8)
-  bool mDown = (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_MIDDLE)) != 0;
-  static bool midPrev = false;
-  static float lastMx = 0, lastMy = 0;
-  if (mDown && !midPrev) {
-    lastMx = ui.mx;
-    lastMy = ui.my;
-  }
-  if (mDown) {
-    float dx = ui.mx - lastMx, dy = ui.my - lastMy;
-    if (ui.shift)
-      app.cam.pan(-dx, -dy);
-    else
-      app.cam.orbit(-dx, -dy);
-    lastMx = ui.mx;
-    lastMy = ui.my;
-  }
-  midPrev = mDown;
-
-  // колесо — зум
-  if (ui.wheel) {
-    app.cam.zoom((float)ui.wheel);
-    app.ui.wheel = 0;
+    if (app.mode == Mode::Move) return;
   }
 
   // Alt+ЛКМ по связи — открыть редактор (5.5)
@@ -1163,40 +1196,24 @@ void panelsDraw(App& app) {
       app.menuCtx = 4;
       app.menuArg.clear();
     }
-    if (app.gizmoOn) {
+    if (app.mode == Mode::Move) {
       if (ui.keyOnce("X")) app.gizmoAxis = 0;
       else if (ui.keyOnce("Y")) app.gizmoAxis = 1;
       else if (ui.keyOnce("Z")) app.gizmoAxis = 2;
-    } else if (ui.keyOnce("G") && !app.selN.empty()) {
-      app.gizmoIds.clear();
-      app.gizmoStart.clear();
-      mp::V3 acc{0, 0, 0};
-      size_t cnt = 0;
-      for (const auto& id : app.selN)
-        if (mp::Neuron* q = app.doc.neuron(id)) {
-          app.gizmoIds.push_back(id);
-          app.gizmoStart.push_back(q->pos);
-          acc.x += q->pos.x; acc.y += q->pos.y; acc.z += q->pos.z;
-          ++cnt;
-        }
-      if (cnt) {
-        app.undoPush("мышь: перенос по оси (G)");
-        app.gizmoOrig = {acc.x / cnt, acc.y / cnt, acc.z / cnt};
-        app.gizmoOn = true;
-        app.gizmoAxis = -1;
-        app.gizmoDrag = false;
-      }
+    } else if (ui.keyOnce("G")) {
+      enterMove(app);
     }
     std::vector<std::string> keys = ui.keys;
     for (const auto& k : keys) {
       if (k == "S" && !ui.ctrl) app.mode = Mode::Select;
       else if (k == "N" && !ui.ctrl) app.mode = Mode::Neuron;
       else if (k == "C" && !ui.ctrl) app.mode = Mode::Wire;
-      else if (k == "X" && !ui.ctrl) app.mode = Mode::Cut;
+      else if (k == "X" && !ui.ctrl && app.mode != Mode::Move) app.mode = Mode::Cut;
       else if (k == "D" && !ui.ctrl) app.mode = Mode::Damage;
       else if (k == "Tab") app.winCode = !app.winCode;
       else if (k == "Escape") {
         app.ui.menuOpen = false;
+        if (app.mode == Mode::Move) app.mode = Mode::Select;
         app.wirePre = false;
         app.selN.clear();
         app.selS.clear();

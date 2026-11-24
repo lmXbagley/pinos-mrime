@@ -21,7 +21,7 @@
 
 namespace mpui {
 
-enum class Mode { Select = 0, Neuron, Wire, Cut, Damage };
+enum class Mode { Select = 0, Neuron, Wire, Cut, Damage, Move };
 
 struct PendingPlace {         // 5.1: окно параметров ДО установки ячейки
   bool open = false;

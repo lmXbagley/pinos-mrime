@@ -120,19 +120,22 @@ void sceneDraw3D(App& app) {
   glLoadMatrixf(app.cam.view().m);
 
   // --- сетка ---
-  float ext = clampf(app.cam.dist * 1.2f, 24.0f, 500.0f);
-  float step = ext > 120 ? 10.0f : 2.0f;
+  float ext = clampf(app.cam.dist * 1.6f, 40.0f, 800.0f);
+  float step = ext > 400 ? 40.0f : ext > 200 ? 20.0f : ext > 100 ? 10.0f : 2.0f;
   unsigned gridC = fadeAlpha(0x2b3440ff, 0.8f);
+  unsigned gridM = fadeAlpha(0x3d4a5aff, 0.9f);
   float tx = (float)app.cam.target.x, tz = (float)app.cam.target.z;
   float gx = std::floor((tx - ext) / step) * step;
   float gz = std::floor((tz - ext) / step) * step;
-  for (float g = gx; g <= tx + ext + 0.01f; g += step)
-    line3D(g, 0, tz - ext, g, 0, tz + ext, 1, gridC);
-  for (float g = gz; g <= tz + ext + 0.01f; g += step)
-    line3D(tx - ext, 0, g, tx + ext, 0, g, 1, gridC);
-  line3D(-ext, 0, 0, ext, 0, 0, 1.5f, 0x8a5a5aff);
-  line3D(0, 0, -ext, 0, 0, ext, 1.5f, 0x5a708aff);
-  line3D(0, 0, 0, 0, ext * 0.25f, 0, 1.5f, 0x608a5aff);
+  int mi = 0;
+  for (float g = gx; g <= tx + ext + 0.01f; g += step, ++mi)
+    line3D(g, 0, tz - ext, g, 0, tz + ext, (mi % 5 == 0) ? 1.4f : 1.0f, (mi % 5 == 0) ? gridM : gridC);
+  mi = 0;
+  for (float g = gz; g <= tz + ext + 0.01f; g += step, ++mi)
+    line3D(tx - ext, 0, g, tx + ext, 0, g, (mi % 5 == 0) ? 1.4f : 1.0f, (mi % 5 == 0) ? gridM : gridC);
+  line3D(-ext, 0, 0, ext, 0, 0, 2.0f, 0xd06a6aff);
+  line3D(0, 0, -ext, 0, 0, ext, 2.0f, 0x6a88d0ff);
+  line3D(0, 0, 0, 0, ext * 0.25f, 0, 2.0f, 0x6ac06aff);
 
   // --- зоны-группы не геометричны; кластеры (3.x) полупрозрачные ---
   for (const auto& c : app.doc.clusters) {
@@ -257,18 +260,25 @@ void sceneDraw3D(App& app) {
   if (app.mode == Mode::Neuron && !app.place.open && !app.overAny) {
     ball3D((float)app.lastPos.x, 0.0f + 0.7f, (float)app.lastPos.z, 0.7f, 0x6fa8dc66);
   }
-  // --- гизмо осевого переноса (G) ---
-  if (app.gizmoOn && !app.gizmoIds.empty()) {
+  // --- гизмо осевого переноса (режим Движ/G) ---
+  if (app.mode == Mode::Move && !app.gizmoIds.empty()) {
     mp::V3 p{0, 0, 0};
     size_t cnt = 0;
     for (const auto& id : app.gizmoIds)
       if (mp::Neuron* q = app.doc.neuron(id)) { p.x += q->pos.x; p.y += q->pos.y; p.z += q->pos.z; ++cnt; }
     if (cnt) p = {p.x / cnt, p.y / cnt, p.z / cnt};
     float L = (float)std::max(6.0, app.cam.dist * 0.25);
-    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x + L, (float)p.y, (float)p.z, 2.5f, app.gizmoAxis == 0 ? 0xff8a5aff : 0xc0504a99);
-    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y + L, (float)p.z, 2.5f, app.gizmoAxis == 1 ? 0x9ade6aff : 0x4f8a3d99);
-    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y, (float)p.z + L, 2.5f, app.gizmoAxis == 2 ? 0x6aa8ffff : 0x3d5f9e99);
-    ball3D((float)p.x, (float)p.y, (float)p.z, 0.9f, 0xf2f6ffff);
+    float ln = (float)std::max(3.0, app.cam.dist * 0.012);
+    unsigned xc = app.gizmoAxis == 0 ? 0xffb08aff : 0xe06a5aff;
+    unsigned yc = app.gizmoAxis == 1 ? 0xbaf08aff : 0x5ac04aff;
+    unsigned zc = app.gizmoAxis == 2 ? 0x9ac8ffff : 0x5a88e0ff;
+    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x + L, (float)p.y, (float)p.z, ln, xc);
+    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y + L, (float)p.z, ln, yc);
+    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y, (float)p.z + L, ln, zc);
+    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x + L, (float)p.y, (float)p.z, ln + 2, fadeAlpha(xc, 0.30f));
+    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y + L, (float)p.z, ln + 2, fadeAlpha(yc, 0.30f));
+    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y, (float)p.z + L, ln + 2, fadeAlpha(zc, 0.30f));
+    ball3D((float)p.x, (float)p.y, (float)p.z, 1.1f, 0xf2f6ffff);
     }
   glDisable(GL_BLEND);
 }
@@ -276,6 +286,36 @@ void sceneDraw3D(App& app) {
 // ---------- 2D-оверлей ----------
 void sceneOverlay2D(App& app) {
   UI& ui = app.ui;
+  // подписи мировых осей
+  if (app.cam.dist > 0) {
+    float ea = clampf(app.cam.dist * 0.6f, 8.0f, 50.0f);
+    mp::V3 exs{(double)ea, 0, 0}, ezs{0, 0, (double)ea};
+    bool o1 = false, o2 = false;
+    mp::V3 s1 = app.cam.screenPoint(exs, app.ui.winW, app.ui.winH, &o1);
+    mp::V3 s2 = app.cam.screenPoint(ezs, app.ui.winW, app.ui.winH, &o2);
+    if (o1) mpui::text(s1.x + 4, s1.y - 16, "X", 0xd08a8aff, 16);
+    if (o2) mpui::text(s2.x + 4, s2.y - 16, "Z", 0x8aa0d0ff, 16);
+  }
+  // подписи осей гизма
+  if (app.mode == Mode::Move && !app.gizmoIds.empty()) {
+    mp::V3 c{0, 0, 0};
+    size_t cnt = 0;
+    for (const auto& id : app.gizmoIds)
+      if (mp::Neuron* q = app.doc.neuron(id)) { c.x += q->pos.x; c.y += q->pos.y; c.z += q->pos.z; ++cnt; }
+    if (cnt) {
+      c = {c.x / cnt, c.y / cnt, c.z / cnt};
+      float L = (float)std::max(6.0, app.cam.dist * 0.25);
+      mp::V3 ends[3] = {{c.x + L, c.y, c.z}, {c.x, c.y + L, c.z}, {c.x, c.y, c.z + L}};
+      const char* nm[3] = {"X", "Y", "Z"};
+      unsigned cols[3] = {0xffb08aff, 0xbaf08aff, 0x9ac8ffff};
+      for (int k = 0; k < 3; ++k) {
+        bool ok = false;
+        mp::V3 sp = app.cam.screenPoint(ends[k], app.ui.winW, app.ui.winH, &ok);
+        if (ok) mpui::text(sp.x + 6, sp.y - 16, nm[k], cols[k], 18);
+      }
+    }
+  }
+
   // гизмо-куб ориентации в углу
   {
     float cx = 58, cy = (float)ui.winH - 58, R = 34;
