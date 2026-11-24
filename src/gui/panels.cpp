@@ -19,7 +19,7 @@ static std::map<unsigned, WinState>& winStates() {
   return m;
 }
 
-bool uiWindowShared(UI& ui, unsigned id, const char* title, float& x, float& y, float w, float h, bool closeBtn) {
+bool uiWindowShared(App& app, UI& ui, unsigned id, const char* title, float& x, float& y, float w, float h, bool closeBtn) {
   WinState& st = winStates()[id];
   if (Rect{x, y, w - (closeBtn ? 26.0f : 0.0f), 24}.hit(ui.mx, ui.my) && ui.lPressed && !ui.guardClicks) {
     st.drag = true;
@@ -34,6 +34,7 @@ bool uiWindowShared(UI& ui, unsigned id, const char* title, float& x, float& y, 
   }
   x = std::max(0.0f, std::min(x, (float)ui.winW - 60));
   y = std::max(0.0f, std::min(y, (float)ui.winH - 30));
+  if (Rect{x, y, w, h}.hit(ui.mx, ui.my)) app.overAny = true;
   quad(x, y, w, h, C_PANEL);
   frame(x, y, w, h, C_BORDER);
   quad(x, y, w, 24, C_PANELTITLE);
@@ -82,7 +83,7 @@ static float enumRow2(UI& ui, unsigned id, const char* name, Rect r, int& idx, c
 static void drawCodePanel(App& app, UI& ui) {
   float w = 560, h = 300;
   float x = 8, y = (float)ui.winH - h - 128;
-  if (uiWindowShared(ui, hashStr("code"), "Код — операция НАД документом (4.1–4.6, R2)", x, y, w, h, true))
+  if (uiWindowShared(app, ui, hashStr("code"), "Код — операция НАД документом (4.1–4.6, R2)", x, y, w, h, true))
     app.winCode = false;
   float bw = 74;
   if (widgetButton(ui, hashStr("tab code"), "Код", {x + 8, y + 26, bw, 20}, true, app.codeTabErrors ? C_BORDER : C_ACCENT))
@@ -150,7 +151,7 @@ static void drawCodePanel(App& app, UI& ui) {
 static void drawFilesPanel(App& app, UI& ui) {
   float w = 410, h = 400;
   float x = 90, y = 70;
-  if (uiWindowShared(ui, hashStr("files"), "Файл проекта (7.1–7.5)", x, y, w, h, false)) {
+  if (uiWindowShared(app, ui, hashStr("files"), "Файл проекта (7.1–7.5)", x, y, w, h, false)) {
     app.winFiles = false;
     return;
   }
@@ -202,7 +203,7 @@ static void drawFilesPanel(App& app, UI& ui) {
 static void drawStandsPanel(App& app, UI& ui) {
   float w = 440, h = 400;
   float x = (float)ui.winW / 2 - w / 2, y = 80;
-  if (uiWindowShared(ui, hashStr("stands"), "Стенды: запись / прогон / регрессия (9.1–9.4)", x, y, w, h, false)) {
+  if (uiWindowShared(app, ui, hashStr("stands"), "Стенды: запись / прогон / регрессия (9.1–9.4)", x, y, w, h, false)) {
     app.winStands = false;
     return;
   }
@@ -477,7 +478,7 @@ static void drawFlagsBar(App& app, UI& ui) {
 static void drawPlaceDialog(App& app, UI& ui) {
   float w = 350, h = 400;
   float x = (float)ui.winW / 2 - w / 2, y = 90;
-  if (uiWindowShared(ui, hashStr("place"), "Новый нейрон — параметры ДО установки (5.1)", x, y, w, h, false)) {
+  if (uiWindowShared(app, ui, hashStr("place"), "Новый нейрон — параметры ДО установки (5.1)", x, y, w, h, false)) {
     app.place.open = false;
     return;
   }
@@ -532,7 +533,7 @@ static void drawPlaceDialog(App& app, UI& ui) {
 static void drawSynDialog(App& app, UI& ui) {
   float w = 370, h = 430;
   float x = (float)ui.winW / 2 - w / 2, y = 90;
-  if (uiWindowShared(ui, hashStr("synd"), app.synWin.editing ? "Связь — редактор (5.2/5.5)" : "Новая связь — параметры (5.2)", x, y, w, h, false)) {
+  if (uiWindowShared(app, ui, hashStr("synd"), app.synWin.editing ? "Связь — редактор (5.2/5.5)" : "Новая связь — параметры (5.2)", x, y, w, h, false)) {
     app.synWin.open = false;
     return;
   }
@@ -616,7 +617,7 @@ static void drawSynDialog(App& app, UI& ui) {
 static void drawFlowDialog(App& app, UI& ui) {
   float w = 300, h = 130;
   float x = (float)ui.winW / 2 - w / 2, y = (float)ui.winH / 2 - 60;
-  if (uiWindowShared(ui, hashStr("flow"), "Поток частоты (5.9)", x, y, w, h, false)) {
+  if (uiWindowShared(app, ui, hashStr("flow"), "Поток частоты (5.9)", x, y, w, h, false)) {
     app.eng.setFlow(app.flowId, 0);
     app.flowOpen = false;
     return;
@@ -639,7 +640,7 @@ static void drawFlowDialog(App& app, UI& ui) {
 static void drawFillDialog(App& app, UI& ui) {
   float w = 300, h = 140;
   float x = (float)ui.winW / 2 - w / 2, y = (float)ui.winH / 2 - 70;
-  if (uiWindowShared(ui, hashStr("fill"), "Заполнение кластера (5.9)", x, y, w, h, false)) {
+  if (uiWindowShared(app, ui, hashStr("fill"), "Заполнение кластера (5.9)", x, y, w, h, false)) {
     app.fillOpen = false;
     return;
   }
@@ -656,7 +657,7 @@ static void drawFillDialog(App& app, UI& ui) {
 static void drawConfirmDialog(App& app, UI& ui) {
   float w = 380, h = 140;
   float x = (float)ui.winW / 2 - w / 2, y = (float)ui.winH / 2 - 70;
-  if (uiWindowShared(ui, hashStr("cnf"), "Подтверждение", x, y, w, h, false)) {
+  if (uiWindowShared(app, ui, hashStr("cnf"), "Подтверждение", x, y, w, h, false)) {
     app.confirmOpen = false;
     return;
   }
@@ -699,7 +700,7 @@ static void drawHelp(App& app, UI& ui) {
   };
   float w = 600, h = 40 + (float)10 * 22;
   float x = (float)ui.winW / 2 - w / 2, y = 120;
-  if (uiWindowShared(ui, hashStr("help"), "Справка — мышь и клавиши", x, y, w, h, false)) {
+  if (uiWindowShared(app, ui, hashStr("help"), "Справка — мышь и клавиши", x, y, w, h, false)) {
     app.winHelp = false;
     return;
   }
@@ -713,7 +714,22 @@ void sceneMouse(App& app) {
   if (ui.menuOpen && !ui.rPressed && ui.menuRect.hit(ui.mx, ui.my)) return;
   if (app.overAnyPrev)
     return; // клик ушел в UI-окно/HUD, сцена не отвечает
-  if (app.place.open && app.mode == Mode::Neuron && !app.overAnyPrev && !ui.menuRect.hit(ui.mx, ui.my)) {
+
+  // СКМ — движение по полю (пан камеры), работает в любом режиме и с открытыми диалогами
+  bool mDown = (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_MIDDLE)) != 0;
+  static bool midPrev = false;
+  static float midGrabX = 0, midGrabY = 0;
+  if (mDown && !midPrev) {
+    midGrabX = ui.mx;
+    midGrabY = ui.my;
+  } else if (mDown && midPrev) {
+    app.cam.pan(midGrabX - ui.mx, midGrabY - ui.my);
+    midGrabX = ui.mx;
+    midGrabY = ui.my;
+  }
+  midPrev = mDown;
+
+  if (app.place.open && app.mode == Mode::Neuron) {
     Ray pray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
     if (ui.lPressed || ui.lReleased) {
       app.place.pos = app.cam.rayPlane(pray, 0.0f);
@@ -730,46 +746,6 @@ void sceneMouse(App& app) {
 
   Ray ray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
   app.lastPos = app.cam.rayPlane(ray, 0.0f);
-
-  // СКМ: орбита / панорама (5.8)
-  bool mDown = (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_MIDDLE)) != 0;
-  static bool midPrev = false;
-  static float lastMx = 0, lastMy = 0;
-  if (mDown && !midPrev) {
-    lastMx = ui.mx;
-    lastMy = ui.my;
-  }
-  bool moveDrag = app.mode == Mode::Move && !app.gizmoIds.empty();
-  if (mDown && moveDrag) {
-    // СКМ — свободный перенос всей группы по плоскости Y=0 (2D-движение)
-    Ray mray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
-    mp::V3 now = app.cam.rayPlane(mray, 0.0f);
-    if (!midPrev) {
-      app.mvGrabPoint = now;
-      app.mvStart.clear();
-      for (const auto& id : app.gizmoIds)
-        if (mp::Neuron* q = app.doc.neuron(id)) app.mvStart.push_back(q->pos);
-      app.mvDrag = true;
-    }
-    if (app.mvDrag) {
-      double ddx = now.x - app.mvGrabPoint.x, ddy = now.y - app.mvGrabPoint.y, ddz = now.z - app.mvGrabPoint.z;
-      size_t si = 0;
-      for (const auto& id : app.gizmoIds) {
-        mp::Neuron* q = app.doc.neuron(id);
-        if (!q || si >= app.mvStart.size()) break;
-        mp::V3 p0 = app.mvStart[si++];
-        q->pos = {p0.x + ddx, p0.y + ddy, p0.z + ddz};
-        app.doc.dirty = true;
-      }
-    }
-  } else {
-    if (!mDown) app.mvDrag = false;
-    float dx = ui.mx - lastMx, dy = ui.my - lastMy;
-    app.cam.pan(-dx, -dy);
-    lastMx = ui.mx;
-    lastMy = ui.my;
-  }
-  midPrev = mDown;
 
   // колесо — зум
   if (ui.wheel) {
