@@ -10,20 +10,20 @@
 
 namespace mpui {
 
-// ---------- тема ----------
-inline constexpr unsigned C_BG = 0x12161cff;
-inline constexpr unsigned C_PANEL = 0x1a2027f0;
-inline constexpr unsigned C_PANELTITLE = 0x252d37ff;
-inline constexpr unsigned C_BORDER = 0x303a46ff;
-inline constexpr unsigned C_TEXT = 0xd7dee7ff;
-inline constexpr unsigned C_DIM = 0x8791a0ff;
-inline constexpr unsigned C_ACCENT = 0x4390e0ff;
-inline constexpr unsigned C_ACCENTHI = 0x6cb3f5ff;
-inline constexpr unsigned C_FIELD = 0x0f1319ff;
-inline constexpr unsigned C_OK = 0x55b46aff;
-inline constexpr unsigned C_WARN = 0xd7a53fff;
-inline constexpr unsigned C_ERR = 0xd9534fff;
-inline constexpr unsigned C_SEL = 0x2d6ea8ff;
+// ---------- тема (стиль FreeCAD dark) ----------
+inline constexpr unsigned C_BG = 0x2b2d30ff;
+inline constexpr unsigned C_PANEL = 0x2f3237f2;
+inline constexpr unsigned C_PANELTITLE = 0x3a3d42ff;
+inline constexpr unsigned C_BORDER = 0x52555aff;
+inline constexpr unsigned C_TEXT = 0xe2e4e7ff;
+inline constexpr unsigned C_DIM = 0x9aa0a6ff;
+inline constexpr unsigned C_ACCENT = 0x4d7cc1ff;
+inline constexpr unsigned C_ACCENTHI = 0x7799d9ff;
+inline constexpr unsigned C_FIELD = 0x26282cff;
+inline constexpr unsigned C_OK = 0x5aa06aff;
+inline constexpr unsigned C_WARN = 0xd0a048ff;
+inline constexpr unsigned C_ERR = 0xcc5550ff;
+inline constexpr unsigned C_SEL = 0x3d5a80ff;
 
 struct Rect {
   float x = 0, y = 0, w = 0, h = 0;

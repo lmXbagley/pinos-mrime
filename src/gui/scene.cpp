@@ -40,7 +40,7 @@ static float clampf(float v, float a, float b) { return std::max(a, std::min(b, 
 void scenePick(App& app) {
   UI& ui = app.ui;
   Ray ray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
-  const float tbase = std::max(0.9f, app.cam.dist * 0.025f);
+  const float tbase = std::max(0.55f, app.cam.dist * 0.013f);
   std::string bestN;
   float bestNT = 1e30f;
   for (const auto& n : app.doc.neurons) {
@@ -74,7 +74,7 @@ void scenePick(App& app) {
 // ---------- 3D ----------
 void sceneDraw3D(App& app) {
   UI& ui = app.ui;
-  glClearColor(0.070f, 0.086f, 0.11f, 1);
+  glClearColor(0.169f, 0.176f, 0.188f, 1);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LEQUAL);
@@ -94,8 +94,8 @@ void sceneDraw3D(App& app) {
     line3D(i, 0, -ext, i, 0, ext, 1, gridC);
     line3D(-ext, 0, i, ext, 0, i, 1, gridC);
   }
-  line3D(-ext, 0, 0, ext, 0, 0, 1.5f, 0x8a5560ff);
-  line3D(0, 0, -ext, 0, 0, ext, 1.5f, 0x55708aff);
+  line3D(-ext, 0, 0, ext, 0, 0, 1.5f, 0x8a5a5aff);
+  line3D(0, 0, -ext, 0, 0, ext, 1.5f, 0x5a708aff);
   line3D(0, 0, 0, 0, ext * 0.25f, 0, 1.5f, 0x608a5aff);
 
   // --- зоны-группы не геометричны; кластеры (3.x) полупрозрачные ---

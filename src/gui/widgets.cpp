@@ -147,7 +147,8 @@ int UI::menuChoice() {
 // ---------- базовые ----------
 void widgetLabel(UI&, const std::string& txt, Rect r, unsigned col, float px) {
   if (r.w > 0) {
-    pushClip(r.x, r.y, r.w, r.h);
+    float ch = r.h > 0 ? r.h : fontHeight(px) + 4.0f;
+    pushClip(r.x, r.y, r.w, ch);
     text(r.x, r.y, txt, col, px);
     popClip();
   } else {
