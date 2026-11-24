@@ -52,7 +52,7 @@ void scenePick(App& app) {
     float dx = (float)(p.x - e.x), dy = (float)(p.y - e.y), dz = (float)(p.z - e.z);
     float D = std::sqrt(dx * dx + dy * dy + dz * dz);
     float fl = 1.0f / std::tan(app.cam.fov * 3.1415926f / 360.0f);
-    return rWorld * 0.5f * fl / std::max(0.1f, D);
+    return rWorld * fl * (std::max(1, ui.winH) / 2.0f) / std::max(0.1f, D);
   };
   std::string bestN;
   float bestDepth = 1e30f;

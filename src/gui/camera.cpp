@@ -36,6 +36,7 @@ Mat4 matPerspective(float fovyDeg, float aspect, float zn, float zf) {
 }
 
 Mat4 matLookAt(const mp::V3& eye, const mp::V3& center, const mp::V3& up) {
+  Mat4 r = matIdentity();
   mp::V3 f{center.x - eye.x, center.y - eye.y, center.z - eye.z};
   float fl = std::sqrt(f.x * f.x + f.y * f.y + f.z * f.z);
   if (fl > 0) {
@@ -51,7 +52,6 @@ Mat4 matLookAt(const mp::V3& eye, const mp::V3& center, const mp::V3& up) {
     s.z /= sl;
   }
   mp::V3 u{s.y * f.z - s.z * f.y, s.z * f.x - s.x * f.z, s.x * f.y - s.y * f.x};
-  Mat4 r;
   r.m[0] = s.x;
   r.m[4] = s.y;
   r.m[8] = s.z;

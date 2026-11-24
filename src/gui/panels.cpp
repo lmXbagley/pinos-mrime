@@ -778,6 +778,22 @@ void sceneMouse(App& app) {
       }
     }
     if (!ui.lDown) app.mvDrag = false;
+    // стрелки — шаговый сдвиг группы (влево/вправо = X, вверх/вниз = Z)
+    {
+      float step = (float)std::max(0.25, app.cam.dist * 0.01);
+      mp::V3 d{0, 0, 0};
+      if (ui.keyOnce("Left")) d.x -= step;
+      if (ui.keyOnce("Right")) d.x += step;
+      if (ui.keyOnce("Up")) d.z -= step;
+      if (ui.keyOnce("Down")) d.z += step;
+      if (d.x != 0 || d.z != 0)
+        for (const auto& id : app.gizmoIds)
+          if (mp::Neuron* q = app.doc.neuron(id)) {
+            q->pos.x += d.x;
+            q->pos.z += d.z;
+            app.doc.dirty = true;
+          }
+    }
     if (ui.keyOnce("Return") || ui.keyOnce("Enter") || ui.keyOnce("Keypad Enter")) {
       app.mode = Mode::Select;
     } else if (ui.keyOnce("Escape")) {
