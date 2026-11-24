@@ -85,10 +85,16 @@ int main(int argc, char** argv) {
         case SDL_MOUSEWHEEL:
           app.ui.wheel += ev.wheel.y;
           break;
-        case SDL_KEYDOWN:
+        case SDL_KEYDOWN: {
           if (ev.key.repeat || ev.key.keysym.sym == SDLK_UNKNOWN) break;
+          if (ev.key.keysym.sym == SDLK_F11) {
+            bool fs = (SDL_GetWindowFlags(win) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
+            SDL_SetWindowFullscreen(win, fs ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+            break;
+          }
           app.ui.keys.push_back(SDL_GetKeyName(ev.key.keysym.sym));
           break;
+        }
         case SDL_TEXTINPUT:
           app.ui.entered += ev.text.text;
           break;

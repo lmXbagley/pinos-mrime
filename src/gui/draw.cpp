@@ -219,3 +219,13 @@ void sphere3D(float x, float y, float z, float r, unsigned rgba, int seg) {
 }
 
 } // namespace mpui
+
+void line2D(float x0, float y0, float x1, float y1, unsigned rgba) {
+  glDisable(GL_TEXTURE_2D);
+  glColor4ub(GLubyte((rgba >> 24) & 0xff), GLubyte((rgba >> 16) & 0xff), GLubyte((rgba >> 8) & 0xff),
+             GLubyte(rgba & 0xff));
+  glBegin(GL_LINES);
+  glVertex2f(x0, y0);
+  glVertex2f(x1, y1);
+  glEnd();
+}

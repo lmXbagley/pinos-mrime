@@ -677,6 +677,29 @@ void sceneMouse(App& app) {
   Ray ray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
   app.lastPos = app.cam.rayPlane(ray, 0.0f);
 
+  // G-гизмо: осевой перенос выделенного нейрона мышью
+  if (app.gizmoOn) {
+    if (ui.lPressed || ui.keyOnce("Escape") || ui.keyOnce("Return") || ui.keyOnce("Enter")) {
+      app.gizmoOn = false;
+    } else if (app.gizmoAxis >= 0 && !app.gizmoId.empty()) {
+      const double a0 = app.gizmoAxis == 0 ? 1.0 : 0.0;
+      const double a1 = app.gizmoAxis == 1 ? 1.0 : 0.0;
+      const double a2 = app.gizmoAxis == 2 ? 1.0 : 0.0;
+      double w0x = ray.o.x - app.gizmoOrig.x, w0y = ray.o.y - app.gizmoOrig.y, w0z = ray.o.z - app.gizmoOrig.z;
+      double A = ray.d.x * ray.d.x + ray.d.y * ray.d.y + ray.d.z * ray.d.z;
+      double Bv = ray.d.x * a0 + ray.d.y * a1 + ray.d.z * a2;
+      double bD = (ray.d.x * w0x + ray.d.y * w0y + ray.d.z * w0z);
+      double bA = (a0 * w0x + a1 * w0y + a2 * w0z);
+      double den = A - Bv * Bv;
+      double sc = den > 1e-9 ? (Bv * bD - A * bA) / den : 0.0;
+      if (mp::Neuron* q = app.doc.neuron(app.gizmoId)) {
+        q->pos = {app.gizmoOrig.x + a0 * sc, app.gizmoOrig.y + a1 * sc, app.gizmoOrig.z + a2 * sc};
+        app.doc.dirty = true;
+      }
+    }
+    if (app.gizmoOn) return;
+  }
+
   // СКМ: орбита / панорама (5.8)
   bool mDown = (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_MIDDLE)) != 0;
   static bool midPrev = false;
@@ -726,7 +749,7 @@ void sceneMouse(App& app) {
     app.pressS = app.hoverS;
     app.pressPos = app.lastPos;
     app.rubber = false;
-    app.rubberPending = app.mode == Mode::Select && app.hoverN.empty() && app.hoverS.empty();
+    app.rubberPending = app.hoverN.empty() && app.hoverS.empty();
     return;
   }
 
@@ -791,9 +814,14 @@ void sceneMouse(App& app) {
     } else if (!app.pressMoved) {
       if (app.mode == Mode::Select) {
         if (!app.pressN.empty()) {
-          app.selN.clear();
-          app.selS.clear();
-          app.selN.insert(app.pressN);
+          if (ui.shift) {
+            if (app.selN.count(app.pressN)) app.selN.erase(app.pressN);
+            else app.selN.insert(app.pressN);
+          } else {
+            app.selN.clear();
+            app.selS.clear();
+            app.selN.insert(app.pressN);
+          }
           app.focusUnit = app.pressN;
         } else if (!app.pressS.empty()) {
           app.selN.clear();
@@ -856,6 +884,8 @@ void sceneMouse(App& app) {
         else if (!app.hoverS.empty()) app.toggleDamage(app.hoverS, true);
       }
     }
+    if (!app.pressMoved && !app.pressN.empty() && app.mode != Mode::Select)
+      app.focusUnit = app.pressN;
     app.rubber = false;
     app.rubberPending = false;
     app.pressValid = false;
@@ -1013,12 +1043,16 @@ void handleMenusStatic(App& app) {
       case 5: app.winFiles = true; break;
       case 6: app.saveFile(app.filePath.empty() ? "autosave.mnp.json" : app.filePath); break;
       case 7: app.cam.pitch = 1.52f; break;
-      case 8:
-        app.cam.pitch = 0.5f;
-        app.cam.dist = 40;
-        app.cam.target = {0, 1, 0};
-        break;
+      case 8: app.fitView(); break;
     }
+  } else if (ctx == 4) {
+    app.place.open = true;
+    app.place.pos = app.lastPos;
+    app.place.n = mp::Neuron();
+    app.place.n.type = m;
+    app.place.n.model = 0;
+    app.place.n.thr = 1.0;
+    app.place.n.leak = 0.02;
   }
 }
 
@@ -1042,8 +1076,28 @@ void panelsDraw(App& app) {
   if (app.flowOpen) drawFlowDialog(app, ui);
   if (app.fillOpen) drawFillDialog(app, ui);
   if (app.confirmOpen) drawConfirmDialog(app, ui);
-  // клавиатура вне панелей
-  if (!app.overAny) {
+  // клавиатура вне панелей (в полях ввода горячие клавиши не работают)
+  if (!app.overAny && ui.focus == 0) {
+    if (ui.shift && ui.keyOnce("A")) {
+      app.ui.openMenu(ui.mx, ui.my, {"нейрон: скрытый", "нейрон: сенсор", "нейрон: мотор",
+                                     "нейрон: модулятор", "нейрон: гомеостат"});
+      app.menuCtx = 4;
+      app.menuArg.clear();
+    }
+    if (app.gizmoOn) {
+      if (ui.keyOnce("X")) app.gizmoAxis = 0;
+      else if (ui.keyOnce("Y")) app.gizmoAxis = 1;
+      else if (ui.keyOnce("Z")) app.gizmoAxis = 2;
+    } else if (ui.keyOnce("G") && (!app.selN.empty() || !app.selS.empty())) {
+      if (!app.selN.empty()) app.gizmoId = *app.selN.begin();
+      else app.gizmoId = *app.selS.begin();
+      if (mp::Neuron* q = app.doc.neuron(app.gizmoId)) {
+        app.undoPush("мышь: перенос по оси (G)");
+        app.gizmoOrig = q->pos;
+        app.gizmoOn = true;
+        app.gizmoAxis = -1;
+      }
+    }
     std::vector<std::string> keys = ui.keys;
     for (const auto& k : keys) {
       if (k == "S" && !ui.ctrl) app.mode = Mode::Select;

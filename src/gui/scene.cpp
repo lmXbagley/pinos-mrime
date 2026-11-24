@@ -1,5 +1,7 @@
 #include "scene.hpp"
 
+#include "widgets.hpp"
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
@@ -221,12 +223,45 @@ void sceneDraw3D(App& app) {
   if (app.mode == Mode::Neuron && !app.place.open && !app.overAny) {
     ball3D((float)app.lastPos.x, 0.0f + 0.7f, (float)app.lastPos.z, 0.7f, 0x6fa8dc66);
   }
+  // --- гизмо осевого переноса (G) ---
+  if (app.gizmoOn && app.doc.neuron(app.gizmoId)) {
+    mp::V3 p = app.doc.neuron(app.gizmoId)->pos;
+    float L = (float)std::max(6.0, app.cam.dist * 0.06);
+    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x + L, (float)p.y, (float)p.z, 2.5f, app.gizmoAxis == 0 ? 0xff8a5aff : 0xc0504a99);
+    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y + L, (float)p.z, 2.5f, app.gizmoAxis == 1 ? 0x9ade6aff : 0x4f8a3d99);
+    line3D((float)p.x, (float)p.y, (float)p.z, (float)p.x, (float)p.y, (float)p.z + L, 2.5f, app.gizmoAxis == 2 ? 0x6aa8ffff : 0x3d5f9e99);
+    ball3D((float)p.x, (float)p.y, (float)p.z, 0.9f, 0xf2f6ffff);
+  }
   glDisable(GL_BLEND);
 }
 
 // ---------- 2D-оверлей ----------
 void sceneOverlay2D(App& app) {
   UI& ui = app.ui;
+  // гизмо-куб ориентации в углу
+  {
+    float cx = 58, cy = (float)ui.winH - 58, R = 34;
+    quad(cx - 46, cy - 46, 92, 92, 0x2f323740);
+    frame(cx - 46, cy - 46, 92, 92, 0x52555a88);
+    const double ax[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+    const unsigned cols[3] = {0xd0605aff, 0x7cc45aff, 0x5f9edaff};
+    const char* lbl[3] = {"X", "Y", "Z"};
+    for (int i = 0; i < 3; ++i) {
+      mp::V3 q = app.cam.target;
+      q.x += ax[i][0]; q.y += ax[i][1]; q.z += ax[i][2];
+      mp::V3 s0 = app.cam.screenPoint(app.cam.target, ui.winW, ui.winH);
+      mp::V3 s1 = app.cam.screenPoint(q, ui.winW, ui.winH);
+      float dx = s1.x - s0.x, dy = s1.y - s0.y;
+      float len = std::sqrt(dx * dx + dy * dy);
+      if (len < 1e-3f) continue;
+      // передняя ось ярче, задняя тусклее: по глубине камеры
+      mp::V3 e1 = app.cam.eye();
+      float depth = (float)((q.x - e1.x) * ax[i][0] + (q.y - e1.y) * ax[i][1] + (q.z - e1.z) * ax[i][2]);
+      unsigned col = (depth < 0 ? cols[i] : (cols[i] & 0xffffff00) | 0x60);
+      text(cx + dx / len * R - 5, cy + dy / len * R - 8, lbl[i], col, 13);
+      line2D(cx - dx / len * 8, cy - dy / len * 8, cx + dx / len * R, cy + dy / len * R, col);
+    }
+  }
   // хинт режима кладёт HUD (panels.cpp)
   // ID-билборды (6.1), масштаб от дистанции
   if (app.showIds) {

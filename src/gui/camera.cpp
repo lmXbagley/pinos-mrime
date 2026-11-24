@@ -154,8 +154,8 @@ Mat4 Camera::view() const {
 }
 
 void Camera::orbit(float dx, float dy) {
-  yaw -= dx * 0.008f;
-  pitch += dy * 0.008f;
+  yaw -= dx * 0.25f / std::max(20.0f, dist);
+  pitch += dy * 0.25f / std::max(20.0f, dist);
   pitch = std::max(-1.55f, std::min(1.55f, pitch));
 }
 

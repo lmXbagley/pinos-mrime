@@ -140,6 +140,10 @@ struct App {
   int menuCtx = 0;             // открытое контекстное меню (0 нет)
   std::string menuArg;         // аргумент меню (id юнита/кластера)
   float flagsScroll = 0;
+  bool gizmoOn = false;    // G: осевой перенос выделенного (FreeCAD-стиль)
+  int gizmoAxis = -1;      // 0=X 1=Y 2=Z, -1 = ось не выбрана
+  std::string gizmoId;
+  mp::V3 gizmoOrig{};
   bool overAny = false; // мышь над любой 2D-панелью (для призрака/пиков)
   bool quit = false;
   double fps = 0;
@@ -173,6 +177,7 @@ struct App {
   bool appStSelValid() const;
   void startRecording();
   void stopRecording();
+  void fitView();
 
   void newClusterOnPlane();    // 3.x: DSL-кластер в точке курсора
   void newDocPrep();

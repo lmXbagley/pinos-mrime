@@ -13,6 +13,7 @@
 #include <fstream>
 #include <set>
 #include <sstream>
+#include <algorithm>
 #include <sys/stat.h>
 
 namespace mpui {
@@ -73,10 +74,36 @@ void App::startup(const char* openArg) {
     loadRecent(recent);
     statusMsg = "новый проект";
   }
-  cam.target = {0, 0, 0};
-  cam.dist = 60;
-  cam.yaw = 0.8;
-  cam.pitch = 0.5;
+  fitView();
+}
+
+void App::fitView() {
+  if (doc.neurons.empty()) {
+    cam.target = {0, 0, 0};
+    cam.dist = 60;
+    cam.yaw = 0.8f;
+    cam.pitch = 0.5f;
+    return;
+  }
+  double mnx = 1e30, mny = 1e30, mnz = 1e30, mxx = -1e30, mxy = -1e30, mxz = -1e30;
+  for (const auto& n : doc.neurons) {
+    mnx = std::min(mnx, n.pos.x); mxx = std::max(mxx, n.pos.x);
+    mny = std::min(mny, n.pos.y); mxy = std::max(mxy, n.pos.y);
+    mnz = std::min(mnz, n.pos.z); mxz = std::max(mxz, n.pos.z);
+  }
+  for (const auto& c : doc.clusters) {
+    double r = c.radius.set ? c.radius.v : 8.0;
+    mnx = std::min(mnx, c.center.x - r); mxx = std::max(mxx, c.center.x + r);
+    mny = std::min(mny, c.center.y - r); mxy = std::max(mxy, c.center.y + r);
+    mnz = std::min(mnz, c.center.z - r); mxz = std::max(mxz, c.center.z + r);
+  }
+  cam.target = {(mnx + mxx) / 2, (mny + mxy) / 2, (mnz + mxz) / 2};
+  double ex = mxx - mnx, ey = mxy - mny, ez = mxz - mnz;
+  double rad = std::sqrt(ex * ex + ey * ey + ez * ez) / 2;
+  cam.dist = (float)std::max(20.0, rad * 2.4 + 14.0);
+  cam.yaw = 0.8f;
+  cam.pitch = 0.5f;
+  cam.flying = false;
 }
 
 void App::update(double dt) {
@@ -191,6 +218,7 @@ void App::openFile(const std::string& path) {
   revalidate();
   addRecent(path);
   undo.push(doc, "открыт файл");
+  fitView();
   statusMsg = "открыт: " + path;
 }
 
