@@ -103,8 +103,9 @@ int main(int argc, char** argv) {
       }
     }
 
-    int w = 1, h = 1;
-    SDL_GL_GetDrawableSize(win, &w, &h);
+    int dw = 1, dh = 1, w = 1, h = 1;
+    SDL_GL_GetDrawableSize(win, &dw, &dh);
+    SDL_GetWindowSize(win, &w, &h);
 
     Uint64 nowT = SDL_GetPerformanceCounter();
     double dt = (double)(nowT - lastT) / (double)perfFreq;
@@ -124,7 +125,7 @@ int main(int argc, char** argv) {
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_LINE_SMOOTH);
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-    glViewport(0, 0, w, h);
+    glViewport(0, 0, dw, dh);
 
     // 3D-вьюпорт (6.x)
     mpui::Mat4 P = app.cam.proj(w, h);

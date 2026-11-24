@@ -42,7 +42,7 @@ static float clampf(float v, float a, float b) { return std::max(a, std::min(b, 
 void scenePick(App& app) {
   UI& ui = app.ui;
   Ray ray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
-  const float tbase = std::max(0.55f, app.cam.dist * 0.013f);
+  const float tbase = std::max(0.8f, app.cam.dist * 0.02f);
   std::string bestN;
   float bestNT = 1e30f;
   for (const auto& n : app.doc.neurons) {

@@ -82,9 +82,12 @@ void UI::endFrame() {
       Rect ir{drop.x + 2, dy + 2 + i * ih, wmax - 4, ih};
       if (ir.hit(mx, my)) {
         quad(ir.x, ir.y, ir.w, ir.h, i == drop.cur ? C_SEL : 0x233042ff);
-        if (lReleased) {
+        if (lPressed || lReleased) {
           if (drop.out) *drop.out = i;
           closed = true;
+          lPressed = false;
+          lReleased = false;
+          lDown = false;
         }
       }
       widgetLabel(*this, drop.items[i], {ir.x + 8, ir.y + 3, ir.w, ih}, i == drop.cur ? C_TEXT : C_DIM);
@@ -113,7 +116,12 @@ void UI::endFrame() {
       Rect ir{x + 2, y + 2 + i * ih, wmenu - 4, ih};
       if (ir.hit(mx, my)) {
         quad(ir.x, ir.y, ir.w, ir.h, 0x233042ff);
-        if (lReleased) pick = (int)i;
+        if (lPressed || lReleased) {
+          pick = (int)i;
+          lPressed = false;
+          lReleased = false;
+          lDown = false;
+        }
       }
       widgetLabel(*this, menu.items[i], {ir.x + 10, ir.y + 3.5f, ir.w, ih}, C_TEXT);
     }

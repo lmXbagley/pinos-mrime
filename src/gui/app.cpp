@@ -266,6 +266,7 @@ void App::applyBuild() {
     char b[96];
     snprintf(b, sizeof b, "код: +%d ~%d -%d", lastBuild.created, lastBuild.updated, lastBuild.removed);
     statusMsg = b;
+    fitView();
   } else if (hadUndoSame) {
     revalidate();
   }

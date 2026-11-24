@@ -674,8 +674,11 @@ static void drawHelp(App& app, UI& ui) {
 // ================= мышь сцены (5.x) =================
 void sceneMouse(App& app) {
   UI& ui = app.ui;
+  if (ui.menuOpen || ui.dropOpen) return;
   if (app.overAny || app.place.open || app.synWin.open || app.confirmOpen || app.fillOpen || app.flowOpen)
     return;
+
+  if (ui.lPressed && ui.focus != 0) { ui.prevFocus = ui.focus; ui.focus = 0; }
 
   Ray ray = app.cam.pickRay(ui.mx, ui.my, ui.winW, ui.winH);
   app.lastPos = app.cam.rayPlane(ray, 0.0f);
