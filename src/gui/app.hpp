@@ -78,6 +78,7 @@ struct App {
 
   // ---- код (4.x) ----
   std::string codeText = "# код поверх схемы: зона(\"V1\"); sensor { zone=\"V1\"; thr=1; }\n";
+  int codeSelAnchor = -1;
   int codeCursor = 0;
   float codeScroll = 0;
   int codeErrLine = -1;

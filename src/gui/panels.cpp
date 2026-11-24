@@ -114,6 +114,7 @@ static void drawCodePanel(App& app, UI& ui) {
       if (targets[(size_t)pick].first > 0) {
         editorCursorToLine(app.codeText, targets[(size_t)pick].first, app.codeCursor);
         app.codeErrLine = targets[(size_t)pick].first;
+        app.codeSelAnchor = -1;
       }
       if (!targets[(size_t)pick].second.empty()) {
         if (const mp::Neuron* n = app.doc.neuron(targets[(size_t)pick].second)) {
@@ -126,13 +127,19 @@ static void drawCodePanel(App& app, UI& ui) {
     std::string code = app.codeText;
     int cur = app.codeCursor;
     if (widgetCodeEditor(ui, hashStr("codeed"), {x + 8, y + 52, w - 16, h - 66}, code, cur, app.codeErrLine,
-                         app.codeScroll)) {
+                         app.codeScroll, app.codeSelAnchor)) {
       app.codeText = code;
       app.codeCursor = cur;
       app.codeErrLine = -1;
     } else {
       app.codeText = code;
       app.codeCursor = cur;
+    }
+    if (ui.wantBuild) {
+      ui.wantBuild = false;
+      app.saveFile(app.filePath.empty() ? std::string("autosave.mnp.json") : app.filePath);
+      app.applyBuild();
+      app.codeSelAnchor = -1;
     }
   }
   std::string st = "сборка: ";

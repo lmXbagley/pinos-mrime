@@ -453,7 +453,7 @@ void editorCursorToLine(const std::string& code, int line, int& cursor) {
   cursor = (int)code.size();
 }
 
-bool widgetCodeEditor(UI& ui, unsigned id, Rect r, std::string& code, int& cursor, int errLine, float& scroll) {
+bool widgetCodeEditor(UI& ui, unsigned id, Rect r, std::string& code, int& cursor, int errLine, float& scroll, int& selAnchor) {
   const float px = 14.0f;
   const float lh = 18.0f;
   quad(r.x, r.y, r.w, r.h, 0x0c0f14ff);
@@ -466,18 +466,55 @@ bool widgetCodeEditor(UI& ui, unsigned id, Rect r, std::string& code, int& curso
   float contentH = lh * (lines + 2);
   scroll = std::max(0.0f, std::min(scroll, std::max(0.0f, contentH - (r.h - 8))));
 
-  if (over(r, ui) && ui.lPressed && !ui.guardClicks) {
-    if (!focused) ui.takeFocus(id, code);
-    focused = true;
-    int targetLine = (int)((ui.my + scroll - (r.y + 4)) / lh) + 1;
+  // позиция курсора по точке мыши (колонка по ширине символов, UTF-8)
+  auto lineBounds = [&](int c) {
+    int st = (int)code.rfind('\n', (size_t)std::max(0, c - 1));
+    st = (c == 0 || st < 0) ? 0 : st + 1;
+    int en = (int)code.find('\n', (size_t)st);
+    if (en < 0) en = (int)code.size();
+    return std::make_pair(st, en);
+  };
+  auto posAt = [&](float mx, float my) {
+    int targetLine = (int)((my + scroll - (r.y + 4)) / lh) + 1;
     if (targetLine < 1) targetLine = 1;
     if (targetLine > lines) targetLine = lines;
-    editorCursorToLine(code, targetLine, cursor);
-    int le = (int)code.find('\n', (size_t)cursor);
-    if (le == (int)std::string::npos) le = (int)code.size();
-    if (cursor > le) cursor = le;
+    size_t ls = 0, le = 0;
+    int no = 1;
+    while (no <= lines) {
+      le = code.find('\n', ls);
+      if (le == std::string::npos) le = code.size();
+      if (no >= targetLine) break;
+      ls = le + 1;
+      ++no;
+    }
+    float x = r.x + 40;
+    size_t i = ls;
+    while (i < le) {
+      size_t c = 1;
+      while (i + c < le && (code[(size_t)(i + c)] & 0xC0) == 0x80) ++c;
+      float cw = textWidth(code.substr(i, c), px);
+      if (mx < x + cw * 0.5f) break;
+      x += cw;
+      i += c;
+    }
+    return (int)i;
+  };
+
+  static bool edDrag = false;
+  if (ui.lPressed && over(r, ui) && !ui.guardClicks) {
+    if (!focused) ui.takeFocus(id, code);
+    focused = true;
+    int p = posAt(ui.mx, ui.my);
+    if (!(ui.shift && selAnchor >= 0)) selAnchor = p;
+    cursor = p;
+    edDrag = true;
     ui.lPressed = false;
   }
+  if (edDrag && focused && ui.lDown) {
+    if (selAnchor < 0) selAnchor = cursor;
+    cursor = posAt(ui.mx, ui.my);
+  }
+  if (!ui.lDown) edDrag = false;
 
   bool changed = false;
   auto cursorCol = [&]() {
@@ -485,14 +522,78 @@ bool widgetCodeEditor(UI& ui, unsigned id, Rect r, std::string& code, int& curso
     lineStart = cursor == 0 ? 0 : (lineStart == (int)std::string::npos ? 0 : lineStart + 1);
     return cursor - lineStart;
   };
+  auto delUtf8 = [&](int pos, int dir) {
+    int nb = 1;
+    if (dir < 0) {
+      while (pos - nb > 0 && (code[(size_t)(pos - nb)] & 0xC0) == 0x80) ++nb;
+      code.erase((size_t)(pos - nb), (size_t)nb);
+      cursor -= nb;
+    } else {
+      while (pos + nb < (int)code.size() && (code[(size_t)(pos + nb)] & 0xC0) == 0x80) ++nb;
+      code.erase((size_t)pos, (size_t)nb);
+    }
+    changed = true;
+  };
+  auto selErase = [&]() {
+    int a = std::min(selAnchor, cursor), b = std::max(selAnchor, cursor);
+    if (selAnchor >= 0 && a < b) {
+      code.erase((size_t)a, (size_t)(b - a));
+      cursor = a;
+      selAnchor = -1;
+      changed = true;
+      return true;
+    }
+    return false;
+  };
   for (const auto& k : ui.keys) {
+    if (ui.ctrl) {
+      if (k == "x" || k == "X") { ui.wantBuild = true; continue; }
+      if (k == "c" || k == "C") {
+        int a, b;
+        if (selAnchor >= 0) { a = std::min(selAnchor, cursor); b = std::max(selAnchor, cursor); }
+        else { auto pr = lineBounds(cursor); a = pr.first; b = pr.second; }
+        SDL_SetClipboardText(code.substr((size_t)a, (size_t)(b - a)).c_str());
+        continue;
+      }
+      if (k == "v" || k == "V") {
+        char* cb = SDL_GetClipboardText();
+        if (cb && *cb) {
+          std::string ins;
+          for (char ch : std::string(cb)) if (ch != '\r') ins += ch;
+          SDL_free(cb);
+          selErase();
+          code.insert((size_t)cursor, ins);
+          cursor += (int)ins.size();
+          changed = true;
+        } else if (cb) SDL_free(cb);
+        continue;
+      }
+      if (k == "k" || k == "K") {
+        auto pr = lineBounds(cursor);
+        int en = pr.second;
+        if (en < (int)code.size()) ++en;
+        SDL_SetClipboardText(code.substr((size_t)pr.first, (size_t)(en - pr.first)).c_str());
+        code.erase((size_t)pr.first, (size_t)(en - pr.first));
+        cursor = pr.first;
+        selAnchor = -1;
+        changed = true;
+        continue;
+      }
+      continue; // ctrl+прочее — не редактируем
+    }
     if (k == "Left") {
+      if (ui.shift) { if (selAnchor < 0) selAnchor = cursor; }
+      else selAnchor = -1;
       while (cursor > 0 && (code[(size_t)(cursor - 1)] & 0xC0) == 0x80) --cursor;
       if (cursor > 0) --cursor;
     } else if (k == "Right") {
+      if (ui.shift) { if (selAnchor < 0) selAnchor = cursor; }
+      else selAnchor = -1;
       if (cursor < (int)code.size()) ++cursor;
       while (cursor < (int)code.size() && (code[(size_t)cursor] & 0xC0) == 0x80) ++cursor;
     } else if (k == "Up" || k == "Down") {
+      if (ui.shift) { if (selAnchor < 0) selAnchor = cursor; }
+      else selAnchor = -1;
       int line = editorLineFromCursor(code, cursor);
       int col = cursorCol();
       line += k == "Up" ? -1 : 1;
@@ -503,20 +604,15 @@ bool widgetCodeEditor(UI& ui, unsigned id, Rect r, std::string& code, int& curso
       if (le == (int)std::string::npos) le = (int)code.size();
       cursor = std::min(cursor, le);
     } else if (k == "Backspace" && cursor > 0) {
-      int nb = 1;
-      while (cursor - nb > 0 && (code[(size_t)(cursor - nb)] & 0xC0) == 0x80) ++nb;
-      code.erase((size_t)(cursor - nb), (size_t)nb);
-      cursor -= nb;
-      changed = true;
-    } else if (k == "Delete" && cursor < (int)code.size()) {
-      int nb = 1;
-      while (cursor + nb < (int)code.size() && (code[(size_t)(cursor + nb)] & 0xC0) == 0x80) ++nb;
-      code.erase((size_t)cursor, (size_t)nb);
-      changed = true;
+      if (!selErase()) delUtf8(cursor, -1);
+    } else if (k == "Delete") {
+      if (!selErase() && cursor < (int)code.size()) delUtf8(cursor, +1);
     } else if (k == "Return" || k == "Enter" || k == "Keypad Enter") {
-      code.insert((size_t)cursor, "\n");
-      ++cursor;
-      changed = true;
+      if (!selErase()) {
+        code.insert((size_t)cursor, "\n");
+        ++cursor;
+        changed = true;
+      }
     } else if (k == "Home") {
       while (cursor > 0 && code[(size_t)(cursor - 1)] != '\n') --cursor;
     } else if (k == "End") {
@@ -531,11 +627,32 @@ bool widgetCodeEditor(UI& ui, unsigned id, Rect r, std::string& code, int& curso
     std::string clean;
     for (char c : ui.entered)
       if (c != '\r' && c != '\n' && (unsigned char)c >= 0x20) clean += c;
-    code.insert((size_t)cursor, clean);
-    cursor += (int)clean.size();
-    changed = true;
+    if (!clean.empty()) {
+      selErase();
+      code.insert((size_t)cursor, clean);
+      cursor += (int)clean.size();
+      changed = true;
+    }
+  }
+  // удержание Backspace: после задержки продолжает удалять по символу, пока зажата
+  if (focused) {
+    const Uint8* kb = SDL_GetKeyboardState(nullptr);
+    bool held = kb[SDL_GetScancodeFromKey(SDLK_BACKSPACE)] != 0;
+    static Uint32 holdStart = 0, holdNext = 0;
+    if (held) {
+      Uint32 now = SDL_GetTicks();
+      if (holdStart == 0) { holdStart = now; holdNext = now + 320; }
+      else if (now >= holdNext && cursor > 0) {
+        delUtf8(cursor, -1);
+        holdNext = now + 45;
+      }
+    } else holdStart = 0;
   }
   // отрисовка
+  int curLine = editorLineFromCursor(code, cursor);
+  int selLo = selAnchor >= 0 ? std::min(selAnchor, cursor) : 0;
+  int selHi = selAnchor >= 0 ? std::max(selAnchor, cursor) : 0;
+  bool hasSel = selAnchor >= 0 && selLo < selHi;
   pushClip(r.x + 1, r.y + 1, r.w - 2, r.h - 2);
   float ty = r.y + 4 - scroll;
   size_t ls = 0;
@@ -546,6 +663,15 @@ bool widgetCodeEditor(UI& ui, unsigned id, Rect r, std::string& code, int& curso
     std::string ln = code.substr(ls, le - ls);
     if (ty > r.y - lh && ty < r.y + r.h) {
       if (lineNo == errLine) quad(r.x + 2, ty - 2, r.w - 4, lh, 0x551c1cff);
+      else if (lineNo == curLine && focused) quad(r.x + 2, ty - 2, r.w - 4, lh, 0x1a212bff);
+      if (hasSel) {
+        int sa = (int)std::max((size_t)selLo, ls), sb = (int)std::min((size_t)selHi, le);
+        if (sa < sb && selHi > (int)ls && selLo < (int)le && sb >= sa) {
+          float x0 = r.x + 40 + textWidth(code.substr(ls, (size_t)(sa - (int)ls)), px);
+          float x1 = r.x + 40 + textWidth(code.substr(ls, (size_t)(sb - (int)ls)), px);
+          quad(x0, ty - 2, std::max(2.0f, x1 - x0), lh, 0x2d5176cc);
+        }
+      }
       char no[16];
       snprintf(no, sizeof(no), "%d", lineNo);
       text(r.x + 6, ty, no, 0x4d5766ff, px - 2);

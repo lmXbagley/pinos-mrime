@@ -65,6 +65,7 @@ struct UI {
   int menuResult = -1;
   Rect menuRect{0, 0, 0, 0};
   bool guardClicks = false; // клик уходит в выпадающий слой
+  bool wantBuild = false;   // ctrl+X из редактора кода: сохранить и собрать
 
   void beginFrame(int w, int h);
   void endFrame();
@@ -91,7 +92,7 @@ float widgetRowLabel(UI&, const std::string& txt, Rect r);
 bool widgetToggleRow(UI&, unsigned id, const std::string& txt, Rect r, bool& v);
 
 // редактор кода (4.x): курсор offset, errLine подсвечивается; scroll в пикселях
-bool widgetCodeEditor(UI&, unsigned id, Rect r, std::string& code, int& cursor, int errLine, float& scroll);
+bool widgetCodeEditor(UI&, unsigned id, Rect r, std::string& code, int& cursor, int errLine, float& scroll, int& selAnchor);
 int editorLineFromCursor(const std::string& code, int cursor);
 void editorCursorToLine(const std::string& code, int line, int& cursor);
 
