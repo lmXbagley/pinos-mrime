@@ -468,6 +468,7 @@ static void drawHud(App& app, UI& ui) {
     case Mode::Cut: hint = "Резать: ЛКМ по связи — подтверждение (5.3)"; break;
     case Mode::Damage: hint = "Повредить: ЛКМ по нейрону/связи — вкл/выкл (5.10)"; break;
     case Mode::Move: hint = "Движ: тяни ЛКМ — группа едет за курсором · СКМ — двигает камеру · Enter — готово · Esc — отмена"; break;
+    case Mode::Ignite: hint = "\u0417\u0430\u0436\u0438\u0433\u0430\u043d\u0438\u0435: \u041b\u041a\u043c \u2014 \u0432\u044b\u0434\u0435\u043b\u0438\u0442\u044c \u043d\u0435\u0439\u0440\u043e\u043d \u00b7 \u0428\u0438\u0444\u0442+\u043b\u043a\u043c \u2014 \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0432 \u0432\u044b\u0434\u0435\u043b\u0435\u043d\u0438\u0435"; break;
   }
   float hy = (float)ui.winH - 26;
   quad(0, hy, W, 26, 0x141920f2);
@@ -672,8 +673,10 @@ static void drawFlowDialog(App& app, UI& ui) {
   snprintf(b, 64, "%s  —  %.1f Гц", app.flowId.c_str(), app.flowHz);
   widgetLabel(ui, b, {x + 12, y + 32, w, 0}, C_TEXT);
   widgetSlider(ui, hashStr("flow sl"), {x + 12, y + 52, w - 100, 18}, app.flowHz, 0.0, 50.0);
-  widgetCheckbox(ui, hashStr("flow enable"), {x + w - 80, y + 50, 80, 22}, app.flowHz > 0, "\u0412\u043b");
-  app.setFlowEvt(app.flowId, app.flowHz);
+  bool flowEnabled = app.flowHz > 0;
+  if (widgetCheckbox(ui, hashStr("flow enable"), {x + w - 80, y + 50, 80, 22}, flowEnabled, "\u0412\u043b")) {
+    app.setFlowEvt(app.flowId, flowEnabled ? app.flowHz : 0);
+  }
   if (widgetButton(ui, hashStr("flow stop"), "Стоп", {x + 12, y + 78, 80, 22})) {
     app.eng.setFlow(app.flowId, 0);
     app.flowHz = 0;
@@ -1287,7 +1290,7 @@ static void drawOscilloscope(App& app, UI& ui) {
       for (size_t i = 1; i < history.size(); ++i) {
         float currX = drawX + i * timeScale;
         float currY = midY - history[i] * valueScale;
-        line(prevX, prevY, currX, currY, color, 2.0f);
+        line2D(prevX, prevY, currX, currY, color);
         prevX = currX;
         prevY = currY;
       }
