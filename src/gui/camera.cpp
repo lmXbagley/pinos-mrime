@@ -163,9 +163,9 @@ void Camera::pan(float dx, float dy) {
   mp::V3 r = right();
   mp::V3 u = upv();
   float k = dist * 0.0016f;
-  target.x += (dx * r.x - dy * u.x) * k;
-  target.y += (dx * r.y - dy * u.y) * k;
-  target.z += (dx * r.z - dy * u.z) * k;
+  target.x -= (dx * r.x - dy * u.x) * k;
+  target.y -= (dx * r.y - dy * u.y) * k;
+  target.z -= (dx * r.z - dy * u.z) * k;
   flying = false;
 }
 

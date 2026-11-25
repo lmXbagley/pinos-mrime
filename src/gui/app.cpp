@@ -60,6 +60,7 @@ const char* modeName(Mode m) {
     case Mode::Cut:    return "вы cut";
     case Mode::Damage: return "повреждение";
     case Mode::Move: return "перемещение";
+    case Mode::Ignite: return "Зажигание";
   }
   return "?";
 }
@@ -199,6 +200,8 @@ void App::structuralChanged() {
   flash.clear();
   lastSpiked.clear();
   impulses.clear();
+  oscHistory.clear();
+  oscNeurons.clear();
   revalidate();
   doc.dirty = true;
 }
@@ -224,6 +227,8 @@ void App::openFile(const std::string& path) {
   flash.clear();
   lastSpiked.clear();
   impulses.clear();
+  oscHistory.clear();
+  oscNeurons.clear();
   selN.clear();
   selS.clear();
   selCluster.clear();
@@ -264,6 +269,8 @@ void App::newDocPrep() {
   focusUnit.clear();
   hoverN.clear();
   hoverS.clear();
+  oscHistory.clear();
+  oscNeurons.clear();
   running = false;
   doc.name = "новый проект";
   newDoc();

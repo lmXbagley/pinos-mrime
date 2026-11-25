@@ -375,7 +375,7 @@ static void drawHud(App& app, UI& ui) {
   float x = 8;
   struct MB { const char* n; Mode m; };
   MB mbs[] = {{"Выбор", Mode::Select}, {"Нейрон", Mode::Neuron}, {"Связь", Mode::Wire},
-              {"Резать", Mode::Cut}, {"Повредить", Mode::Damage}, {"Движ", Mode::Move}};
+              {"\u0420\u0435\u0437\u0430\u0442\u044c", Mode::Cut}, {"\u041f\u043e\u0432\u0440\u0435\u0434\u0438\u0442\u044c", Mode::Damage}, {"\u0414\u0432\u0438\u0436", Mode::Move}, {"\u0417\u0430\u0436\u0438\u0433\u0430\u043d\u0438\u0435", Mode::Ignite}};
   for (auto& mb : mbs) {
     if (widgetButton(ui, hashStr(mb.n), mb.n, {x, 4, 80, 24}, true, app.mode == mb.m ? C_ACCENT : C_BORDER)) {
       if (mb.m == Mode::Move)
@@ -404,6 +404,9 @@ static void drawHud(App& app, UI& ui) {
   x += textWidth(cb, 13) + 12;
   if (widgetButton(ui, hashStr("ids"), "ID", {x, 4, 40, 24}, true, app.showIds ? C_ACCENT : C_BORDER))
     app.showIds = !app.showIds;
+  x += 44;
+  if (widgetButton(ui, hashStr("osc_toggle"), "O", {x, 4, 40, 24}, true, app.oscOpen ? C_ACCENT : C_BORDER))
+    app.oscOpen = !app.oscOpen;
   x += 44;
   if (widgetButton(ui, hashStr("wmap"), "Веса", {x, 4, 56, 24}, true, app.weightMap ? C_ACCENT : C_BORDER))
     app.weightMap = !app.weightMap;
@@ -662,15 +665,14 @@ static void drawSynDialog(App& app, UI& ui) {
 static void drawFlowDialog(App& app, UI& ui) {
   float w = 300, h = 130;
   float x = (float)ui.winW / 2 - w / 2, y = (float)ui.winH / 2 - 60;
-  if (uiWindowShared(app, ui, hashStr("flow"), "Поток частоты (5.9)", x, y, w, h, false)) {
-    app.eng.setFlow(app.flowId, 0);
-    app.winFlow = false;
+  if (uiWindowShared(app, ui, hashStr("flow"), "Поток частоты (5.9)", x, y, w, h, true)) {
     return;
   }
   char b[64];
   snprintf(b, 64, "%s  —  %.1f Гц", app.flowId.c_str(), app.flowHz);
   widgetLabel(ui, b, {x + 12, y + 32, w, 0}, C_TEXT);
-  widgetSlider(ui, hashStr("flow sl"), {x + 12, y + 52, w - 24, 18}, app.flowHz, 0.0, 50.0);
+  widgetSlider(ui, hashStr("flow sl"), {x + 12, y + 52, w - 100, 18}, app.flowHz, 0.0, 50.0);
+  widgetCheckbox(ui, hashStr("flow enable"), {x + w - 80, y + 50, 80, 22}, app.flowHz > 0, "\u0412\u043b");
   app.setFlowEvt(app.flowId, app.flowHz);
   if (widgetButton(ui, hashStr("flow stop"), "Стоп", {x + 12, y + 78, 80, 22})) {
     app.eng.setFlow(app.flowId, 0);
@@ -678,7 +680,6 @@ static void drawFlowDialog(App& app, UI& ui) {
   }
   if (widgetButton(ui, hashStr("flow cl"), "Закрыть", {x + 100, y + 78, 90, 22}, true, C_BORDER)) {
     app.eng.setFlow(app.flowId, 0);
-    app.winFlow = false;
   }
 }
 
@@ -769,7 +770,7 @@ void sceneMouse(App& app) {
     midGrabX = ui.mx;
     midGrabY = ui.my;
   } else if (mDown && midPrev) {
-    app.cam.pan(midGrabX - ui.mx, midGrabY - ui.my);
+    app.cam.pan(ui.mx - midGrabX, midGrabY - ui.my);
     midGrabX = ui.mx;
     midGrabY = ui.my;
   }
@@ -1237,7 +1238,136 @@ void handleMenusStatic(App& app) {
   }
 }
 
+// ================= Осциллограф =================
+static void drawOscilloscope(App& app, UI& ui) {
+  if (!app.oscOpen) return;
+  
+  float h = 120;
+  float x = 8, y = (float)ui.winH - h - 8;
+  float w = (float)ui.winW - 16;
+  
+  quad(x, y, w, h, C_PANEL);
+  frame(x, y, w, h, C_BORDER);
+  quad(x, y, w, 24, C_PANELTITLE);
+  widgetLabel(ui, "Осциллограф", {x + 10, y + 4, w, 0}, C_TEXT);
+  
+  if (widgetButton(ui, hashStr("osc_toggle_ui"), app.oscOpen ? "Закрыть" : "Открыть", {x + w - 100, y + 2, 96, 20}, true, C_BORDER)) {
+    app.oscOpen = !app.oscOpen;
+  }
+  
+  if (!app.running) {
+    widgetLabel(ui, "Запустите симуляцию для отображения осциллозафа", {x + 10, y + 30, w, 0}, C_DIM, 13);
+    return;
+  }
+  
+  float drawX = x + 10, drawY = y + 28, drawW = w - 20, drawH = h - 60;
+  quad(drawX, drawY, drawW, drawH, 0x1a1a2e);
+  frame(drawX, drawY, drawW, drawH, 0x444444);
+  
+  if (!app.oscNeurons.empty() && !app.oscHistory.empty()) {
+    float timeScale = drawW / (float)app.oscHistorySize;
+    float valueScale = drawH / 2.0f;
+    float midY = drawY + drawH / 2.0f;
+    
+    int colorIdx = 0;
+    const unsigned colors[] = {0xff0000ff, 0x00ff00ff, 0x0000ffff, 0xffff00ff, 0xff00ffff, 0x00ffffff, 0xff8000ff, 0xff0080ff};
+    
+    for (const auto& neuronId : app.oscNeurons) {
+      auto it = app.oscHistory.find(neuronId);
+      if (it == app.oscHistory.end() || it->second.empty()) continue;
+      
+      unsigned color = colors[colorIdx % 8];
+      app.oscColors[neuronId] = color;
+      colorIdx++;
+      
+      const auto& history = it->second;
+      float prevX = drawX;
+      float prevY = midY - history[0] * valueScale;
+      
+      for (size_t i = 1; i < history.size(); ++i) {
+        float currX = drawX + i * timeScale;
+        float currY = midY - history[i] * valueScale;
+        line(prevX, prevY, currX, currY, color, 2.0f);
+        prevX = currX;
+        prevY = currY;
+      }
+    }
+  }
+  
+  float legendY = y + h - 28;
+  int legendIdx = 0;
+  for (const auto& neuronId : app.oscNeurons) {
+    auto colorIt = app.oscColors.find(neuronId);
+    unsigned color = colorIt != app.oscColors.end() ? colorIt->second : 0xffffffff;
+    quad(x + 10 + legendIdx * 120, legendY, 14, 14, color);
+    frame(x + 10 + legendIdx * 120, legendY, 14, 14, 0x000000);
+    widgetLabel(ui, neuronId, {x + 30 + legendIdx * 120, legendY, 100, 0}, C_TEXT, 12);
+    legendIdx++;
+    if (legendIdx >= 5) break;
+  }
+  
+  if (widgetButton(ui, hashStr("osc_add"), "Добавить нейрон", {x + w - 180, y + h - 28, 170, 22}, true, C_ACCENT)) {
+    if (!app.focusUnit.empty() && app.doc.neuron(app.focusUnit)) {
+      if (std::find(app.oscNeurons.begin(), app.oscNeurons.end(), app.focusUnit) == app.oscNeurons.end()) {
+        app.oscNeurons.push_back(app.focusUnit);
+      }
+    }
+  }
+}
+
 // ================= главный вызов 2D-слоя =================
+// ================= Зажигание =================
+static void drawIgnitePanel(App& app, UI& ui) {
+  if (app.mode != Mode::Ignite) return;
+  
+  float w = 280, h = 200;
+  float x = (float)ui.winW - w - 8, y = 70;
+  
+  quad(x, y, w, h, C_PANEL);
+  frame(x, y, w, h, C_BORDER);
+  quad(x, y, w, 24, C_PANELTITLE);
+  widgetLabel(ui, "Настройки зажигания", {x + 10, y + 4, w, 0}, C_TEXT);
+  
+  float yw = y + 30;
+  
+  widgetLabel(ui, "Кастота Гц", {x + 10, yw, w, 0}, C_DIM, 13);
+  if (widgetSlider(ui, hashStr("ignite_hz"), {x + 10, yw + 18, w - 20, 18}, app.igniteHz, 0.1, 50.0)) {
+    if (app.igniteActive) {
+      for (const auto& id : app.igniteSel) {
+        app.eng.setFlow(id, app.igniteHz);
+      }
+    }
+  }
+  yw += 44;
+  
+  if (widgetCheckbox(ui, hashStr("ignite_active"), {x + 10, yw, w - 20, 22}, app.igniteActive, "Влючить зажигание")) {
+    for (const auto& id : app.igniteSel) {
+      app.eng.setFlow(id, app.igniteActive ? app.igniteHz : 0);
+    }
+  }
+  yw += 28;
+  
+  char buf[128];
+  snprintf(buf, 128, "Выбранные нейроны: %zu", app.igniteSel.size());
+  widgetLabel(ui, buf, {x + 10, yw, w, 0}, C_DIM, 13);
+  yw += 22;
+  
+  if (widgetButton(ui, hashStr("ignite_activate"), "Активировать все", {x + 10, yw, w - 20, 24}, true, C_ACCENT)) {
+    for (const auto& id : app.igniteSel) {
+      app.eng.setFlow(id, app.igniteHz);
+    }
+    app.igniteActive = true;
+  }
+  yw += 30;
+  
+  if (widgetButton(ui, hashStr("ignite_stop"), "Стоп все", {x + 10, yw, w - 20, 24}, true, C_ERR)) {
+    for (const auto& id : app.igniteSel) {
+      app.eng.setFlow(id, 0);
+    }
+    app.igniteActive = false;
+  }
+}
+
 void panelsDraw(App& app) {
   UI& ui = app.ui;
   app.overAnyPrev = app.overAny;
@@ -1259,6 +1389,8 @@ void panelsDraw(App& app) {
   if (app.winFlow) drawFlowDialog(app, ui);
   if (app.fillOpen) drawFillDialog(app, ui);
   if (app.confirmOpen) drawConfirmDialog(app, ui);
+  if (app.oscOpen) drawOscilloscope(app, ui);
+  drawIgnitePanel(app, ui);
   // клавиатура вне панелей (в полях ввода горячие клавиши не работают)
   if (!app.overAny && ui.focus == 0) {
     if (ui.shift && ui.keyOnce("A")) {
