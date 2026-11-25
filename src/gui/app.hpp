@@ -21,7 +21,7 @@
 
 namespace mpui {
 
-enum class Mode { Select = 0, Neuron, Wire, Cut, Damage, Move };
+enum class Mode { Select = 0, Neuron, Wire, Cut, Damage, Move, Ignite };
 
 struct PendingPlace {         // 5.1: окно параметров ДО установки ячейки
   bool open = false;
@@ -65,7 +65,6 @@ struct App {
   std::string wireFrom;
   PendingPlace place;
   PendingSyn synWin;
-  bool flowOpen = false;
   std::string flowId;
   double flowHz = 0;
   bool fillOpen = false;
@@ -75,6 +74,20 @@ struct App {
   std::string confirmTxt;
   int confirmWhat = 0;           // 1 удалить юниты 2 перерезать связь 3 новая схема
   std::string confirmArg;
+
+  // ---- зажигание (Ignite mode) ----
+  bool igniteOpen = false;
+  std::vector<std::string> igniteSel;
+  double igniteHz = 10.0;
+  bool igniteActive = false;
+
+  // ---- осциллограф ----
+  bool oscOpen = true;
+  std::vector<std::string> oscNeurons;
+  std::map<std::string, std::vector<double>> oscHistory;
+  std::map<std::string, unsigned> oscColors;
+  float oscScroll = 0;
+  int oscHistorySize = 200;
 
   // ---- код (4.x) ----
   std::string codeText = "# код поверх схемы: зона(\"V1\"); sensor { zone=\"V1\"; thr=1; }\n";
@@ -86,7 +99,7 @@ struct App {
   float errScroll = 0;
   bool codeTabErrors = false;
   bool wantFs = false;
-  bool winCode = true, winInsp = true, winStands = false, winFiles = false, winHelp = false, winAbout = false;
+  bool winCode = true, winInsp = true, winStands = false, winFiles = false, winHelp = false, winAbout = false, winFlow = false;
 
   // ---- файлы (7.x) ----
   std::string filePath;

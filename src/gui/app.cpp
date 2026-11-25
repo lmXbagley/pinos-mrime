@@ -152,6 +152,19 @@ void App::update(double dt) {
                                 [](const Imp& i) { return i.t >= 1.0; }),
                  impulses.end());
 
+  // осциллограф: сбор данных
+  if (running && oscOpen) {
+    for (auto& id : oscNeurons) {
+      const mp::Neuron* n = doc.neuron(id);
+      if (n) {
+        double value = n->u;
+        oscHistory[id].push_back(value);
+        if (oscHistory[id].size() > (size_t)oscHistorySize) 
+          oscHistory[id].erase(oscHistory[id].begin());
+      }
+    }
+  }
+
   // автосохранение (7.5): каждые 30 c, если есть изменения
   if (doc.dirty) {
     autosaveT += dt;

@@ -664,7 +664,7 @@ static void drawFlowDialog(App& app, UI& ui) {
   float x = (float)ui.winW / 2 - w / 2, y = (float)ui.winH / 2 - 60;
   if (uiWindowShared(app, ui, hashStr("flow"), "Поток частоты (5.9)", x, y, w, h, false)) {
     app.eng.setFlow(app.flowId, 0);
-    app.flowOpen = false;
+    app.winFlow = false;
     return;
   }
   char b[64];
@@ -678,7 +678,7 @@ static void drawFlowDialog(App& app, UI& ui) {
   }
   if (widgetButton(ui, hashStr("flow cl"), "Закрыть", {x + 100, y + 78, 90, 22}, true, C_BORDER)) {
     app.eng.setFlow(app.flowId, 0);
-    app.flowOpen = false;
+    app.winFlow = false;
   }
 }
 
@@ -795,7 +795,7 @@ void sceneMouse(App& app) {
     app.lastPos = app.place.pos;
     return;
   }
-  if (app.place.open || app.synWin.open || app.confirmOpen || app.fillOpen || app.flowOpen)
+  if (app.place.open || app.synWin.open || app.confirmOpen || app.fillOpen || app.winFlow)
     return;
 
   if (ui.lPressed && ui.focus != 0) { ui.prevFocus = ui.focus; ui.focus = 0; }
@@ -889,7 +889,7 @@ void sceneMouse(App& app) {
     app.pressS = app.hoverS;
     app.pressPos = app.lastPos;
     app.rubber = false;
-    app.rubberPending = app.hoverN.empty() && app.hoverS.empty();
+    app.rubberPending = (app.mode == Mode::Select || app.mode == Mode::Ignite) && app.hoverN.empty() && app.hoverS.empty();
     return;
   }
 
@@ -925,7 +925,7 @@ void sceneMouse(App& app) {
             q->pos = {app.lastPos.x + kv.second.x, app.lastPos.y + kv.second.y, app.lastPos.z + kv.second.z};
       }
       app.doc.dirty = true;
-    } else if (app.mode == Mode::Select && app.pressN.empty() && app.pressS.empty() && app.rubberPending) {
+    } else if ((app.mode == Mode::Select || app.mode == Mode::Ignite) && app.pressN.empty() && app.pressS.empty() && app.rubberPending) {
       app.rubber = true;
       app.rubberPending = false;
     }
@@ -939,7 +939,7 @@ void sceneMouse(App& app) {
 
   if (ui.lReleased && app.pressValid) {
     if (app.flowPending && !app.pressMoved && !app.pressN.empty()) {
-      app.flowOpen = true;
+      app.winFlow = true;
       app.flowId = app.pressN;
       app.flowHz = 0;
     } else if (app.rubber && app.pressMoved) {
@@ -1022,9 +1022,39 @@ void sceneMouse(App& app) {
       } else if (app.mode == Mode::Damage) {
         if (!app.hoverN.empty()) app.toggleDamage(app.hoverN, false);
         else if (!app.hoverS.empty()) app.toggleDamage(app.hoverS, true);
+      } else if (app.mode == Mode::Ignite) {
+        if (!app.hoverN.empty()) {
+          if (ui.shift) {
+            auto it = std::find(app.igniteSel.begin(), app.igniteSel.end(), app.hoverN);
+            if (it == app.igniteSel.end()) app.igniteSel.push_back(app.hoverN);
+            else app.igniteSel.erase(it);
+          } else {
+            app.igniteSel.clear();
+            app.igniteSel.push_back(app.hoverN);
+          }
+          app.igniteOpen = true;
+          app.focusUnit = app.hoverN;
+        } else if (app.rubber && app.pressMoved) {
+          float x0 = std::min(app.rubX0, app.rubX1);
+          float x1 = std::max(app.rubX0, app.rubX1);
+          float y0 = std::min(app.rubY0, app.rubY1);
+          float y1 = std::max(app.rubY0, app.rubY1);
+          app.igniteSel.clear();
+          for (const auto& n : app.doc.neurons) {
+            bool ok = false;
+            mp::V3 sp = app.cam.screenPoint(n.pos, ui.winW, ui.winH, &ok);
+            if (ok && sp.x >= x0 && sp.x <= x1 && sp.y >= y0 && sp.y <= y1) {
+              app.igniteSel.push_back(n.id);
+            }
+          }
+          if (!app.igniteSel.empty()) {
+            app.igniteOpen = true;
+            app.focusUnit = app.igniteSel[0];
+          }
+        }
       }
     }
-    if (!app.pressMoved && !app.pressN.empty() && app.mode != Mode::Select)
+    if (!app.pressMoved && !app.pressN.empty() && app.mode != Mode::Select && app.mode != Mode::Ignite)
       app.focusUnit = app.pressN;
     app.rubber = false;
     app.rubberPending = false;
@@ -1095,7 +1125,7 @@ void handleMenusStatic(App& app) {
         app.flash[arg] = 1.0;
         break;
       case 2:
-        app.flowOpen = true;
+        app.winFlow = true;
         app.flowId = arg;
         app.flowHz = 0;
         ui.menuOpen = false;
@@ -1226,7 +1256,7 @@ void panelsDraw(App& app) {
   if (app.winAbout) drawAbout(app, ui);
   if (app.place.open) drawPlaceDialog(app, ui);
   if (app.synWin.open) drawSynDialog(app, ui);
-  if (app.flowOpen) drawFlowDialog(app, ui);
+  if (app.winFlow) drawFlowDialog(app, ui);
   if (app.fillOpen) drawFillDialog(app, ui);
   if (app.confirmOpen) drawConfirmDialog(app, ui);
   // клавиатура вне панелей (в полях ввода горячие клавиши не работают)
@@ -1245,6 +1275,7 @@ void panelsDraw(App& app) {
       else if (k == "C" && !ui.ctrl) app.mode = Mode::Wire;
       else if (k == "X" && !ui.ctrl && app.mode != Mode::Move) app.mode = Mode::Cut;
       else if (k == "D" && !ui.ctrl) app.mode = Mode::Damage;
+      else if (k == "I" && !ui.ctrl) app.mode = Mode::Ignite;
       else if (k == "Tab") app.winCode = !app.winCode;
       else if (k == "Escape") {
         app.ui.menuOpen = false;

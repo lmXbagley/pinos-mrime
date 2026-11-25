@@ -276,7 +276,7 @@ static void drawNeuronInspector(App& app, UI& ui, mp::Neuron& nr, Rect r) {
     app.flash[nr.id] = 1.0;
   }
   if (widgetButton(ui, gid2("flow", nr.id), "Поток", {r.x + bw + 6, y, bw, 24})) {
-    app.flowOpen = true;
+    app.winFlow = true;
     app.flowId = nr.id;
     app.flowHz = 0;
   }
