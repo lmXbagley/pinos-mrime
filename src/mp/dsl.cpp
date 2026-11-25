@@ -385,35 +385,17 @@ void applyUnit(Project& doc, const UnitDecl& u, ExprCtx cx, int inst,
     if (key == "mzone") { n.mzonelist = evalStrList(toks, u.line, errs); continue; }
     if (key == "at" || key == "pos") {
       n.pos = parseVec(toks, cx, errs, u.line); continue; }
-    // числовые
-    double v = evalParam(toks, cx, errs, u.line);
-    if (key == "thr") { n.thr = OptF(v); continue; }
-    if (key == "leak") { n.leak = OptF(v); continue; }
-    if (key == "refrMax") { n.refrMax = OptI((long long)v); continue; }
-    if (key == "noise") { n.noise = OptF(v); continue; }
-    if (key == "trace") { n.trace = OptI((long long)v); continue; }
-    if (key == "homeoRate") { n.homeoRate = OptF(v); continue; }
     if (key == "src") { n.src = OptI((long long)(evalStr(toks, u.line, errs) == "api" ? 1 : 0)); continue; }
     if (key == "enc") {
       std::string e = evalStr(toks, u.line, errs);
       n.enc = OptI((long long)(e == "event_diff" ? SensorEncoding::EventDiff : e == "event_onoff" ? SensorEncoding::EventOnOff : SensorEncoding::Rate));
       continue;
     }
-    if (key == "fireThr") { n.fireThr = OptF(v); continue; }
-    if (key == "hyst") { n.hyst = OptF(v); continue; }
-    if (key == "normMin") { n.normMin = OptF(v); continue; }
-    if (key == "normMax") { n.normMax = OptF(v); continue; }
-    if (key == "smoothMs") { n.smoothMs = OptI((long long)v); continue; }
     if (key == "act") {
       std::string a = evalStr(toks, u.line, errs);
       n.act = OptI((long long)(a == "servo_R" ? Actuator::ServoR : a == "voice" ? Actuator::Voice : Actuator::ServoL));
       continue;
     }
-    if (key == "mapMin") { n.mapMin = OptF(v); continue; }
-    if (key == "mapMax") { n.mapMax = OptF(v); continue; }
-    if (key == "mapSpeed") { n.mapSpeed = OptF(v); continue; }
-    if (key == "curve") { n.curve = OptI((long long)(evalStr(toks, u.line, errs) == "gamma" ? Curve::Gamma : Curve::Linear)); continue; }
-    if (key == "gamma") { n.gamma = OptF(v); continue; }
     if (key == "mkind") {
       std::string k = evalStr(toks, u.line, errs);
       n.mkind = OptI((long long)(k == "punishment" ? ModKind::Punishment : k == "novelty" ? ModKind::Novelty : ModKind::Dopamine));
@@ -424,6 +406,24 @@ void applyUnit(Project& doc, const UnitDecl& u, ExprCtx cx, int inst,
       n.mscope = OptI((long long)(k == "zone" ? ModScope::Zone : k == "zones" ? ModScope::Zones : ModScope::Global));
       continue;
     }
+    if (key == "curve") { n.curve = OptI((long long)(evalStr(toks, u.line, errs) == "gamma" ? Curve::Gamma : Curve::Linear)); continue; }
+    // числовые
+    double v = evalParam(toks, cx, errs, u.line);
+    if (key == "thr") { n.thr = OptF(v); continue; }
+    if (key == "leak") { n.leak = OptF(v); continue; }
+    if (key == "refrMax") { n.refrMax = OptI((long long)v); continue; }
+    if (key == "noise") { n.noise = OptF(v); continue; }
+    if (key == "trace") { n.trace = OptI((long long)v); continue; }
+    if (key == "homeoRate") { n.homeoRate = OptF(v); continue; }
+    if (key == "fireThr") { n.fireThr = OptF(v); continue; }
+    if (key == "hyst") { n.hyst = OptF(v); continue; }
+    if (key == "normMin") { n.normMin = OptF(v); continue; }
+    if (key == "normMax") { n.normMax = OptF(v); continue; }
+    if (key == "smoothMs") { n.smoothMs = OptI((long long)v); continue; }
+    if (key == "mapMin") { n.mapMin = OptF(v); continue; }
+    if (key == "mapMax") { n.mapMax = OptF(v); continue; }
+    if (key == "mapSpeed") { n.mapSpeed = OptF(v); continue; }
+    if (key == "gamma") { n.gamma = OptF(v); continue; }
     if (key == "windowSec") { n.windowSec = OptF(v); continue; }
     if (key == "rate") { n.rate = OptF(v); continue; }
     if (key == "target") { n.target = OptF(v); continue; }
@@ -589,14 +589,27 @@ BuildResult parseAndBuild(Project& doc, const std::string& codeText) {
       if (!L.accept("bygrid")) { errs.push_back({cur_line(L), "ожеидалось «по сетке WxH»"}); }
       if (L.cur().k == Tok::Num) {
         double a = L.eat().num;
-        if (L.is("x")) { ++L.p; double b = (L.cur().k == Tok::Num ? L.eat().num : 1); s.gw = (int)a; s.gh = (int)b; }
-        else { s.gw = (int)a; s.gh = 1; }
+        // лексер склеивает «5x4» в Num(5)+Ident("x4"): поддерживаем оба разбиения
+        bool gotH = false;
+        if (L.cur().k == Tok::Ident) {
+          const std::string& sv = L.cur().s;
+          bool restDigits = sv.size() > 1 &&
+                            std::all_of(sv.begin() + 1, sv.end(), [](unsigned char c) { return std::isdigit(c) != 0; });
+          if (sv[0] == 'x' && restDigits) { s.gw = (int)a; s.gh = std::atoi(sv.c_str() + 1); gotH = true; ++L.p; }
+          else if (sv == "x") {
+            ++L.p;
+            if (L.cur().k == Tok::Num) { s.gw = (int)a; s.gh = (int)L.eat().num; gotH = true; }
+          }
+        }
+        if (!gotH) { s.gw = (int)a; s.gh = 1; }
       }
       if (L.isIdent("at")) {
         ++L.p;
         if (L.is("[")) {
           std::vector<Tok> vec;
-          // at [ ... ]
+          // at [ ... ]: parseVec ждёт "["..."]", восстанавливаем скобки
+          Tok lb; lb.k = Tok::Punct; lb.s = "["; lb.line = line;
+          vec.push_back(lb);
           ++L.p;
           int depth = 1;
           while (!L.eof() && depth > 0) {
@@ -604,6 +617,8 @@ BuildResult parseAndBuild(Project& doc, const std::string& codeText) {
             if (L.is("]")) { --depth; if (depth == 0) { ++L.p; break; } }
             vec.push_back(L.eat());
           }
+          Tok rb; rb.k = Tok::Punct; rb.s = "]"; rb.line = line;
+          vec.push_back(rb);
           ExprCtx cx0;
           s.unit.at = parseVec(vec, cx0, errs, line);
           s.unit.hasAt = true;
@@ -646,12 +661,17 @@ BuildResult parseAndBuild(Project& doc, const std::string& codeText) {
       if (L.isIdent("at")) {
         ++L.p;
         if (L.is("[")) {
-          std::vector<Tok> vec; ++L.p; int depth = 1;
+          std::vector<Tok> vec;
+          Tok lb; lb.k = Tok::Punct; lb.s = "["; lb.line = line;
+          vec.push_back(lb);
+          ++L.p; int depth = 1;
           while (!L.eof() && depth > 0) {
             if (L.is("[")) ++depth;
             if (L.is("]")) { --depth; if (depth == 0) { ++L.p; break; } }
             vec.push_back(L.eat());
           }
+          Tok rb; rb.k = Tok::Punct; rb.s = "]"; rb.line = line;
+          vec.push_back(rb);
           ExprCtx cx0;
           s.unit.at = parseVec(vec, cx0, errs, line);
           s.unit.hasAt = true;

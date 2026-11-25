@@ -136,3 +136,31 @@ MPT_TEST(dsl_export_rebuild_roundtrip) {
   for (const auto& n : doc.neurons) if (!n.byCode || n.srcCluster.empty()) sawManual = sawManual || !n.byCode;
   CHECK(sawManual, "manual unit still there");
 }
+
+// repeat N bygrid WxH at [...] + строковые параметры enc/src: обе ветки раньше падали
+// (лексер склеивал «5x2» в Num+Ident, at-вектор терял скобки, Str-параметры шли в evalParam)
+MPT_TEST(dsl_repeat_grid_str_params) {
+  Project doc;
+  std::string code =
+      "zone(\"RA\");\n"
+      "repeat 4 bygrid 2x2 at [-2, 0, -1] step 2 { sensor { zone=\"RA\"; enc=\"rate\"; fireThr=0.2 } }\n"
+      "hidden { zone=\"RA\"; enc=\"rate\"; pos=[0, 0, 0] }\n"
+      "connect(\"RA\" -> \"RA.H.1\", rule=\"full\", weight=0.55, delay=1);\n";
+  BuildResult r = dslBuild(doc, code);
+  if (!r.ok) for (auto& e : r.errors) std::fprintf(stderr, "  err L%d: %s\n", e.line, e.msg.c_str());
+  CHECK(r.ok, "repeat grid + str params build ok");
+  CHECK(r.created == 10, "1 zone + 4 retina + 1 hidden + 4 syn");
+  int sensors = 0;
+  for (const auto& n : doc.neurons) {
+    if (n.type.set && n.type.v == (long long)NType::Sensor) {
+      ++sensors;
+      CHECK(n.enc.v == (long long)SensorEncoding::Rate, "enc=rate applied without spurious errors");
+    }
+  }
+  CHECK(sensors == 4, "retina ids");
+  // сетка 2x2: x = -2..0, z строка одна плоскость at: gx->x, gy->y
+  const Neuron* a = doc.neuron("RA.S.1");
+  const Neuron* b = doc.neuron("RA.S.4");
+  CHECK(a && b && mpt::near(a->pos.x, -2.0) && mpt::near(b->pos.x, 0.0), "bygrid laid cells out");
+  CHECK(doc.synapses.size() == 4, "zone->unit full rule made 4 synapses");
+}

@@ -1,0 +1,80 @@
+// МИНОСПРАЙМ — зрительная кора (пример: распознавание вертикальной/горизонтальной полосы)
+// Сеть: сетчатка 5x5 -> V1: 5 горизонтальных + 5 вертикальных ориентационных детекторов
+// -> латеральное торможение (anti-H/anti-V) -> два мотонейрона-выхода (WTA "кто сильнее").
+// Как пользоваться: вставь весь текст в окно «Код» и нажми «Собрать».
+// Демо распознавания в GUI: в режиме «Выбор» подожги ЛКМ три клетки среднего
+// столбца сетчатки (R1.S.3, R2.S.3, R3.S.3) — включится выход «ВЕРТИКАЛЬ».
+// Подожги среднюю строку (R3.S.1 .. R3.S.5) — включится «ГОРИЗОНТАЛЬ».
+
+// зоны
+zone("R1", color="#3a6ea5"); zone("R2", color="#33608d"); zone("R3", color="#3f5871");
+zone("R4", color="#33475b"); zone("R5", color="#2f4858");
+zone("V1H", color="#5a4632"); zone("V1V", color="#46505a");
+zone("OUT", color="#4a5d3a");
+
+// сетчатка: строки по 5 сенсоров, частотное кодирование
+repeat 5 bygrid 5x1 at [-12, 0, -6] step 3 { sensor { zone="R1"; label="ret"; enc="rate"; thr=1.0; leak=0; refrMax=2; noise=0; trace=0; src="mouse"; fireThr=0.2; hyst=0; normMin=0; normMax=1; smoothMs=0 } }
+repeat 5 bygrid 5x1 at [-12, 0, -3] step 3 { sensor { zone="R2"; label="ret"; enc="rate"; thr=1.0; leak=0; refrMax=2; noise=0; trace=0; src="mouse"; fireThr=0.2; hyst=0; normMin=0; normMax=1; smoothMs=0 } }
+repeat 5 bygrid 5x1 at [-12, 0,  0] step 3 { sensor { zone="R3"; label="ret"; enc="rate"; thr=1.0; leak=0; refrMax=2; noise=0; trace=0; src="mouse"; fireThr=0.2; hyst=0; normMin=0; normMax=1; smoothMs=0 } }
+repeat 5 bygrid 5x1 at [-12, 0,  3] step 3 { sensor { zone="R4"; label="ret"; enc="rate"; thr=1.0; leak=0; refrMax=2; noise=0; trace=0; src="mouse"; fireThr=0.2; hyst=0; normMin=0; normMax=1; smoothMs=0 } }
+repeat 5 bygrid 5x1 at [-12, 0,  6] step 3 { sensor { zone="R5"; label="ret"; enc="rate"; thr=1.0; leak=0; refrMax=2; noise=0; trace=0; src="mouse"; fireThr=0.2; hyst=0; normMin=0; normMax=1; smoothMs=0 } }
+
+// V1: детекторы горизонталей (по одной на строку сетчатки)
+hidden { zone="V1H"; label="H1"; pos=[6, 0, -6];   thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+hidden { zone="V1H"; label="H2"; pos=[6, 0, -3];   thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+hidden { zone="V1H"; label="H3"; pos=[6, 0,  0];   thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+hidden { zone="V1H"; label="H4"; pos=[6, 0,  3];   thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+hidden { zone="V1H"; label="H5"; pos=[6, 0,  6];   thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+
+// V1: детекторы вертикалей (по одному на столбец)
+hidden { zone="V1V"; label="V1"; pos=[10.5, 0, -6];  thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+hidden { zone="V1V"; label="V2"; pos=[10.5, 0, -3];  thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+hidden { zone="V1V"; label="V3"; pos=[10.5, 0,  0];  thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+hidden { zone="V1V"; label="V4"; pos=[10.5, 0,  3];  thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+hidden { zone="V1V"; label="V5"; pos=[10.5, 0,  6];  thr=1.3; leak=0.6; refrMax=2; noise=0; trace=1 }
+
+// feed-forward: строка -> её детектор
+connect("R1" -> "V1H.H.1", rule="full", weight=0.55, delay=1);
+connect("R2" -> "V1H.H.2", rule="full", weight=0.55, delay=1);
+connect("R3" -> "V1H.H.3", rule="full", weight=0.55, delay=1);
+connect("R4" -> "V1H.H.4", rule="full", weight=0.55, delay=1);
+connect("R5" -> "V1H.H.5", rule="full", weight=0.55, delay=1);
+
+// feed-forward: столбец -> его детектор (явные соединения по id)
+connect("R1.S.1" -> "V1V.H.1", rule="full", weight=0.55, delay=1);
+connect("R2.S.1" -> "V1V.H.1", rule="full", weight=0.55, delay=1);
+connect("R3.S.1" -> "V1V.H.1", rule="full", weight=0.55, delay=1);
+connect("R4.S.1" -> "V1V.H.1", rule="full", weight=0.55, delay=1);
+connect("R5.S.1" -> "V1V.H.1", rule="full", weight=0.55, delay=1);
+connect("R1.S.2" -> "V1V.H.2", rule="full", weight=0.55, delay=1);
+connect("R2.S.2" -> "V1V.H.2", rule="full", weight=0.55, delay=1);
+connect("R3.S.2" -> "V1V.H.2", rule="full", weight=0.55, delay=1);
+connect("R4.S.2" -> "V1V.H.2", rule="full", weight=0.55, delay=1);
+connect("R5.S.2" -> "V1V.H.2", rule="full", weight=0.55, delay=1);
+connect("R1.S.3" -> "V1V.H.3", rule="full", weight=0.55, delay=1);
+connect("R2.S.3" -> "V1V.H.3", rule="full", weight=0.55, delay=1);
+connect("R3.S.3" -> "V1V.H.3", rule="full", weight=0.55, delay=1);
+connect("R4.S.3" -> "V1V.H.3", rule="full", weight=0.55, delay=1);
+connect("R5.S.3" -> "V1V.H.3", rule="full", weight=0.55, delay=1);
+connect("R1.S.4" -> "V1V.H.4", rule="full", weight=0.55, delay=1);
+connect("R2.S.4" -> "V1V.H.4", rule="full", weight=0.55, delay=1);
+connect("R3.S.4" -> "V1V.H.4", rule="full", weight=0.55, delay=1);
+connect("R4.S.4" -> "V1V.H.4", rule="full", weight=0.55, delay=1);
+connect("R5.S.4" -> "V1V.H.4", rule="full", weight=0.55, delay=1);
+connect("R1.S.5" -> "V1V.H.5", rule="full", weight=0.55, delay=1);
+connect("R2.S.5" -> "V1V.H.5", rule="full", weight=0.55, delay=1);
+connect("R3.S.5" -> "V1V.H.5", rule="full", weight=0.55, delay=1);
+connect("R4.S.5" -> "V1V.H.5", rule="full", weight=0.55, delay=1);
+connect("R5.S.5" -> "V1V.H.5", rule="full", weight=0.55, delay=1);
+
+// латеральное торможение между группами детекторов (не-первичность подавляется)
+connect("V1H" -> "V1V", rule="full", sign="-", weight=0.6, delay=1);
+connect("V1V" -> "V1H", rule="full", sign="-", weight=0.6, delay=1);
+
+// выход WTA: два мотонейрона, время сильнее решает что видно
+motor { zone="OUT"; label="ВЕРТИКАЛЬ";  pos=[17, 0, -2]; thr=1.0; leak=0.1; refrMax=2; noise=0; trace=0; act="servo_L"; mapMin=0; mapMax=100; mapSpeed=1; curve="linear" }
+motor { zone="OUT"; label="ГОРИЗОНТАЛЬ"; pos=[17, 0, 2];  thr=1.0; leak=0.1; refrMax=2; noise=0; trace=0; act="servo_R"; mapMin=0; mapMax=100; mapSpeed=1; curve="linear" }
+connect("V1V" -> "OUT.M.1", rule="full", weight=0.5, delay=1);
+connect("V1H" -> "OUT.M.2", rule="full", weight=0.5, delay=1);
+connect("OUT.M.1" -> "OUT.M.2", rule="full", sign="-", weight=1.0);
+connect("OUT.M.2" -> "OUT.M.1", rule="full", sign="-", weight=1.0);

@@ -1,0 +1,8206 @@
+{
+  "magic": "minosprime",
+  "v": 2,
+  "project": {
+    "name": "",
+    "tickBudget": 200000,
+    "excNormLimit": 8,
+    "tickHz": 1000,
+    "gammaConst": 0.050000000000000003,
+    "uRest": 0
+  },
+  "zones": [
+    {
+      "code": "R1",
+      "color": "#3a6ea5",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "code": "R2",
+      "color": "#33608d",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "code": "R3",
+      "color": "#3f5871",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "code": "R4",
+      "color": "#33475b",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "code": "R5",
+      "color": "#2f4858",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "code": "V1H",
+      "color": "#5a4632",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "code": "V1V",
+      "color": "#46505a",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "code": "OUT",
+      "color": "#4a5d3a",
+      "note": "",
+      "byCode": true
+    }
+  ],
+  "neurons": [
+    {
+      "id": "R1.S.1",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R1",
+      "pos": [
+        -12,
+        0,
+        -6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R1.S.2",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R1",
+      "pos": [
+        -9,
+        0,
+        -6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R1.S.3",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R1",
+      "pos": [
+        -6,
+        0,
+        -6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R1.S.4",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R1",
+      "pos": [
+        -3,
+        0,
+        -6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R1.S.5",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R1",
+      "pos": [
+        0,
+        0,
+        -6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R2.S.1",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R2",
+      "pos": [
+        -12,
+        0,
+        -3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R2.S.2",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R2",
+      "pos": [
+        -9,
+        0,
+        -3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R2.S.3",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R2",
+      "pos": [
+        -6,
+        0,
+        -3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R2.S.4",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R2",
+      "pos": [
+        -3,
+        0,
+        -3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R2.S.5",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R2",
+      "pos": [
+        0,
+        0,
+        -3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R3.S.1",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R3",
+      "pos": [
+        -12,
+        0,
+        0
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R3.S.2",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R3",
+      "pos": [
+        -9,
+        0,
+        0
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R3.S.3",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R3",
+      "pos": [
+        -6,
+        0,
+        0
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R3.S.4",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R3",
+      "pos": [
+        -3,
+        0,
+        0
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R3.S.5",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R3",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R4.S.1",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R4",
+      "pos": [
+        -12,
+        0,
+        3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R4.S.2",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R4",
+      "pos": [
+        -9,
+        0,
+        3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R4.S.3",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R4",
+      "pos": [
+        -6,
+        0,
+        3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R4.S.4",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R4",
+      "pos": [
+        -3,
+        0,
+        3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R4.S.5",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R4",
+      "pos": [
+        0,
+        0,
+        3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R5.S.1",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R5",
+      "pos": [
+        -12,
+        0,
+        6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R5.S.2",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R5",
+      "pos": [
+        -9,
+        0,
+        6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R5.S.3",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R5",
+      "pos": [
+        -6,
+        0,
+        6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R5.S.4",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R5",
+      "pos": [
+        -3,
+        0,
+        6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "R5.S.5",
+      "label": "ret",
+      "type": "sensor",
+      "type_set": true,
+      "zone": "R5",
+      "pos": [
+        0,
+        0,
+        6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": "manual",
+      "enc": "rate",
+      "fireThr": {
+        "set": true,
+        "v": 0.20000000000000001
+      },
+      "hyst": {
+        "set": true,
+        "v": 0
+      },
+      "normMin": {
+        "set": true,
+        "v": 0
+      },
+      "normMax": {
+        "set": true,
+        "v": 1
+      },
+      "smoothMs": {
+        "set": true,
+        "v": 0
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1H.H.1",
+      "label": "H1",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1H",
+      "pos": [
+        6,
+        0,
+        -6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1H.H.2",
+      "label": "H2",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1H",
+      "pos": [
+        6,
+        0,
+        -3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1H.H.3",
+      "label": "H3",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1H",
+      "pos": [
+        6,
+        0,
+        0
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1H.H.4",
+      "label": "H4",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1H",
+      "pos": [
+        6,
+        0,
+        3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1H.H.5",
+      "label": "H5",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1H",
+      "pos": [
+        6,
+        0,
+        6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1V.H.1",
+      "label": "V1",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1V",
+      "pos": [
+        10.5,
+        0,
+        -6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1V.H.2",
+      "label": "V2",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1V",
+      "pos": [
+        10.5,
+        0,
+        -3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1V.H.3",
+      "label": "V3",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1V",
+      "pos": [
+        10.5,
+        0,
+        0
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1V.H.4",
+      "label": "V4",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1V",
+      "pos": [
+        10.5,
+        0,
+        3
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "V1V.H.5",
+      "label": "V5",
+      "type": "hidden",
+      "type_set": true,
+      "zone": "V1V",
+      "pos": [
+        10.5,
+        0,
+        6
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1.3
+      },
+      "leak": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 1
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": null,
+      "mapMin": {
+        "set": false
+      },
+      "mapMax": {
+        "set": false
+      },
+      "mapSpeed": {
+        "set": false
+      },
+      "inv": false,
+      "curve": null,
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "OUT.M.1",
+      "label": "ВЕРТИКАЛЬ",
+      "type": "motor",
+      "type_set": true,
+      "zone": "OUT",
+      "pos": [
+        17,
+        0,
+        -2
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0.10000000000000001
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": "servo_L",
+      "mapMin": {
+        "set": true,
+        "v": 0
+      },
+      "mapMax": {
+        "set": true,
+        "v": 100
+      },
+      "mapSpeed": {
+        "set": true,
+        "v": 1
+      },
+      "inv": false,
+      "curve": "linear",
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    },
+    {
+      "id": "OUT.M.2",
+      "label": "ГОРИЗОНТАЛЬ",
+      "type": "motor",
+      "type_set": true,
+      "zone": "OUT",
+      "pos": [
+        17,
+        0,
+        2
+      ],
+      "model": "",
+      "model_set": false,
+      "thr": {
+        "set": true,
+        "v": 1
+      },
+      "leak": {
+        "set": true,
+        "v": 0.10000000000000001
+      },
+      "refrMax": {
+        "set": true,
+        "v": 2
+      },
+      "noise": {
+        "set": true,
+        "v": 0
+      },
+      "trace": {
+        "set": true,
+        "v": 0
+      },
+      "homeoOn": false,
+      "homeoRate": {
+        "set": false
+      },
+      "growth": [],
+      "color": "",
+      "note": "",
+      "tag": "",
+      "src": null,
+      "enc": null,
+      "fireThr": {
+        "set": false
+      },
+      "hyst": {
+        "set": false
+      },
+      "normMin": {
+        "set": false
+      },
+      "normMax": {
+        "set": false
+      },
+      "smoothMs": {
+        "set": false
+      },
+      "act": "servo_R",
+      "mapMin": {
+        "set": true,
+        "v": 0
+      },
+      "mapMax": {
+        "set": true,
+        "v": 100
+      },
+      "mapSpeed": {
+        "set": true,
+        "v": 1
+      },
+      "inv": false,
+      "curve": "linear",
+      "gamma": {
+        "set": false
+      },
+      "mkind": null,
+      "mscope": null,
+      "mzonelist": [],
+      "windowSec": {
+        "set": false
+      },
+      "rate": {
+        "set": false
+      },
+      "target": {
+        "set": false
+      },
+      "integSec": {
+        "set": false
+      },
+      "kThr": {
+        "set": false
+      },
+      "kPlast": {
+        "set": false
+      },
+      "disabled": false,
+      "byCode": true,
+      "srcCluster": ""
+    }
+  ],
+  "synapses": [
+    {
+      "id": "syn.1",
+      "pre": "R1.S.1",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.2",
+      "pre": "R1.S.2",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.3",
+      "pre": "R1.S.3",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.4",
+      "pre": "R1.S.4",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.5",
+      "pre": "R1.S.5",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.6",
+      "pre": "R2.S.1",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.7",
+      "pre": "R2.S.2",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.8",
+      "pre": "R2.S.3",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.9",
+      "pre": "R2.S.4",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.10",
+      "pre": "R2.S.5",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.11",
+      "pre": "R3.S.1",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.12",
+      "pre": "R3.S.2",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.13",
+      "pre": "R3.S.3",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.14",
+      "pre": "R3.S.4",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.15",
+      "pre": "R3.S.5",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.16",
+      "pre": "R4.S.1",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.17",
+      "pre": "R4.S.2",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.18",
+      "pre": "R4.S.3",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.19",
+      "pre": "R4.S.4",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.20",
+      "pre": "R4.S.5",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.21",
+      "pre": "R5.S.1",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.22",
+      "pre": "R5.S.2",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.23",
+      "pre": "R5.S.3",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.24",
+      "pre": "R5.S.4",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.25",
+      "pre": "R5.S.5",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.26",
+      "pre": "R1.S.1",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.27",
+      "pre": "R2.S.1",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.28",
+      "pre": "R3.S.1",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.29",
+      "pre": "R4.S.1",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.30",
+      "pre": "R5.S.1",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.31",
+      "pre": "R1.S.2",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.32",
+      "pre": "R2.S.2",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.33",
+      "pre": "R3.S.2",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.34",
+      "pre": "R4.S.2",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.35",
+      "pre": "R5.S.2",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.36",
+      "pre": "R1.S.3",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.37",
+      "pre": "R2.S.3",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.38",
+      "pre": "R3.S.3",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.39",
+      "pre": "R4.S.3",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.40",
+      "pre": "R5.S.3",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.41",
+      "pre": "R1.S.4",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.42",
+      "pre": "R2.S.4",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.43",
+      "pre": "R3.S.4",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.44",
+      "pre": "R4.S.4",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.45",
+      "pre": "R5.S.4",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.46",
+      "pre": "R1.S.5",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.47",
+      "pre": "R2.S.5",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.48",
+      "pre": "R3.S.5",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.49",
+      "pre": "R4.S.5",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.50",
+      "pre": "R5.S.5",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.55000000000000004
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.51",
+      "pre": "V1H.H.1",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.52",
+      "pre": "V1H.H.1",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.53",
+      "pre": "V1H.H.1",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.54",
+      "pre": "V1H.H.1",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.55",
+      "pre": "V1H.H.1",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.56",
+      "pre": "V1H.H.2",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.57",
+      "pre": "V1H.H.2",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.58",
+      "pre": "V1H.H.2",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.59",
+      "pre": "V1H.H.2",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.60",
+      "pre": "V1H.H.2",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.61",
+      "pre": "V1H.H.3",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.62",
+      "pre": "V1H.H.3",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.63",
+      "pre": "V1H.H.3",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.64",
+      "pre": "V1H.H.3",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.65",
+      "pre": "V1H.H.3",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.66",
+      "pre": "V1H.H.4",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.67",
+      "pre": "V1H.H.4",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.68",
+      "pre": "V1H.H.4",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.69",
+      "pre": "V1H.H.4",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.70",
+      "pre": "V1H.H.4",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.71",
+      "pre": "V1H.H.5",
+      "post": "V1V.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.72",
+      "pre": "V1H.H.5",
+      "post": "V1V.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.73",
+      "pre": "V1H.H.5",
+      "post": "V1V.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.74",
+      "pre": "V1H.H.5",
+      "post": "V1V.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.75",
+      "pre": "V1H.H.5",
+      "post": "V1V.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.76",
+      "pre": "V1V.H.1",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.77",
+      "pre": "V1V.H.1",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.78",
+      "pre": "V1V.H.1",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.79",
+      "pre": "V1V.H.1",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.80",
+      "pre": "V1V.H.1",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.81",
+      "pre": "V1V.H.2",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.82",
+      "pre": "V1V.H.2",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.83",
+      "pre": "V1V.H.2",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.84",
+      "pre": "V1V.H.2",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.85",
+      "pre": "V1V.H.2",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.86",
+      "pre": "V1V.H.3",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.87",
+      "pre": "V1V.H.3",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.88",
+      "pre": "V1V.H.3",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.89",
+      "pre": "V1V.H.3",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.90",
+      "pre": "V1V.H.3",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.91",
+      "pre": "V1V.H.4",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.92",
+      "pre": "V1V.H.4",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.93",
+      "pre": "V1V.H.4",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.94",
+      "pre": "V1V.H.4",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.95",
+      "pre": "V1V.H.4",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.96",
+      "pre": "V1V.H.5",
+      "post": "V1H.H.5",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.97",
+      "pre": "V1V.H.5",
+      "post": "V1H.H.4",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.98",
+      "pre": "V1V.H.5",
+      "post": "V1H.H.3",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.99",
+      "pre": "V1V.H.5",
+      "post": "V1H.H.2",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.100",
+      "pre": "V1V.H.5",
+      "post": "V1H.H.1",
+      "weight": {
+        "set": true,
+        "v": 0.59999999999999998
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.101",
+      "pre": "V1V.H.1",
+      "post": "OUT.M.1",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.102",
+      "pre": "V1V.H.2",
+      "post": "OUT.M.1",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.103",
+      "pre": "V1V.H.3",
+      "post": "OUT.M.1",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.104",
+      "pre": "V1V.H.4",
+      "post": "OUT.M.1",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.105",
+      "pre": "V1V.H.5",
+      "post": "OUT.M.1",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.106",
+      "pre": "V1H.H.1",
+      "post": "OUT.M.2",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.107",
+      "pre": "V1H.H.2",
+      "post": "OUT.M.2",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.108",
+      "pre": "V1H.H.3",
+      "post": "OUT.M.2",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.109",
+      "pre": "V1H.H.4",
+      "post": "OUT.M.2",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.110",
+      "pre": "V1H.H.5",
+      "post": "OUT.M.2",
+      "weight": {
+        "set": true,
+        "v": 0.5
+      },
+      "sign": "exc",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 1
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.111",
+      "pre": "OUT.M.1",
+      "post": "OUT.M.2",
+      "weight": {
+        "set": true,
+        "v": 1
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 0
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    },
+    {
+      "id": "syn.112",
+      "pre": "OUT.M.2",
+      "post": "OUT.M.1",
+      "weight": {
+        "set": true,
+        "v": 1
+      },
+      "sign": "inh",
+      "plast": "rigid",
+      "lr": {
+        "set": true,
+        "v": 0.01
+      },
+      "pw": {
+        "set": true,
+        "v": 20
+      },
+      "wMin": {
+        "set": true,
+        "v": 0
+      },
+      "wMax": {
+        "set": true,
+        "v": 1
+      },
+      "decay": {
+        "set": true,
+        "v": 0
+      },
+      "delay": {
+        "set": true,
+        "v": 0
+      },
+      "enabled": true,
+      "color": "",
+      "note": "",
+      "byCode": true
+    }
+  ],
+  "clusters": [],
+  "stands": [],
+  "idCounter": {
+    "OUT.M": 2,
+    "R1.S": 5,
+    "R2.S": 5,
+    "R3.S": 5,
+    "R4.S": 5,
+    "R5.S": 5,
+    "V1H.H": 5,
+    "V1V.H": 5
+  },
+  "synCounter": 112,
+  "clustCounter": 0,
+  "dirty": true
+}
